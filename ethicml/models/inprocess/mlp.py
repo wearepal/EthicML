@@ -61,6 +61,9 @@ def select_mlp(
 
     :param hidden_layer_sizes: The number of neurons in each hidden layer.
     :param seed: The seed for the random number generator.
+    :param lr: The learning rate.
+    :param batch_size: The batch size.
+    :returns: The instantiated MLP.
     """
     random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(

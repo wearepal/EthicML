@@ -9,10 +9,18 @@ from ranzen import implements
 import sklearn
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.models.inprocess.in_algorithm import HyperParamType, InAlgorithm
+from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.inprocess.shared import settings_for_svm_lr
-from ethicml.models.inprocess.svm import KernelType, select_svm
-from ethicml.utility import ClassifierType, DataTuple, Prediction, SoftPrediction, TestTuple
+from ethicml.models.inprocess.svm import select_svm
+from ethicml.utility import (
+    ClassifierType,
+    DataTuple,
+    HyperParamType,
+    KernelType,
+    Prediction,
+    SoftPrediction,
+    TestTuple,
+)
 
 __all__ = ["Reweighting", "compute_instance_weights"]
 

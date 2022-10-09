@@ -34,6 +34,8 @@ def get_dataset_obj_by_name(name: str) -> Callable[[], Dataset]:
     """Given a dataset name, get the corresponding dataset object.
 
     :param name: Name of the dataset.
+    :returns: A callable that can be used to construct the dataset object.
+    :raises NotImplementedError: If the given name does not correspond to a dataset.
     """
     lookup = _lookup_table()
     lowercase_name = name.lower()

@@ -116,7 +116,9 @@ def evaluate_models(
         (Default: True)
     :param num_jobs: Number of parallel jobs; if None, the number of CPUs is used. (Default: None)
     :param scaler: Sklearn-style scaler to be used on the continuous features. (Default: None)
-    :param repeat_on: Should the `data` or `model` seed be varied for each run? Or should they `both` be the same? (Default: "both")
+    :param repeat_on: Should the ``data`` or ``model`` seed be varied for each run? Or should they
+        ``both`` be the same? (Default: "both")
+    :returns: A :class:`Results` object.
     """
     per_sens_metrics_check(per_sens_metrics)
     if splitter is None:

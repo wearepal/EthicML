@@ -8,5 +8,6 @@ ethicml.models
 
 .. toctree::
    :glob:
+   :maxdepth: 2
 
    ./*

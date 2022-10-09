@@ -33,9 +33,11 @@ def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1
 
     HGR(x,y) is the second highest eigenvalue of the joint density on (x,y). We compute here the second eigenvalue on
     an empirical and discretized density estimated from the input data.
+
     :param x: A torch 1-D Tensor
     :param y: A torch 1-D Tensor
     :param density: so far only kde is supported
+    :param damping: a damping factor
     :return: numerical value between 0 and 1 (0: independent, 1:linked by a deterministic equation)
     """
     h2d = _joint_2(x, y, density, damping=damping)
@@ -50,9 +52,11 @@ def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float =
 
     This is know to be the square of an upper-bound on the Hirschfeld-Gebelein-Renyi maximum correlation coefficient. We compute it here on
     an empirical and discretized density estimated from the input data.
+
     :param x: A torch 1-D Tensor
     :param y: A torch 1-D Tensor
     :param density: so far only kde is supported
+    :param damping: a damping factor
     :return: numerical value between 0 and \infty (0: independent)
     """
     h2d = _joint_2(x, y, density, damping=damping)

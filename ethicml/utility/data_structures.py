@@ -102,7 +102,7 @@ class SubsetMixin(ABC):
 
     @final
     def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
+        """Number of entries in the underlying data."""
         return len(self.data)
 
 
@@ -145,7 +145,7 @@ class SubgroupTuple(SubsetMixin):
         return self.data.drop(self.s_column, inplace=False, axis="columns")
 
     def __iter__(self) -> Iterator[pd.DataFrame | pd.Series]:
-        """Overwrite magic method __iter__."""
+        """Iterator of ``self.x`` and ``self.s``."""
         return iter([self.x, self.s])
 
     def replace(
@@ -186,6 +186,7 @@ class SubgroupTuple(SubsetMixin):
         """Load test tuple from npz file.
 
         :param data_path: Path to load the npz file.
+        :returns: A :class:`SubgroupTuple` with the loaded data.
         """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
@@ -245,7 +246,7 @@ class DataTuple(SubsetMixin):
         return self.data[self.y_column]
 
     def __iter__(self) -> Iterator[pd.DataFrame | pd.Series]:
-        """Overwrite magic method __iter__."""
+        """Iterator of ``self.x``, ``self.s`` and ``self.y``."""
         return iter([self.x, self.s, self.y])
 
     def remove_y(self) -> SubgroupTuple:
@@ -298,6 +299,7 @@ class DataTuple(SubsetMixin):
         """Concatenate the dataframes in the DataTuple and then apply a function to it.
 
         :param mapper: A function that takes a dataframe and returns a dataframe.
+        :returns: The transformed :class:`DataTuple`.
         """
         return self.replace_data(data=mapper(self.data))
 
@@ -317,6 +319,7 @@ class DataTuple(SubsetMixin):
         """Load data tuple from npz file.
 
         :param data_path: Path to the npz file.
+        :returns: A :class:`DataTuple` with the loaded data.
         """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
@@ -382,7 +385,7 @@ class LabelTuple(SubsetMixin):
         return self.data[self.y_column]
 
     def __iter__(self) -> Iterator[pd.DataFrame | pd.Series]:
-        """Overwrite magic method __iter__."""
+        """Iterator of ``self.x`` and ``self.y``."""
         return iter([self.s, self.y])
 
     def replace(self, *, s: pd.Series | None = None, y: pd.Series | None = None) -> LabelTuple:
@@ -439,6 +442,7 @@ class Prediction:
 
         :param s_data: Dataframe with the s-values.
         :param s: S-value to get the subset for.
+        :returns: The requested subset as a new ``Prediction`` object.
         """
         return Prediction(hard=self.hard[s_data == s])
 
@@ -457,6 +461,7 @@ class Prediction:
         """Load prediction from npz file.
 
         :param npz_path: Path to the npz file.
+        :returns: A :class:`Prediction` object with the loaded data.
         """
         info = None
         if (npz_path.parent / "info.json").exists():
@@ -528,6 +533,7 @@ def concat(
 
     :param datatup_list: List of data tuples to concatenate.
     :param ignore_index: Ignore the index of the dataframes. (Default: False)
+    :returns: The concatenated data tuple.
     """
     data: pd.DataFrame = pd.concat(
         [dt.data for dt in datatup_list], axis="index", sort=False, ignore_index=ignore_index
@@ -539,16 +545,22 @@ class FairnessType(StrEnum):
     """Fairness type."""
 
     dp = auto()
+    """Demographic parity."""
     eq_opp = auto()
+    """Equality of Opportunity."""
     eq_odds = auto()
+    """Equalized Odds."""
 
 
 class ClassifierType(StrEnum):
     """Classifier type."""
 
     lr = auto()
+    """Logistic Regression."""
     svm = auto()
+    """Support Vector Machine."""
     gbt = auto()
+    """Gradient Boosting."""
 
 
 class TrainTestPair(NamedTuple):
@@ -566,7 +578,7 @@ class TrainValPair(NamedTuple):
 
 
 Results = NewType("Results", pd.DataFrame)
-"""Container for results from :func:`~ethicml.run.evaluate.evaluate_models`."""
+"""Container for results from :func:`~ethicml.run.evaluate_models`."""
 
 
 RESULTS_COLUMNS: Final = ["dataset", "scaler", "transform", "model", "split_id"]
@@ -622,6 +634,7 @@ class ResultsAggregator:
 
         :param csv_file: Path to the CSV file.
         :param prepend:  (Default: False)
+        :returns: ``True`` if the file existed and was succesfully loaded; ``False`` otherwise.
         """
         if csv_file.is_file():  # if file exists
             self.append_df(pd.read_csv(csv_file), prepend=prepend)
@@ -657,6 +670,7 @@ def filter_results(
     :param results: Results object to filter.
     :param values: Values to filter on.
     :param index: Index to filter on. (Default: "model")
+    :returns: The filtered results.
     """
     if isinstance(index, str):
         index = PandasIndex(index)
@@ -668,6 +682,7 @@ def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Resu
 
     :param results: Results object to filter.
     :param mapping: Mapping from old index to new index.
+    :returns: The filtered and mapped results.
     """
     return map_over_results_index(
         filter_results(results, mapping),
@@ -684,6 +699,7 @@ def aggregate_results(
     :param metrics: Metrics used for aggregation.
     :param aggregator: Aggregator to use. The aggreators are the ones used in pandas.
         (Default: ("mean", "std"))
+    :returns: The aggregated results as a ``pd.DataFrame``.
     """
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]
 
@@ -692,16 +708,22 @@ class KernelType(StrEnum):
     """Values for SVM Kernel."""
 
     linear = auto()
+    """Linear kernel."""
     poly = auto()
+    """Polynomial kernel."""
     rbf = auto()
+    """Radial basis function kernel."""
     sigmoid = auto()
+    """Sigmoid kernel."""
 
 
 class ModelType(StrEnum):
     """What to use as the underlying model for the fairness method."""
 
     deep = auto()
+    """Deep neural network."""
     linear = auto()
+    """Linear model."""
 
 
 HyperParamValue: TypeAlias = Union[bool, int, float, str]

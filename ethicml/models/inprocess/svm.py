@@ -59,6 +59,7 @@ def select_svm(C: float, kernel: KernelType, seed: int) -> LinearSVC | SVC:
     :param C: The penalty parameter of the error term.
     :param kernel: The kernel to use.
     :param seed: The seed for the random number generator.
+    :returns: The instantiated SVM.
     """
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:

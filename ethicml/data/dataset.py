@@ -1,20 +1,20 @@
 """Data structure for all datasets that come with the framework."""
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from enum import Enum, auto
+from dataclasses import dataclass, field
+from enum import auto
 from pathlib import Path
 import typing
-from typing import ClassVar, Literal, NamedTuple, Sequence, TypedDict, final
+from typing import ClassVar, Sequence, TypedDict, final
 
 import pandas as pd
-from ranzen import implements
+from ranzen import StrEnum, implements
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
 
 from .util import (
-    DiscFeatureGroup,
+    DiscFeatureGroups,
     LabelSpec,
     flatten_dict,
     from_dummies,
@@ -31,18 +31,23 @@ __all__ = [
     "LabelSpecsPair",
     "LegacyDataset",
     "StaticCSVDataset",
+    "one_hot_encode_and_combine",
 ]
 
 
-class LabelSpecsPair(NamedTuple):
-    """A pair of label specs."""
+@dataclass
+class LabelSpecsPair:
+    """A pair of label specs.
+
+    :param s: Spec for building the ``s`` label.
+    :param y: Spec for building the ``y`` label.
+    :param to_remove: List of feature groups that need to be removed because they are label building
+        blocks. (Default: ``[]``)
+    """
 
     s: LabelSpec
-    """Spec for building the s label."""
     y: LabelSpec
-    """Spec for building the y label."""
-    to_remove: list[str]
-    """List of feature groups that need to be removed because they are label building blocks."""
+    to_remove: list[str] = field(default_factory=list)
 
 
 class FeatureSplit(TypedDict):
@@ -53,11 +58,13 @@ class FeatureSplit(TypedDict):
     y: list[str]
 
 
-class FeatureOrder(Enum):
+class FeatureOrder(StrEnum):
     """Order of features in the loaded datatuple."""
 
     cont_first = auto()
+    """Continuous features first."""
     disc_first = auto()
+    """Discrete features first."""
 
 
 class Dataset(ABC):
@@ -74,8 +81,10 @@ class Dataset(ABC):
     ) -> DataTuple:
         """Load dataset from its CSV file.
 
-        :param labels_as_features: if True, the s and y labels are included in the x features
-        :returns: DataTuple with dataframes of features, labels and sensitive attributes
+        :param labels_as_features: If ``True``, the s and y labels are included in the x features.
+        :param order: Order of the columns in the dataframes. Can be ``disc_first`` or
+            ``cont_first``. See :class:`FeatureOrder`.
+        :returns: ``DataTuple`` with dataframes of features, labels and sensitive attributes.
         """
 
     @property
@@ -99,7 +108,7 @@ class Dataset(ABC):
 
     @property
     @abstractmethod
-    def disc_feature_groups(self) -> DiscFeatureGroup:
+    def disc_feature_groups(self) -> DiscFeatureGroups:
         """Return Dictionary of feature groups."""
 
     @abstractmethod
@@ -139,7 +148,7 @@ class CSVDataset(Dataset, ABC):
 
     @property
     @abstractmethod
-    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         """Discrete feature groups, including features for the labels."""
 
     @property
@@ -185,7 +194,7 @@ class CSVDataset(Dataset, ABC):
         return flatten_dict(self.disc_feature_groups)
 
     @property
-    def disc_feature_groups(self) -> DiscFeatureGroup:
+    def disc_feature_groups(self) -> DiscFeatureGroups:
         """Return Dictionary of feature groups, without s and y labels."""
         dfgs = self.unfiltered_disc_feat_groups
         # select those feature groups that are not for the x and y labels
@@ -227,12 +236,12 @@ class CSVDataset(Dataset, ABC):
         label_specs = self.get_label_specs()
 
         # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = self._one_hot_encode_and_combine(s_df, label_spec=label_specs.s)
+        s_data, s_mask = one_hot_encode_and_combine(s_df, label_specs.s, self.discard_non_one_hot)
         if s_mask is not None:
             x_data = x_data.loc[s_mask].reset_index(drop=True)
             s_data = s_data.loc[s_mask].reset_index(drop=True)
             y_df = y_df.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = self._one_hot_encode_and_combine(y_df, label_spec=label_specs.y)
+        y_data, y_mask = one_hot_encode_and_combine(y_df, label_specs.y, self.discard_non_one_hot)
         if y_mask is not None:
             x_data = x_data.loc[y_mask].reset_index(drop=True)
             s_data = s_data.loc[y_mask].reset_index(drop=True)
@@ -268,61 +277,6 @@ class CSVDataset(Dataset, ABC):
                 )
         return dataframe
 
-    def _one_hot_encode_and_combine(
-        self, attributes: pd.DataFrame, label_spec: LabelSpec
-    ) -> tuple[pd.Series, pd.Series | None]:
-        """Construct a new label according to the LabelSpecs.
-
-        :param attributes: DataFrame containing the attributes.
-        :param label_spec: A label spec.
-        """
-        mask = None  # the mask is needed when we have to discard samples
-
-        # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(
-            0, index=range(len(attributes)), name=",".join(label_spec)
-        )
-
-        for name, spec in label_spec.items():
-            if len(spec.columns) > 1:  # data is one-hot encoded
-                raw_values = attributes[spec.columns]
-                if self.discard_non_one_hot:
-                    # only use those samples where exactly one of the specified attributes is true
-                    mask = raw_values.sum(axis="columns") == 1
-                else:
-                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
-                values = undo_one_hot(raw_values)
-            else:
-                values = attributes[spec.columns[0]]
-            combination += spec.multiplier * values
-        return combination, mask
-
-    def expand_labels(self, label: pd.Series, label_type: Literal["s", "y"]) -> pd.DataFrame:
-        """Expand a label in the form of an index into all the subfeatures.
-
-        :param label: DataFrame containing the labels.
-        :param label_type: Type of label to expand.
-        """
-        label_specs = self.get_label_specs()
-        label_mapping = label_specs.s if label_type == "s" else label_specs.y
-
-        # first order the multipliers; this is important for disentangling the values
-        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
-
-        final_df = {}
-        for i, name in enumerate(names_ordered):
-            spec = label_mapping[name]
-            value = label
-            if i + 1 < len(names_ordered):
-                next_group = label_mapping[names_ordered[i + 1]]
-                value = label % next_group.multiplier
-            value = value // spec.multiplier
-            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
-            restored = pd.get_dummies(value)
-            final_df[name] = restored  # for the multi-level column index
-
-        return pd.concat(final_df, axis=1)
-
     @typing.no_type_check
     def load_aif(self):  # Returns aif.360 Standard Dataset
         """Load the dataset as an AIF360 dataset.
@@ -351,6 +305,40 @@ class CSVDataset(Dataset, ABC):
         )
 
 
+def one_hot_encode_and_combine(
+    attributes: pd.DataFrame, label_spec: LabelSpec, discard_non_one_hot: bool
+) -> tuple[pd.Series, pd.Series | None]:
+    """Construct a new label according to the given :class:`~ethicml.data.util.LabelSpec`.
+
+    This function is at the heart of the label spec API in EthicML.
+
+    :param attributes: DataFrame containing the attributes.
+    :param label_spec: A label spec.
+    :param discard_non_one_hot: If ``True``, a mask is returned which masks out all rows which are
+        not properly one-hot (i.e., either all classes are 0 or more than one is 1).
+    :returns: A tuple of a Series with the new labels and -- if ``discard_non_one_hot`` is ``True``
+        -- a mask for filtering out the rows that were not properly one-hot.
+    """
+    mask = None  # the mask is needed when we have to discard samples
+
+    # create a Series of zeroes with the same length as the dataframe
+    combination: pd.Series = pd.Series(0, index=range(len(attributes)), name=",".join(label_spec))
+
+    for name, spec in label_spec.items():
+        if len(spec.columns) > 1:  # data is one-hot encoded
+            raw_values = attributes[spec.columns]
+            if discard_non_one_hot:
+                # only use those samples where exactly one of the specified attributes is true
+                mask = raw_values.sum(axis="columns") == 1
+            else:
+                assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
+            values = undo_one_hot(raw_values)
+        else:
+            values = attributes[spec.columns[0]]
+        combination += spec.multiplier * values
+    return combination, mask
+
+
 @dataclass
 class CSVDatasetDC(CSVDataset, ABC):
     """Dataset that uses the default load function."""
@@ -371,7 +359,37 @@ class CSVDatasetDC(CSVDataset, ABC):
 
 @dataclass
 class StaticCSVDataset(CSVDatasetDC, ABC):
-    """Dataset whose size and file location does not depend on constructor arguments."""
+    """Dataset whose size and file location does not depend on constructor arguments.
+
+    :example:
+        How to subclass this:
+
+        .. code:: python
+
+            @dataclass
+            class Toy(StaticCSVDataset):
+                '''Dataset with toy data for testing.'''
+
+                num_samples: ClassVar[int] = 400
+                csv_file: ClassVar[str] = "toy.csv"
+
+                @property
+                def name(self) -> str:
+                    return "Toy"
+
+                def get_label_specs(self) -> LabelSpecsPair:
+                    return LabelSpecsPair(
+                        s=single_col_spec("sens"), y=single_col_spec("class")
+                    )
+
+                @property
+                def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
+                    return {"disc_1": ["a_1", "a_2", "a_3"], "disc_2": ["b_1", "b_2"]}
+
+                @property
+                def continuous_features(self) -> list[str]:
+                    return ["c1", "c2"]
+    """
 
     num_samples: ClassVar[int] = 0
     csv_file: ClassVar[str] = "<overwrite me>"
@@ -387,7 +405,11 @@ class StaticCSVDataset(CSVDatasetDC, ABC):
 
 @dataclass(init=False)
 class LegacyDataset(CSVDataset):
-    """Dataset that uses the default load function."""
+    """Dataset base class.
+
+    This base class is considered legacy now. Please use :class:`CSVDatasetDC` or
+    :class:`StaticCSVDataset` instead.
+    """
 
     discrete_only: bool = False
     invert_s: bool = False
@@ -423,7 +445,7 @@ class LegacyDataset(CSVDataset):
 
     @property
     @implements(CSVDataset)
-    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return self._unfiltered_disc_feat_groups
 
     @property

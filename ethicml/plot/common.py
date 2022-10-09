@@ -37,6 +37,7 @@ def common_plotting_settings(
     :param plot_def: a `PlotDef` that defines properties of the plot
     :param xaxis_title: label for x-axis
     :param yaxis_title: label for y-axis
+    :returns: A legend object if a legend was defined; otherwise ``None``.
     """
     plot.set_xlabel(xaxis_title)
     plot.set_ylabel(yaxis_title)
@@ -78,6 +79,7 @@ def errorbox(
     :param firstshape: index of the shape that should be used for the first entry (Default: 0)
     :param markersize: size of the markers (Default: 6)
     :param use_cross: if True, use cross instead of boxes (Default: False)
+    :returns: A legend object if a legend was defined; otherwise ``None``.
     """
     # ================================ constants for plots ========================================
     colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
@@ -187,6 +189,7 @@ def scatter(
     :param startindex: index of color and shape that should be used for the first entry (Default: 0)
     :param markersize: size of the markers (Default: 6)
     :param connect_dots: if True, connect the data points with a line (Default: False)
+    :returns: A legend object if a legend was defined; otherwise ``None``.
     """
     shapes = ["o", "X", "D", "s", "^", "v", "<", ">", "*", "p", "P"]
     colors10 = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]

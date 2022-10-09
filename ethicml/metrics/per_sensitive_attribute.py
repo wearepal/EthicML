@@ -69,6 +69,10 @@ def aggregate_over_sens(
 
     :param per_sens_res: Dictionary of the results.
     :param aggregator: A callable that is used to aggregate results.
+    :param infix: A string that will be displayed between the sensitive attributes in the final
+        metric name.
+    :param prefix: A prefix for the final metric name.
+    :param suffix: A suffix for the final metric name.
     :returns: Dictionary of the aggregated results.
     """
     sens_keys = sorted(per_sens_res.keys())

@@ -6,7 +6,7 @@ from typing import ClassVar
 from ranzen import implements
 
 from ..dataset import LabelSpecsPair, StaticCSVDataset
-from ..util import DiscFeatureGroup, single_col_spec
+from ..util import DiscFeatureGroups, single_col_spec
 
 __all__ = ["Toy"]
 
@@ -25,15 +25,11 @@ class Toy(StaticCSVDataset):
 
     @implements(StaticCSVDataset)
     def get_label_specs(self) -> LabelSpecsPair:
-        return LabelSpecsPair(
-            s=single_col_spec("sensitive-attr"),
-            y=single_col_spec("decision"),
-            to_remove=[],
-        )
+        return LabelSpecsPair(s=single_col_spec("sensitive-attr"), y=single_col_spec("decision"))
 
     @property
     @implements(StaticCSVDataset)
-    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return {
             "disc_1": ["disc_1_a", "disc_1_b", "disc_1_c", "disc_1_d", "disc_1_e"],
             "disc_2": ["disc_2_x", "disc_2_y", "disc_2_z"],

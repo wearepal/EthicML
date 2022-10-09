@@ -8,7 +8,7 @@ from ranzen import implements
 
 from ..dataset import LabelSpecsPair, StaticCSVDataset
 from ..util import (
-    DiscFeatureGroup,
+    DiscFeatureGroups,
     flatten_dict,
     reduce_feature_group,
     single_col_spec,
@@ -95,7 +95,7 @@ class Adult(StaticCSVDataset):
 
     @property
     @implements(StaticCSVDataset)
-    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
