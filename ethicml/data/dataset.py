@@ -219,7 +219,8 @@ class CSVDataset(Dataset, ABC):
         else:
             feature_split_x = feature_split["x"]
 
-        dataframe = self._generate_missing_columns(dataframe)
+        for feature_group in self.unfiltered_disc_feat_groups.values():
+            dataframe = _generate_complementary_column(dataframe, feature_group)
 
         x_data = dataframe[feature_split_x]
         s_df = dataframe[feature_split["s"]]
@@ -249,34 +250,6 @@ class CSVDataset(Dataset, ABC):
 
         return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
 
-    def _generate_missing_columns(self, dataframe: pd.DataFrame) -> pd.DataFrame:
-        """Check whether we have to generate some complementary columns for binary features.
-
-        This happens when we have, for example, several races: race-asian-pac-islander, etc, but we
-        want to have an attribute called "race_other" that summarizes them all. Now, the problem
-        is that this cannot be done before this point, because only here have we actually loaded
-        the data. So, we have to do it here, with all the information we can piece together.
-        """
-        for group in self.unfiltered_disc_feat_groups.values():
-            if len(group) == 1:
-                continue
-            for feature in group:
-                if feature in dataframe.columns:
-                    continue  # nothing to do
-                missing_feature = feature
-
-                existing_features = [other for other in group if other in dataframe.columns]
-                assert len(existing_features) == len(group) - 1, "at most 1 feature missing"
-                # the dummy feature is the inverse of the existing feature
-                or_combination = dataframe[existing_features[0]] == 1
-                for other in existing_features[1:]:
-                    or_combination |= dataframe[other] == 1
-                inverse: pd.Series = 1 - or_combination
-                dataframe = pd.concat(
-                    [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
-                )
-        return dataframe
-
     @typing.no_type_check
     def load_aif(self):  # Returns aif.360 Standard Dataset
         """Load the dataset as an AIF360 dataset.
@@ -303,6 +276,33 @@ class CSVDataset(Dataset, ABC):
             privileged_classes=[lambda x: x == 1],
             categorical_features=disc_feature_groups.keys(),
         )
+
+
+def _generate_complementary_column(
+    dataframe: pd.DataFrame, feature_group: list[str]
+) -> pd.DataFrame:
+    """Check whether we have to generate some complementary columns for binary features.
+
+    This happens when we have, for example, several races: race-asian-pac-islander, etc, but we want
+    to have an attribute called "race_other" that summarizes them all. Now, the problem is that this
+    cannot be done before this point, because only here have we actually loaded the data. So, we
+    have to do it here, with all the information we can piece together.
+    """
+    for feature in feature_group:
+        if feature in dataframe.columns:
+            continue  # nothing to do
+        missing_feature = feature
+
+        existing_features = [other for other in feature_group if other in dataframe.columns]
+        assert existing_features, f"no column from this feature group seems to exist: {feature}"
+        assert len(existing_features) == len(feature_group) - 1, "at most 1 feature missing"
+        # the dummy feature is the inverse of the existing feature
+        or_combination = dataframe[existing_features[0]] == 1
+        for other in existing_features[1:]:
+            or_combination |= dataframe[other] == 1
+        inverse: pd.Series = 1 - or_combination
+        dataframe = pd.concat([dataframe, inverse.to_frame(name=missing_feature)], axis="columns")
+    return dataframe
 
 
 def one_hot_encode_and_combine(
