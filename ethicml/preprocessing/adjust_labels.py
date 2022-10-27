@@ -18,9 +18,8 @@ def assert_binary_labels(data_tuple: DataTuple) -> None:
 class LabelBinarizer:
     """If a dataset has labels [-1,1], then this will make it so the labels = [0,1]."""
 
-    def __init__(self) -> None:
-        self.min_val: int
-        self.max_val: int
+    min_val: int
+    max_val: int
 
     def adjust(self, dataset: DataTuple) -> DataTuple:
         """Take a datatuple and make the labels [0,1]."""

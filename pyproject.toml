@@ -170,3 +170,17 @@ convention = "pep257"
 add_ignore = ["D105", "D107", "D401"]
 ignore_decorators = "implements|overload"
 match = "(?!(test_|__init__)).*\\.py"
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.8"
+reportMissingTypeArgument = "none"
+reportCallInDefaultInitializer = "warning"
+reportPropertyTypeMismatch = "warning"
+reportUninitializedInstanceVariable = "warning"
+reportUnusedCallResult = "warning"
+# these errors are a bit annoying
+reportUnknownMemberType = "none"
+reportUnknownVariableType = "none"
+reportUnknownParameterType = "none"
+reportUnknownArgumentType = "none"
