@@ -445,8 +445,8 @@ python-versions = ">=3.8"
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
     {version = ">=1.20.3", markers = "python_version < \"3.10\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
 ]
 python-dateutil = ">=2.8.1"
 pytz = ">=2020.1"
@@ -718,7 +718,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "ranzen"
-version = "2.0.3"
+version = "2.0.4"
 description = "A toolkit facilitating machine-learning experimentation."
 category = "main"
 optional = false
@@ -1639,8 +1639,8 @@ pyyaml = [
     {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
 ]
 ranzen = [
-    {file = "ranzen-2.0.3-py3-none-any.whl", hash = "sha256:6885dae64544e720526f82e80880fa80204a177e6ef1011e675f7ac87adc9f48"},
-    {file = "ranzen-2.0.3.tar.gz", hash = "sha256:30ece0cd8efa206dbc784090fc345c6ab139adba9a23dd3cf6b5b265ee70736c"},
+    {file = "ranzen-2.0.4-py3-none-any.whl", hash = "sha256:a6e60812c7ac4e7f15f22def1da3aa794810ba17635eb89208ccb9f84821f13b"},
+    {file = "ranzen-2.0.4.tar.gz", hash = "sha256:290a30e3b3100c49a159b29d02e87468ec28364fe6e6e5801e4df33c93809dab"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
