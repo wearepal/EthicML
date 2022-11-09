@@ -19,12 +19,15 @@ class ScalerType(Protocol):
 
     def fit_transform(self, df: pd.DataFrame) -> pd.DataFrame:
         """Fit parameters of the transformation to the given data and then transform."""
+        ...
 
     def inverse_transform(self, df: pd.DataFrame) -> pd.DataFrame:
         """Invert the transformation."""
+        ...
 
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
         """Transform the given data."""
+        ...
 
 
 def scale_continuous(
