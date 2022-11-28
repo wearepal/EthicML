@@ -463,11 +463,11 @@ test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
 name = "pandas-stubs"
-version = "1.5.1.221024"
+version = "1.5.2.221124"
 description = "Type annotations for pandas"
 category = "dev"
 optional = false
-python-versions = ">=3.8,<3.11"
+python-versions = ">=3.8,<3.12"
 
 [package.dependencies]
 types-pytz = ">=2022.1.1"
@@ -1486,8 +1486,8 @@ pandas = [
     {file = "pandas-1.5.2.tar.gz", hash = "sha256:220b98d15cee0b2cd839a6358bd1f273d0356bf964c1a1aeb32d47db0215488b"},
 ]
 pandas-stubs = [
-    {file = "pandas-stubs-1.5.1.221024.tar.gz", hash = "sha256:a756ea4c7f2f973b9f9dfd64d724ba911e82e8ffa2e0188f56fadfdd9345771a"},
-    {file = "pandas_stubs-1.5.1.221024-py3-none-any.whl", hash = "sha256:363e3833137375aebd6ab272fe89d94e88a443891a48d536c905e16ce2800cf6"},
+    {file = "pandas-stubs-1.5.2.221124.tar.gz", hash = "sha256:d6bab9f373ff3c309bf560065d230a38ce4dcd22368be393fad6eb353d102b7c"},
+    {file = "pandas_stubs-1.5.2.221124-py3-none-any.whl", hash = "sha256:5a2c47a0cf8e12e113d760d5da9c48daa2b977b14a4c368b8bbff27dbfcfd2bb"},
 ]
 pathspec = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
