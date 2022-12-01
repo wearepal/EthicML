@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.models.preprocess.pre_subprocess import PreAlgorithmSubprocess
 
@@ -40,7 +39,7 @@ class VFAE(PreAlgorithmSubprocess):
     z2_enc_size: List[int] = field(default_factory=lambda: [100])
     z1_dec_size: List[int] = field(default_factory=lambda: [100])
 
-    @implements(PreAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> VfaeArgs:
         # TODO: replace this with dataclasses.asdict()
         return {
@@ -56,15 +55,15 @@ class VFAE(PreAlgorithmSubprocess):
         }
 
     @property
-    @implements(PreAlgorithmSubprocess)
+    @override
     def out_size(self) -> int:
         return self.latent_dims
 
     @property
-    @implements(PreAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return "VFAE"
 
-    @implements(PreAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.vfae"]

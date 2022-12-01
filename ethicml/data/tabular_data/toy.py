@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ..dataset import LabelSpecsPair, StaticCSVDataset
 from ..util import DiscFeatureGroups, single_col_spec
@@ -19,16 +18,16 @@ class Toy(StaticCSVDataset):
     csv_file: ClassVar[str] = "toy.csv"
 
     @property
-    @implements(StaticCSVDataset)
+    @override
     def name(self) -> str:
         return "Toy"
 
-    @implements(StaticCSVDataset)
+    @override
     def get_label_specs(self) -> LabelSpecsPair:
         return LabelSpecsPair(s=single_col_spec("sensitive-attr"), y=single_col_spec("decision"))
 
     @property
-    @implements(StaticCSVDataset)
+    @override
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return {
             "disc_1": ["disc_1_a", "disc_1_b", "disc_1_c", "disc_1_d", "disc_1_e"],
@@ -36,6 +35,6 @@ class Toy(StaticCSVDataset):
         }
 
     @property
-    @implements(StaticCSVDataset)
+    @override
     def continuous_features(self) -> list[str]:
         return ["a1", "a2"]

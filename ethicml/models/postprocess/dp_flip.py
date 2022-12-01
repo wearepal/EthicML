@@ -1,10 +1,10 @@
 """Demographic Parity Label flipping approach."""
 from __future__ import annotations
 from dataclasses import dataclass
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -18,15 +18,15 @@ class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
     @property
-    @implements(PostAlgorithm)
+    @override
     def name(self) -> str:
         return "DemPar. Post Process"
 
-    @implements(PostAlgorithm)
+    @override
     def fit(self, train_predictions: Prediction, train: DataTuple) -> DPFlip:
         return self
 
-    @implements(PostAlgorithm)
+    @override
     def predict(self, test_predictions: Prediction, test: TestTuple, seed: int = 888) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
@@ -34,7 +34,7 @@ class DPFlip(PostAlgorithm):
         )
         return self._flip(_test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=seed)
 
-    @implements(PostAlgorithm)
+    @override
     def run(
         self,
         train_predictions: Prediction,

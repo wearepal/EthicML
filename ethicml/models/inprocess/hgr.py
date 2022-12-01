@@ -7,8 +7,7 @@ http://proceedings.mlr.press/v97/mary19a/mary19a.pdf
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
 from ethicml.utility import HyperParamType, ModelType
@@ -36,11 +35,11 @@ class HGR(InAlgorithmSubprocess):
     batch_size: int = 128
     model_type: ModelType = ModelType.deep
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.hgr_method"]
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> HgrArgs:
         return {
             "lr": self.lr,
@@ -51,7 +50,7 @@ class HGR(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
@@ -62,6 +61,6 @@ class HGR(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return f"HGR {self.model_type}_model"

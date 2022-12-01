@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction
 
@@ -22,7 +21,7 @@ class CV(CfmMetric):
     _name: ClassVar[str] = "CV"
     apply_per_sensitive: ClassVar[bool] = False
 
-    @implements(MetricStaticName)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         prob_pos = ProbPos(pos_class=self.pos_class, labels=self.labels)
         per_sens = metric_per_sens(prediction, actual, metric=prob_pos)
@@ -40,7 +39,7 @@ class AbsCV(CV):
 
     _name: ClassVar[str] = "CV absolute"
 
-    @implements(MetricStaticName)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         cv_score = super().score(prediction, actual)
         # the following is equivalent to 1 - abs(diff)

@@ -3,9 +3,9 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from typing import Callable, ClassVar, Tuple
+from typing_extensions import override
 
 import pandas as pd
-from ranzen import implements
 from sklearn.metrics import accuracy_score, f1_score
 
 from ethicml.utility import EvalTuple, Prediction
@@ -21,7 +21,7 @@ class SklearnMetric(MetricStaticName, ABC):
     # we have to store the callable in a 1-element tuple because otherwise mypy gets confused
     sklearn_metric: ClassVar[Tuple[Callable[[pd.Series, pd.Series], float]]]
 
-    @implements(MetricStaticName)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         return self.sklearn_metric[0](actual.y, prediction.hard)
 
@@ -50,7 +50,7 @@ class RobustAccuracy(SklearnMetric):
     apply_per_sensitive: ClassVar[bool] = False
     _name: ClassVar[str] = "Robust Accuracy"
 
-    @implements(SklearnMetric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         score_func = super().score
         return min(

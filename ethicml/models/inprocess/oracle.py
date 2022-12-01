@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithmNoParams
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -25,20 +24,20 @@ class Oracle(InAlgorithmNoParams):
     is_fairness_algo: ClassVar[bool] = False
 
     @property
-    @implements(InAlgorithmNoParams)
+    @override
     def name(self) -> str:
         return "Oracle"
 
-    @implements(InAlgorithmNoParams)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> Oracle:
         return self
 
-    @implements(InAlgorithmNoParams)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         return Prediction(hard=test.y.copy())
 
-    @implements(InAlgorithmNoParams)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         return Prediction(hard=test.y.copy())
@@ -54,23 +53,23 @@ class DPOracle(InAlgorithmNoParams):
     """
 
     @property
-    @implements(InAlgorithmNoParams)
+    @override
     def name(self) -> str:
         return "DemPar. Oracle"
 
-    @implements(InAlgorithmNoParams)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> DPOracle:
         self.seed = seed
         return self
 
-    @implements(InAlgorithmNoParams)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         flipper = DPFlip()
         test_preds = Prediction(test.y.copy())
         return flipper.run(test_preds, test, test_preds, test, seed=self.seed)
 
-    @implements(InAlgorithmNoParams)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         flipper = DPFlip()

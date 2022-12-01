@@ -6,9 +6,9 @@ in turn based on the paper https://arxiv.org/abs/1807.00787
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
+from typing_extensions import override
 
 import numpy as np
-from ranzen import implements
 
 from ethicml.utility import EvalTuple, Prediction
 
@@ -23,7 +23,7 @@ class Theil(MetricStaticName):
 
     _name: ClassVar[str] = "Theil_Index"
 
-    @implements(MetricStaticName)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         y_true_df = actual.y
         y_pos_label = y_true_df.max()

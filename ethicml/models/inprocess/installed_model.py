@@ -12,9 +12,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+from typing_extensions import override
 
 import git.cmd
-from ranzen.decorators import implements
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
 
@@ -65,7 +65,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         self.__name = name
 
     @property
-    @implements(InAlgorithm)
+    @override
     def name(self) -> str:
         return self.__name
 

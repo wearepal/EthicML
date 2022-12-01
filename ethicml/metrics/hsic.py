@@ -6,10 +6,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 from typing import ClassVar
+from typing_extensions import override
 
 import numpy as np
 from numpy.random import RandomState
-from ranzen.decorators import implements
 
 from ethicml.metrics.metric import MetricStaticName
 from ethicml.utility import EvalTuple, Prediction
@@ -65,7 +65,7 @@ class Hsic(MetricStaticName):
     _name: ClassVar[str] = "HSIC"
     apply_per_sensitive: ClassVar[bool] = False
 
-    @implements(MetricStaticName)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         preds = prediction.hard.to_numpy()[:, np.newaxis]
         sens_labels = actual.s.to_numpy()[:, np.newaxis]

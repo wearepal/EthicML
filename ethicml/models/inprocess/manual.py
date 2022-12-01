@@ -1,10 +1,10 @@
 """Manually specified (i.e. not learned) models."""
 from __future__ import annotations
 from dataclasses import dataclass
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithmNoParams
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -22,15 +22,15 @@ class Corels(InAlgorithmNoParams):
     """
 
     @property
-    @implements(InAlgorithmNoParams)
+    @override
     def name(self) -> str:
         return "CORELS"
 
-    @implements(InAlgorithmNoParams)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> Corels:
         return self
 
-    @implements(InAlgorithmNoParams)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         if test.name is None or "Compas" not in test.name or test.s.name != "sex":
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
@@ -44,6 +44,6 @@ class Corels(InAlgorithmNoParams):
         pred = np.where(condition1 | condition2 | condition3, np.ones_like(age), np.zeros_like(age))
         return Prediction(hard=pd.Series(pred))
 
-    @implements(InAlgorithmNoParams)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         return self.predict(test)

@@ -2,8 +2,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import ClassVar, final
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction
 
@@ -41,6 +40,6 @@ class MetricStaticName(Metric, ABC):
 
     _name: ClassVar[str] = "<please overwrite me>"
 
-    @implements(Metric)
+    @override
     def get_name(self) -> str:
         return self._name
