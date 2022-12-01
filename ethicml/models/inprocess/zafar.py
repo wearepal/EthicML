@@ -21,7 +21,7 @@ SUB_DIR_IMPACT: Final = Path(".") / "disparate_impact" / "run-classifier"
 SUB_DIR_MISTREAT: Final = Path(".") / "disparate_mistreatment" / "run_classifier"
 
 
-class FitParams(NamedTuple):
+class _FitParams(NamedTuple):
     model_path: Path
     label_converter: LabelBinarizer
 
@@ -36,7 +36,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             use_poetry=True,
         )
         self._sub_dir = sub_dir
-        self._fit_params: FitParams | None = None
+        self._fit_params: _FitParams | None = None
 
     @staticmethod
     def _create_file_in_zafar_format(
@@ -81,7 +81,7 @@ class _ZafarAlgorithmBase(InstalledModel):
 
     def _fit(
         self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Path | None = None
-    ) -> FitParams:
+    ) -> _FitParams:
         model_path = (model_dir.resolve() if model_dir is not None else tmp_path) / "model.npy"
         label_converter = LabelBinarizer()
         train_path = tmp_path / "train.json"
@@ -91,9 +91,9 @@ class _ZafarAlgorithmBase(InstalledModel):
         working_dir = self._code_path.resolve() / self._sub_dir
         self.call_script(cmd, cwd=working_dir)
 
-        return FitParams(model_path, label_converter)
+        return _FitParams(model_path, label_converter)
 
-    def _predict(self, test: TestTuple, tmp_path: Path, fit_params: FitParams) -> Prediction:
+    def _predict(self, test: TestTuple, tmp_path: Path, fit_params: _FitParams) -> Prediction:
         test_path = tmp_path / "test.json"
         self._create_file_in_zafar_format(test, test_path, fit_params.label_converter)
         predictions_path = tmp_path / "predictions.json"

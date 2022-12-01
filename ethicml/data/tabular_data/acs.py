@@ -34,7 +34,7 @@ __all__ = ["AcsIncome", "AcsEmployment"]
 
 
 @contextlib.contextmanager
-def download_dir(root: Path) -> Generator[None, None, None]:
+def _download_dir(root: Path) -> Generator[None, None, None]:
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve())
     try:
@@ -43,7 +43,7 @@ def download_dir(root: Path) -> Generator[None, None, None]:
         os.chdir(curdir)
 
 
-class AcsBase(Dataset):
+class _AcsBase(Dataset):
     split: str
     target: str
 
@@ -234,7 +234,7 @@ class AcsBase(Dataset):
         return combination
 
 
-class AcsIncome(AcsBase):
+class AcsIncome(_AcsBase):
     """The ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
 
     def __init__(
@@ -289,7 +289,7 @@ class AcsIncome(AcsBase):
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
 
-        with download_dir(self.root):
+        with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
 
         disc_feats = [
@@ -384,7 +384,7 @@ class AcsIncome(AcsBase):
         return self._backend_load(dataframe, labels_as_features=labels_as_features)
 
 
-class AcsEmployment(AcsBase):
+class AcsEmployment(_AcsBase):
     """The ACS Employmment Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
 
     def __init__(
@@ -447,7 +447,7 @@ class AcsEmployment(AcsBase):
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
 
-        with download_dir(self.root):
+        with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
 
         disc_feats = [
