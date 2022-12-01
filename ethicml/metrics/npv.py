@@ -7,7 +7,6 @@ from typing_extensions import override
 from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
-from .metric import Metric
 
 __all__ = ["NPV"]
 

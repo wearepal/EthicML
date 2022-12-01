@@ -7,7 +7,6 @@ from typing_extensions import override
 from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
-from .metric import MetricStaticName
 from .per_sensitive_attribute import diff_per_sens, metric_per_sens
 from .prob_pos import ProbPos
 

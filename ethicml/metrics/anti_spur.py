@@ -6,7 +6,7 @@ from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction
 
-from .metric import Metric, MetricStaticName
+from .metric import MetricStaticName
 
 __all__ = ["AS"]
 

@@ -8,7 +8,6 @@ from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
 from .fpr import FPR
-from .metric import Metric
 from .per_sensitive_attribute import diff_per_sens, metric_per_sens
 from .tpr import TPR
 

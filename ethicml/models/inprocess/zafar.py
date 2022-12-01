@@ -12,7 +12,6 @@ import pandas as pd
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
-from .in_algorithm import InAlgorithm
 from .installed_model import InstalledModel
 
 __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
