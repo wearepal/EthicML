@@ -2,10 +2,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 import sklearn
 from sklearn.linear_model import LogisticRegression
 
@@ -51,7 +51,7 @@ class Reweighting(InAlgorithm):
         )
 
     @property
-    @implements(InAlgorithm)
+    @override
     def hyperparameters(self) -> HyperParamType:
         _hyperparameters: dict[str, Any] = {"C": self.C}
         if self.classifier is ClassifierType.svm:
@@ -60,7 +60,7 @@ class Reweighting(InAlgorithm):
         return _hyperparameters
 
     @property
-    @implements(InAlgorithm)
+    @override
     def name(self) -> str:
         lr_params = f" C={self.chosen_c}" if self.classifier is ClassifierType.lr else ""
         svm_params = (
@@ -70,18 +70,18 @@ class Reweighting(InAlgorithm):
         )
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
-    @implements(InAlgorithm)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> Reweighting:
         self.clf = self._train(
             train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed
         )
         return self
 
-    @implements(InAlgorithm)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         return self._predict(model=self.clf, test=test)
 
-    @implements(InAlgorithm)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = self._train(
             train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed

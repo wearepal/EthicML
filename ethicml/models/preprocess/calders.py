@@ -2,9 +2,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
+from typing_extensions import override
 
 import pandas as pd
-from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, concat
 
@@ -25,17 +25,17 @@ class Calders(PreAlgorithm):
         self._out_size: Optional[int] = None
 
     @property
-    @implements(PreAlgorithm)
+    @override
     def out_size(self) -> int:
         assert self._out_size is not None
         return self._out_size
 
     @property
-    @implements(PreAlgorithm)
+    @override
     def name(self) -> str:
         return "Calders"
 
-    @implements(PreAlgorithm)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> tuple[Calders, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = _calders_algorithm(
@@ -43,11 +43,11 @@ class Calders(PreAlgorithm):
         )
         return self, new_train.rename(f"{self.name}: {train.name}")
 
-    @implements(PreAlgorithm)
+    @override
     def transform(self, data: T) -> T:
         return data.rename(f"{self.name}: {data.name}")
 
-    @implements(PreAlgorithm)
+    @override
     def run(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         new_train, new_test = _calders_algorithm(

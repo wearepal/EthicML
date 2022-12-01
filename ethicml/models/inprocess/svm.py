@@ -2,10 +2,10 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 from sklearn.svm import SVC, LinearSVC
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithmDC
@@ -32,21 +32,21 @@ class SVM(InAlgorithmDC):
     kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
 
     @property
-    @implements(InAlgorithmDC)
+    @override
     def name(self) -> str:
         return f"SVM ({self.kernel})"
 
-    @implements(InAlgorithmDC)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> SVM:
         self.clf = select_svm(self.C, self.kernel, seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithmDC)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
-    @implements(InAlgorithmDC)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = select_svm(self.C, self.kernel, seed)
         clf.fit(train.x, train.y.to_numpy().ravel())

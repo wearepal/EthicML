@@ -5,9 +5,9 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Final, NamedTuple
+from typing_extensions import override
 
 import pandas as pd
-from ranzen import implements
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
@@ -59,14 +59,14 @@ class _ZafarAlgorithmBase(InstalledModel):
         with file_path.open("w") as out_file:
             json.dump(out, out_file)
 
-    @implements(InAlgorithm)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             fit_params = self._fit(train, tmp_path, seed)
             return self._predict(test, tmp_path, fit_params)
 
-    @implements(InAlgorithm)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> _ZafarAlgorithmBase:
         with TemporaryDirectory() as tmpdir:
             self._fit_params = self._fit(
@@ -74,7 +74,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             )
         return self
 
-    @implements(InAlgorithm)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         assert self._fit_params is not None, "call fit() first"
         with TemporaryDirectory() as tmpdir:
@@ -126,11 +126,11 @@ class ZafarBaseline(_ZafarAlgorithmBase):
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
     @property
-    @implements(InAlgorithm)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {}
 
-    @implements(_ZafarAlgorithmBase)
+    @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
         return ["fit.py", train_name, model_path, "baseline", "0"]
 
@@ -143,11 +143,11 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
         self.gamma = gamma
 
     @property
-    @implements(InAlgorithm)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {"gamma": self.gamma}
 
-    @implements(_ZafarAlgorithmBase)
+    @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
         return ["fit.py", train_name, model_path, "gamma", str(self.gamma)]
 
@@ -160,11 +160,11 @@ class ZafarFairness(_ZafarAlgorithmBase):
         self._c = C
 
     @property
-    @implements(InAlgorithm)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {"C": self._c}
 
-    @implements(_ZafarAlgorithmBase)
+    @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
         return ["fit.py", train_name, model_path, "c", str(self._c)]
 
@@ -183,11 +183,11 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self._eps = eps
 
     @property
-    @implements(InAlgorithm)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {"tau": self._tau, "mu": self._mu, "eps": self._eps}
 
-    @implements(_ZafarAlgorithmBase)
+    @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
         return [
             "fit.py",

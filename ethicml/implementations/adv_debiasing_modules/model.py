@@ -4,11 +4,10 @@ Original implementation is modified to handle regression and multi-class
 classification problems
 """
 from __future__ import annotations
-from typing_extensions import Self
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -39,7 +38,7 @@ class Adversary(nn.Module):
             nn.Linear(n_hidden, n_sensitive),
         )
 
-    @implements(nn.Module)
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return torch.sigmoid(self.network(x))
 

@@ -10,11 +10,11 @@ import contextlib
 import os
 from pathlib import Path
 from typing import Generator, Iterable, Literal
+from typing_extensions import override
 
 from folktables import ACSDataSource, adult_filter, folktables, state_list
 import numpy as np
 import pandas as pd
-from ranzen import implements
 
 from ethicml.utility.data_helpers import undo_one_hot
 from ethicml.utility.data_structures import DataTuple
@@ -119,7 +119,7 @@ class AcsBase(Dataset):
             to_remove += self.continuous_features
         return to_remove
 
-    @implements(Dataset)
+    @override
     def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
         features_to_remove = self.features_to_remove
 
@@ -281,7 +281,7 @@ class AcsIncome(AcsBase):
 
         return table[key]
 
-    @implements(Dataset)
+    @override
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
@@ -439,7 +439,7 @@ class AcsEmployment(AcsBase):
 
         return table[key]
 
-    @implements(Dataset)
+    @override
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:

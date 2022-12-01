@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction
 
@@ -19,7 +18,7 @@ class FNR(CfmMetric):
 
     _name: ClassVar[str] = "FNR"
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         _, _, f_neg, t_pos = self._confusion_matrix(prediction=prediction, actual=actual)
         return f_neg / (f_neg + t_pos)

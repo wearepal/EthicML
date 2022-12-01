@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from .pre_subprocess import PreAlgorithmSubprocess
 
@@ -39,7 +38,7 @@ class Zemel(PreAlgorithmSubprocess):
     def __post_init__(self) -> None:
         self._in_size: Optional[int] = None
 
-    @implements(PreAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> ZemelArgs:
         return {
             "clusters": self.clusters,
@@ -53,16 +52,16 @@ class Zemel(PreAlgorithmSubprocess):
         }
 
     @property
-    @implements(PreAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return "Zemel"
 
     @property
-    @implements(PreAlgorithmSubprocess)
+    @override
     def out_size(self) -> int:
         assert self._in_size is not None
         return self._in_size
 
-    @implements(PreAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.zemel"]

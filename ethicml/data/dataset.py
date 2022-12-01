@@ -6,9 +6,10 @@ from enum import auto
 from pathlib import Path
 import typing
 from typing import ClassVar, Sequence, TypedDict, final
+from typing_extensions import override
 
 import pandas as pd
-from ranzen import StrEnum, implements
+from ranzen import StrEnum
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
@@ -173,7 +174,7 @@ class CSVDataset(Dataset, ABC):
         """Get the list of class labels."""
         return label_spec_to_feature_list(self.get_label_specs().y)
 
-    @implements(Dataset)
+    @override
     def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
         if self.load_discrete_only:
             x = self.discrete_features
@@ -202,11 +203,11 @@ class CSVDataset(Dataset, ABC):
         assert all(group in dfgs for group in to_remove), f"can't remove all groups"
         return {group: v for group, v in dfgs.items() if group not in to_remove}
 
-    @implements(Dataset)
+    @override
     def __len__(self) -> int:
         return self.get_num_samples()
 
-    @implements(Dataset)
+    @override
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
@@ -394,11 +395,11 @@ class StaticCSVDataset(CSVDatasetDC, ABC):
     num_samples: ClassVar[int] = 0
     csv_file: ClassVar[str] = "<overwrite me>"
 
-    @implements(CSVDataset)
+    @override
     def get_num_samples(self) -> int:
         return self.num_samples
 
-    @implements(CSVDataset)
+    @override
     def get_filename_or_path(self) -> str | Path:
         return self.csv_file
 
@@ -444,21 +445,21 @@ class LegacyDataset(CSVDataset):
         self._cont_features = list(cont_features)
 
     @property
-    @implements(CSVDataset)
+    @override
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return self._unfiltered_disc_feat_groups
 
     @property
-    @implements(CSVDataset)
+    @override
     def continuous_features(self) -> list[str]:
         return self._cont_features
 
     @property
-    @implements(CSVDataset)
+    @override
     def name(self) -> str:
         return self._name
 
-    @implements(CSVDataset)
+    @override
     def get_label_specs(self) -> LabelSpecsPair:
         s_spec = self._sens_attr_spec
         y_spec = self._class_label_spec
@@ -468,11 +469,11 @@ class LegacyDataset(CSVDataset):
             to_remove=list(self._s_prefix) + list(self._class_label_prefix),
         )
 
-    @implements(CSVDataset)
+    @override
     def get_num_samples(self) -> int:
         return self._num_samples
 
-    @implements(CSVDataset)
+    @override
     def get_filename_or_path(self) -> str | Path:
         return self._raw_file_name_or_path
 

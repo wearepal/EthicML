@@ -1,8 +1,8 @@
 """DRO Loss."""
 from __future__ import annotations
 from typing import Type
+from typing_extensions import override
 
-from ranzen import implements
 from torch import Tensor, nn
 from torch.nn.modules.loss import NLLLoss, _Loss
 
@@ -20,6 +20,6 @@ class DROLoss(nn.Module):
         self.loss = loss_module(reduction="none")
         self.eta = eta
 
-    @implements(nn.Module)
+    @override
     def forward(self, pred: Tensor, target: Tensor) -> Tensor:  # pylint: disable=arguments-differ
         return (self.loss(pred, target=target) - self.eta).relu().pow(2).mean()

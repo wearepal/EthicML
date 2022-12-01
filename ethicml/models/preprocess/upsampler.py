@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from enum import auto
 import itertools
 from typing import Optional
+from typing_extensions import override
 
 import pandas as pd
-from ranzen import StrEnum, implements
+from ranzen import StrEnum
 
 from ethicml.models.inprocess.logistic_regression import LR
 from ethicml.utility import DataTuple, SoftPrediction
@@ -38,27 +39,27 @@ class Upsampler(PreAlgorithm):
         self._out_size: Optional[int] = None
 
     @property
-    @implements(PreAlgorithm)
+    @override
     def name(self) -> str:
         return f"Upsample {self.strategy}"
 
     @property
-    @implements(PreAlgorithm)
+    @override
     def out_size(self) -> int:
         assert self._out_size is not None
         return self._out_size
 
-    @implements(PreAlgorithm)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> tuple[Upsampler, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = upsample(train, train, self.strategy, seed, name=self.name)
         return self, new_train
 
-    @implements(PreAlgorithm)
+    @override
     def transform(self, data: T) -> T:
         return data.rename(f"{self.name}: {data.name}")
 
-    @implements(PreAlgorithm)
+    @override
     def run(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         return upsample(train, test, self.strategy, seed, name=self.name)

@@ -2,10 +2,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithmNoParams
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -24,22 +24,22 @@ class Blind(InAlgorithmNoParams):
     is_fairness_algo: ClassVar[bool] = False
 
     @property
-    @implements(InAlgorithmNoParams)
+    @override
     def name(self) -> str:
         return "Blind"
 
-    @implements(InAlgorithmNoParams)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> Blind:
         self.vals = train.y.drop_duplicates()
         self.seed = seed
         return self
 
-    @implements(InAlgorithmNoParams)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         random = np.random.RandomState(self.seed)
         return Prediction(hard=pd.Series(random.choice(self.vals.to_numpy(), test.x.shape[0])))
 
-    @implements(InAlgorithmNoParams)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         vals = train.y.drop_duplicates()
         random = np.random.RandomState(seed)

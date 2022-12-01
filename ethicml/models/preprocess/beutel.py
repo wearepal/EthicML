@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import FairnessType
 
@@ -47,11 +46,11 @@ class Beutel(PreAlgorithmSubprocess):
     validation_pcnt: float = 0.1
 
     @property
-    @implements(PreAlgorithmSubprocess)
+    @override
     def out_size(self) -> int:
         return self.enc_size[-1]
 
-    @implements(PreAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> BeutelArgs:
         # TODO: replace this with dataclasses.asdict()
         return {
@@ -70,10 +69,10 @@ class Beutel(PreAlgorithmSubprocess):
         }
 
     @property
-    @implements(PreAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return f"Beutel {self.fairness}"
 
-    @implements(PreAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.beutel"]

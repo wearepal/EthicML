@@ -2,9 +2,9 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar, Tuple
+from typing_extensions import override
 
 import numpy as np
-from ranzen import implements
 from sklearn.neural_network import MLPClassifier
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithmDC
@@ -31,11 +31,11 @@ class MLP(InAlgorithmDC):
     lr: float = 1e-3
 
     @property
-    @implements(InAlgorithmDC)
+    @override
     def name(self) -> str:
         return "MLP"
 
-    @implements(InAlgorithmDC)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> MLP:
         self.clf = select_mlp(
             self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size
@@ -43,11 +43,11 @@ class MLP(InAlgorithmDC):
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithmDC)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         return SoftPrediction(soft=self.clf.predict_proba(test.x), info=self.hyperparameters)
 
-    @implements(InAlgorithmDC)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = select_mlp(self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size)
         clf.fit(train.x, train.y.to_numpy().ravel())
