@@ -573,21 +573,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
-name = "pydocstyle"
-version = "6.1.1"
-description = "Python docstring style checker"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-snowballstemmer = "*"
-toml = {version = "*", optional = true, markers = "extra == \"toml\""}
-
-[package.extras]
-toml = ["toml"]
-
-[[package]]
 name = "pylint"
 version = "2.15.6"
 description = "python code static checker"
@@ -755,6 +740,14 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
+name = "ruff"
+version = "0.0.149"
+description = "An extremely fast Python linter, written in Rust."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "scikit-learn"
 version = "1.1.3"
 description = "A set of python modules for machine learning and data mining"
@@ -878,14 +871,6 @@ python-versions = "*"
 smmap = ">=3.0.1"
 
 [[package]]
-name = "snowballstemmer"
-version = "2.2.0"
-description = "This package provides 29 stemmers for 28 languages generated from Snowball algorithms."
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "teext"
 version = "0.1.6"
 description = "Typing extensions extensions"
@@ -1002,7 +987,7 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "4308634a44e98d23e2ee5662610b51e6218f56abffad4e01eb8b753801e6cacf"
+content-hash = "07b26cd40eeb9c3052613bb2810826bd3a3928b88d4476a1972f7a5ebf579c0e"
 
 [metadata.files]
 antlr4-python3-runtime = [
@@ -1577,10 +1562,6 @@ py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
 ]
-pydocstyle = [
-    {file = "pydocstyle-6.1.1-py3-none-any.whl", hash = "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"},
-    {file = "pydocstyle-6.1.1.tar.gz", hash = "sha256:1d41b7c459ba0ee6c345f2eb9ae827cab14a7533a88c5c6f7e94923f72df92dc"},
-]
 pylint = [
     {file = "pylint-2.15.6-py3-none-any.whl", hash = "sha256:15060cc22ed6830a4049cf40bc24977744df2e554d38da1b2657591de5bcd052"},
     {file = "pylint-2.15.6.tar.gz", hash = "sha256:25b13ddcf5af7d112cf96935e21806c1da60e676f952efb650130f2a4483421c"},
@@ -1664,6 +1645,24 @@ requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
     {file = "requests-2.27.1.tar.gz", hash = "sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"},
 ]
+ruff = [
+    {file = "ruff-0.0.149-py3-none-macosx_10_7_x86_64.whl", hash = "sha256:e56d77e2a33067e480d6e9ecc328b066c9f8a96ec0f049f7c6107ff1d7106f7f"},
+    {file = "ruff-0.0.149-py3-none-macosx_10_9_x86_64.macosx_10_9_arm64.macosx_10_9_universal2.whl", hash = "sha256:ad6e65923abbc59cb677c6d3bbfd778f87a95942c5499eb595afd6803999bf80"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:eab933a922721930fd6fd02b1001355ee8b81e8810796d7e5d16d2e72a14dc88"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:89c5bbc74e2a79f853c3477f1b87846a77b489029d49e4ff53cfcb3d41217b8c"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:afa90ff653ef1354ffeaca92c8fb57a8aac16019a702c1c1cf50625b580eb421"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:9dc2710115b3006231ab6843d5dc1719618cd7972fa69fcd30e8b3496f380cd9"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:d79584f96f133f5856d846a162a9f083ac116b890707ef32b4446f4a5b15ccec"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:8efb6b2f96b127239ee17de9eb9f858b01c72483a9a2c100126ec54d4313f63d"},
+    {file = "ruff-0.0.149-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4f198fc1cb6cf66e864156449079921a846abe8b6488674f646ea09bccd81457"},
+    {file = "ruff-0.0.149-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:7e7bde713fd6a6305078dbf54c61e403d120b29093a3e365ec71607574ad1caa"},
+    {file = "ruff-0.0.149-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:5437e96025dc4427e77e8cf2b49c5ac04b2f3c9e9c62799d60f5f0d5bfc20be8"},
+    {file = "ruff-0.0.149-py3-none-musllinux_1_2_i686.whl", hash = "sha256:481b5093db3dd59cf31c192bfe8c1594cebd46e28a36f86d9a1683802a73e9a7"},
+    {file = "ruff-0.0.149-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:a02c571dbb09c3ee0a17be507ddeec5cdbca2ab098f26aeead2fe691843a837a"},
+    {file = "ruff-0.0.149-py3-none-win32.whl", hash = "sha256:58605add6c6f4b5d8306290c66965609da386c5b686a30c535a319dfba3c9af7"},
+    {file = "ruff-0.0.149-py3-none-win_amd64.whl", hash = "sha256:58f640e94d5473db4cde84211659576aeccb88ae459e273f204683596b5ec205"},
+    {file = "ruff-0.0.149.tar.gz", hash = "sha256:b6707c1ecc9730900138eb92dd0e7cd9123364ae9b33ba2cc9d623990129a29e"},
+]
 scikit-learn = [
     {file = "scikit-learn-1.1.3.tar.gz", hash = "sha256:bef51978a51ec19977700fe7b86aecea49c825884f3811756b74a3b152bb4e35"},
     {file = "scikit_learn-1.1.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:8e9dd76c7274055d1acf4526b8efb16a3531c26dcda714a0c16da99bf9d41900"},
@@ -1736,10 +1735,6 @@ smmap = [
 smmap2 = [
     {file = "smmap2-3.0.1-py3-none-any.whl", hash = "sha256:0cb6ea470b1ad9a65a02ca7f4c7ae601861f7dd24a43812ca51cfca2892bb524"},
     {file = "smmap2-3.0.1.tar.gz", hash = "sha256:44cc8bdaf96442dbb9a8e2e14377d074b3d0eea292eee3c95c8c449b6c92c557"},
-]
-snowballstemmer = [
-    {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
-    {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
 teext = [
     {file = "teext-0.1.6-cp310-cp310-manylinux_2_35_x86_64.whl", hash = "sha256:cfd57a151c49b050d2cad9ff757f8152674804db4d77bd4f0edc024a9ca37ff4"},

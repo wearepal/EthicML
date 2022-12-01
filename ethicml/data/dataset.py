@@ -200,7 +200,7 @@ class CSVDataset(Dataset, ABC):
         dfgs = self.unfiltered_disc_feat_groups
         # select those feature groups that are not for the x and y labels
         to_remove = self.get_label_specs().to_remove
-        assert all(group in dfgs for group in to_remove), f"can't remove all groups"
+        assert all(group in dfgs for group in to_remove), "can't remove all groups"
         return {group: v for group, v in dfgs.items() if group not in to_remove}
 
     @override

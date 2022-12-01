@@ -26,7 +26,7 @@ __all__ = [
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
 
-def maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
+def _maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
     columns = data.x.columns
 
     if len(columns) > 2:
@@ -50,7 +50,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     """Make 2D plot."""
     file_path = Path(filepath)
 
-    amalgamated, x1_name, x2_name = maybe_tsne(data)
+    amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
     plot = sns.scatterplot(  # type: ignore[attr-defined]
         x=x1_name,
@@ -81,7 +81,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: tuple[int, int] = (0, 1
     plt.clf()
 
 
-def multivariate_grid(
+def _multivariate_grid(
     col_x: str,
     col_y: str,
     sens_col: str,
@@ -120,9 +120,9 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
     file_path = Path(filepath)
     data.x.columns
 
-    amalgamated, x1_name, x2_name = maybe_tsne(data)
+    amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
-    multivariate_grid(
+    _multivariate_grid(
         col_x=x1_name,
         col_y=x2_name,
         sens_col=str(data.s.name),

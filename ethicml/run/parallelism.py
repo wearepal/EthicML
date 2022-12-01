@@ -69,6 +69,7 @@ class Algorithm(Protocol[_RT]):
     """Protocol for making `arrange_in_parallel` generic."""
 
     def run(self, train: DataTuple, test: DataTuple, seed: int) -> _RT:
+        """Generic run-method."""
         ...
 
 

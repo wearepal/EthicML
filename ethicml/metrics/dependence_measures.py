@@ -94,9 +94,9 @@ class Yanovich(_DependenceMeasure):
             # i < j
             for j in range(i + 1, len(x_vals)):
                 for k in range(len(y_vals)):
-                    # k < l
-                    for l in range(k + 1, len(y_vals)):
-                        determinant = joint[i, k] * joint[j, l] - joint[j, k] * joint[i, l]
+                    # k < m
+                    for m in range(k + 1, len(y_vals)):
+                        determinant = joint[i, k] * joint[j, m] - joint[j, k] * joint[i, m]
                         sum_sq_determinants += determinant**2
 
         marginal = np.sum(joint, axis=1)

@@ -50,12 +50,11 @@ models = ["scipy","GitPython","pipenv","scikit-learn","fairlearn","cloudpickle",
 all = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2"]
 ci = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2","omegaconf"]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "^22.6"
 isort = "5.10.1"
 mypy = ">=0.950"
 pre-commit = "^2.20.0"
-pydocstyle = {version = "^6.1.1", extras = ["toml"]}
 pylint = "^2.14.5"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
@@ -63,6 +62,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
+ruff = "^0.0.149"
 
 [tool.black]
 line-length = 100
@@ -165,12 +165,6 @@ module = ["pytest.*"]
 follow_imports = "skip"
 follow_imports_for_stubs = true
 
-[tool.pydocstyle]
-convention = "pep257"
-add_ignore = ["D105", "D107", "D401"]
-ignore_decorators = "override|overload"
-match = "(?!(test_|__init__)).*\\.py"
-
 [tool.pyright]
 typeCheckingMode = "strict"
 pythonVersion = "3.8"
@@ -187,10 +181,13 @@ reportUnknownArgumentType = "none"
 
 [tool.ruff]
 line-length = 100
-ignore = ["F403", "E501"]
-extend-select = ["I", "U"]
-extend-ignore = [
+# extend-select = ["I", "D", "U"]
+extend-select = ["D"]
+ignore = [
+    "D105", # magic methods
+    "D107", # __init__
     "D203",
+    "D208", # over indentation
     "D212",
     "D213",
     "D214",
@@ -207,6 +204,9 @@ extend-ignore = [
     "D415",
     "D416",
     "D417",
+    "E501",
+    "F403",
+    "I252",
 ]
 target-version = "py38"
 [tool.ruff.isort]

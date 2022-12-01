@@ -8,7 +8,6 @@ from typing_extensions import override
 import numpy as np
 import pandas as pd
 
-from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.inprocess.installed_model import InstalledModel
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
