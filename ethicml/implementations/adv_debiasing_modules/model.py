@@ -4,7 +4,6 @@ Original implementation is modified to handle regression and multi-class
 classification problems
 """
 from __future__ import annotations
-from typing import Literal
 from typing_extensions import Self
 
 import numpy as np

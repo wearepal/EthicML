@@ -1,7 +1,7 @@
 """FairDummies Models."""
 from __future__ import annotations
 import random
-from typing import Callable, Literal
+from typing import Callable
 from typing_extensions import Self
 
 import numpy as np

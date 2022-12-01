@@ -8,9 +8,9 @@ from typing import Optional
 import pandas as pd
 from ranzen import StrEnum, implements
 
+from ethicml.models.inprocess.logistic_regression import LR
 from ethicml.utility import DataTuple, SoftPrediction
 
-from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Upsampler", "UpsampleStrategy"]
