@@ -987,7 +987,7 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "07b26cd40eeb9c3052613bb2810826bd3a3928b88d4476a1972f7a5ebf579c0e"
+content-hash = "afb0b64bca7124158090979709c44db1016e65e370e1ea15888d3963c3267767"
 
 [metadata.files]
 antlr4-python3-runtime = [

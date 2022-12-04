@@ -170,7 +170,8 @@ def run_generate_crime() -> None:
     data = pd.get_dummies(data, columns=["state"])
 
     # Add a new column, ">0.06black" as in:
-    # Faisal Kamiran and Toon Calders. 2012. Data preprocessing techniques for classification without discrimination.
+    # Faisal Kamiran and Toon Calders. 2012.
+    # Data preprocessing techniques for classification without discrimination.
     # Knowledge and Information Systems 33, 1 (2012), 1–33.
     data[">0.06black"] = data["racepctblack"] > 0.06
     data[">0.06black"] = data[">0.06black"].astype(int)

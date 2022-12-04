@@ -69,10 +69,12 @@ def train_test_split(
 ) -> tuple[DataTuple, DataTuple]:
     """Split a data tuple into two datatuple along the rows of the DataFrames.
 
-    :param data: data tuple to split
-    :param train_percentage: percentage for train split. Must be `None` if `num_test_samples` given. (Default: 0.8)
-    :param random_seed: seed to make splitting reproducible (Default: 0)
-    :param num_test_samples: Number of samples to make the test set. Must be `None` if `train_percentage` given. (Default: None)
+    :param data: Data tuple to split.
+    :param train_percentage: Percentage for train split. Must be ``None`` if ``num_test_samples``
+        given. (Default: 0.8)
+    :param random_seed: Seed to make splitting reproducible (Default: 0)
+    :param num_test_samples: Number of samples to make the test set. Must be ``None`` if
+        ``train_percentage`` given. (Default: None)
     :returns: train split and test split
     """
     if train_percentage is None:

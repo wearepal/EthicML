@@ -701,7 +701,8 @@ def aggregate_results(
         (Default: ("mean", "std"))
     :returns: The aggregated results as a ``pd.DataFrame``.
     """
-    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]
+    grouped = results.groupby(["dataset", "scaler", "transform", "model"])
+    return grouped.agg(aggregator)[metrics]  # type: ignore[arg-type]
 
 
 class KernelType(StrEnum):

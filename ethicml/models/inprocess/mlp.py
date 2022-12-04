@@ -15,10 +15,11 @@ __all__ = ["MLP"]
 
 @dataclass
 class MLP(InAlgorithmDC):
-    """Multi-layer Perceptron.
+    """Multi-layer perceptron.
 
     This is a wraper around the SKLearn implementation of the MLP.
-    Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
+    Documentation:
+    https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
 
     :param hidden_layer_sizes: The number of neurons in each hidden layer.
     """

@@ -29,16 +29,18 @@ def _joint_2(
 
 
 def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1e-10) -> float:
-    """An estimator of the Hirschfeld-Gebelein-Renyi maximum correlation coefficient using Witsenhausen’s Characterization.
+    """An estimator of the Hirschfeld-Gebelein-Renyi maximum correlation coefficient.
 
-    HGR(x,y) is the second highest eigenvalue of the joint density on (x,y). We compute here the second eigenvalue on
-    an empirical and discretized density estimated from the input data.
+    This function is using Witsenhausen’s Characterization.
+
+    HGR(x,y) is the second highest eigenvalue of the joint density on (x,y). We compute here the
+    second eigenvalue on an empirical and discretized density estimated from the input data.
 
     :param x: A torch 1-D Tensor
     :param y: A torch 1-D Tensor
     :param density: so far only kde is supported
     :param damping: a damping factor
-    :return: numerical value between 0 and 1 (0: independent, 1:linked by a deterministic equation)
+    :returns: numerical value between 0 and 1 (0: independent, 1:linked by a deterministic equation)
     """
     h2d = _joint_2(x, y, density, damping=damping)
     marginal_x = h2d.sum(dim=1).unsqueeze(1)
@@ -48,16 +50,17 @@ def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1
 
 
 def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 0) -> float:
-    r"""The \chi^2 divergence between the joint distribution on (x,y) and the product of marginals.
+    r"""The :math:`\chi^2` divergence between the joint distribution and the product of marginals.
 
-    This is know to be the square of an upper-bound on the Hirschfeld-Gebelein-Renyi maximum correlation coefficient. We compute it here on
-    an empirical and discretized density estimated from the input data.
+    This is know to be the square of an upper-bound on the Hirschfeld-Gebelein-Renyi maximum
+    correlation coefficient. We compute it here on an empirical and discretized density estimated
+    from the input data.
 
     :param x: A torch 1-D Tensor
     :param y: A torch 1-D Tensor
     :param density: so far only kde is supported
     :param damping: a damping factor
-    :return: numerical value between 0 and \infty (0: independent)
+    :returns: numerical value between 0 and :math:`\infty` (0: independent)
     """
     h2d = _joint_2(x, y, density, damping=damping)
     marginal_x = h2d.sum(dim=1).unsqueeze(1)
@@ -91,17 +94,19 @@ def _joint_3(
 
 
 def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kde]) -> np.ndarray:
-    """An estimator of the function z -> HGR(x|z, y|z).
+    """An estimator of the function :math:`z\to HGR(x|z, y|z)`.
 
     Where HGR is the Hirschfeld-Gebelein-Renyi maximum correlation
-    coefficient computed using Witsenhausen’s Characterization: HGR(x,y) is the second highest eigenvalue of the joint
-    density on (x,y). We compute here the second eigenvalue on
-    an empirical and discretized density estimated from the input data.
+    coefficient computed using Witsenhausen’s Characterization: HGR(x,y) is the second highest
+    eigenvalue of the joint density on (x,y). We compute here the second eigenvalue on an empirical
+    and discretized density estimated from the input data.
+
     :param x: A torch 1-D Tensor
     :param y: A torch 1-D Tensor
     :param z: A torch 1-D Tensor
     :param density: so far only kde is supported
-    :return: A torch 1-D Tensor of same size as Z. (0: independent, 1:linked by a deterministic equation)
+    :returns: A torch 1-D Tensor of same size as Z.
+        (0: independent, 1: linked by a deterministic equation)
     """
     damping = 1e-10
     h3d = _joint_3(x, y, z, density, damping=damping)
@@ -114,17 +119,18 @@ def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kd
 def chi_2_cond(
     x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kde]
 ) -> torch.Tensor:
-    r"""An estimator of the function z -> chi^2(x|z, y|z).
+    r"""An estimator of the function :math:`z\to chi^2(x|z, y|z)`.
 
-    Where \chi^2 is the \chi^2 divergence between the joint
-    distribution on (x,y) and the product of marginals. This is know to be the square of an upper-bound on the
-    Hirschfeld-Gebelein-Renyi maximum correlation coefficient. We compute it here on an empirical and discretized
-    density estimated from the input data.
+    Where :math:`\chi^2` is the :math:`\chi^2` divergence between the joint distribution on (x,y)
+    and the product of marginals. This is know to be the square of an upper-bound on the
+    Hirschfeld-Gebelein-Renyi maximum correlation coefficient. We compute it here on an empirical
+    and discretized density estimated from the input data.
+
     :param x: A torch 1-D Tensor
     :param y: A torch 1-D Tensor
     :param z: A torch 1-D Tensor
     :param density: so far only kde is supported
-    :return: A torch 1-D Tensor of same size as Z. (0: independent)
+    :returns: A torch 1-D Tensor of same size as Z. (0: independent)
     """
     damping = 0
     h3d = _joint_3(x, y, z, density, damping=damping)

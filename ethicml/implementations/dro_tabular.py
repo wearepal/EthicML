@@ -16,7 +16,8 @@ try:
 
 except ImportError as e:
     raise RuntimeError(
-        "In order to use PyTorch, please install it following the instructions at https://pytorch.org/ . "
+        "In order to use PyTorch, "
+        "please install it following the instructions at https://pytorch.org/ . "
     ) from e
 
 
