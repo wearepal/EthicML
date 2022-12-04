@@ -75,9 +75,9 @@ class _ZafarAlgorithmBase(InstalledModel):
 
     @override
     def predict(self, test: TestTuple) -> Prediction:
-        assert self._fit_params is not None, "call fit() first"
+        assert (params := self._fit_params) is not None, "call fit() first"
         with TemporaryDirectory() as tmpdir:
-            return self._predict(test, tmp_path=Path(tmpdir), fit_params=self._fit_params)
+            return self._predict(test, tmp_path=Path(tmpdir), fit_params=params)
 
     def _fit(
         self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Path | None = None

@@ -89,8 +89,8 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
-    if preds["preds"].min() != preds["preds"].max():
-        preds = preds.replace(preds["preds"].min(), exponentiated_gradient.min_class_label)
+    if (min_val := preds["preds"].min()) != preds["preds"].max():
+        preds = preds.replace(min_val, exponentiated_gradient.min_class_label)
     return preds
 
 
