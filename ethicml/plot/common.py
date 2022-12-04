@@ -41,8 +41,8 @@ def common_plotting_settings(
     """
     plot.set_xlabel(xaxis_title)
     plot.set_ylabel(yaxis_title)
-    if plot_def.title:
-        plot.set_title(plot_def.title)
+    if title := plot_def.title:
+        plot.set_title(title)
     plot.grid(True)
 
     # get handles and labels for the legend

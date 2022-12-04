@@ -92,8 +92,8 @@ class Kamishima(InstalledModel):
         to_return = pd.Series(predictions)
         to_return = to_return.astype(int)
 
-        if to_return.min() != to_return.max():
-            to_return = to_return.replace(to_return.min(), fit_info.min_class_label)
+        if (min_val := to_return.min()) != to_return.max():
+            to_return = to_return.replace(min_val, fit_info.min_class_label)
         return Prediction(hard=to_return)
 
 

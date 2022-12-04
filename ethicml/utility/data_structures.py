@@ -467,8 +467,8 @@ class Prediction:
         :returns: A :class:`Prediction` object with the loaded data.
         """
         info = None
-        if (npz_path.parent / "info.json").exists():
-            with open(npz_path.parent / "info.json", encoding="utf-8") as json_file:
+        if (json_path := npz_path.parent / "info.json").exists():
+            with open(json_path, encoding="utf-8") as json_file:
                 info = json.load(json_file)
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)

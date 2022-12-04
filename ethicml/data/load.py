@@ -53,26 +53,26 @@ class ConfigurableDataset(LegacyDataset):
     additional_to_drop: Optional[List[str]] = None
 
     def __post_init__(self) -> None:
-        assert self.filepath_ is not None
-        assert self.s_column is not None
-        assert self.y_column is not None
+        assert (filepath := self.filepath_) is not None
+        assert (s_column := self.s_column) is not None
+        assert (y_column := self.y_column) is not None
         if self.additional_to_drop is None:
             self.additional_to_drop = []
 
-        dataframe: pd.DataFrame = pd.read_csv(self.filepath_)
+        dataframe: pd.DataFrame = pd.read_csv(filepath)
 
         columns: list[str] = [str(x) for x in dataframe.columns.to_numpy().tolist()]
-        columns.remove(self.s_column)
-        columns.remove(self.y_column)
+        columns.remove(s_column)
+        columns.remove(y_column)
         for additional in self.additional_to_drop:
             columns.remove(additional)
 
         super().__init__(
-            name=self.filepath_.name,
+            name=filepath.name,
             num_samples=len(dataframe),
             features=columns,
             cont_features=[],
-            sens_attr_spec=self.s_column,
-            class_label_spec=self.y_column,
-            filename_or_path=self.filepath_,
+            sens_attr_spec=s_column,
+            class_label_spec=y_column,
+            filename_or_path=filepath,
         )

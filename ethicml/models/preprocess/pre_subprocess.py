@@ -100,8 +100,8 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             transformed_train = DataTuple.from_file(transformed_train_path)
 
         # prefix the name of the algorithm to the dataset name
-        if train.name is not None:
-            transformed_train = transformed_train.rename(f"{self.name}: {train.name}")
+        if (dname := train.name) is not None:
+            transformed_train = transformed_train.rename(f"{self.name}: {dname}")
         return self, transformed_train
 
     @final
@@ -136,8 +136,8 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             transformed_test: T = _load_file(transformed_test_path, data)
 
         # prefix the name of the algorithm to the dataset name
-        if data.name is not None:
-            transformed_test = transformed_test.rename(f"{self.name}: {data.name}")
+        if (dname := data.name) is not None:
+            transformed_test = transformed_test.rename(f"{self.name}: {dname}")
         return transformed_test
 
     @final
