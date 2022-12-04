@@ -1,4 +1,7 @@
-"""Paper: "Achieving Equalized Odds by Resampling Sensitive Attributes," Y. Romano, S. Bates, and E. J. Candès, 2020.
+"""Adversarial debiasing.
+
+Paper: "Achieving Equalized Odds by Resampling Sensitive Attributes,"
+Y. Romano, S. Bates, and E. J. Candès, 2020.
 
 https://github.com/yromano/fair_dummies
 """

@@ -113,7 +113,11 @@ class CVResults:
         return self.get_best_result(measure).params
 
     def best(self, measure: Metric) -> InAlgorithm:
-        """Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric."""
+        """Return a model initialised with the best hyper-parameters.
+
+        The best hyper-parameters are those that perform optimally on average across folds for a
+        given metric.
+        """
         return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:

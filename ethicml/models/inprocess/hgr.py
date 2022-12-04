@@ -1,6 +1,7 @@
 """HGR Classifier.
 
-Paper: "Fairness-Aware Learning for Continuous Attributes and Treatments, J. Mary, C. Calauzènes, N. El Karoui, ICML 2019."
+Paper: "Fairness-Aware Learning for Continuous Attributes and Treatments",
+J. Mary, C. Calauzènes, N. El Karoui, ICML 2019.
 Based on: https://github.com/criteo-research/continuous-fairness
 http://proceedings.mlr.press/v97/mary19a/mary19a.pdf
 """

@@ -26,7 +26,8 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         torch.manual_seed(seed)
     except ImportError as e:
         raise RuntimeError(
-            "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
+            "In order to use PyTorch, "
+            "please install it following the instructions as https://pytorch.org/ . "
         ) from e
 
     random.seed(seed)

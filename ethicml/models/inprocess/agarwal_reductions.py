@@ -30,8 +30,9 @@ class AgarwalArgs(TypedDict):
 class Agarwal(InAlgorithmSubprocess):
     """Agarwal class.
 
-    A wrapper around the Exponentiated Gradient method documented
-    `on this website <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+    A wrapper around the `Exponentiated Gradient method
+    <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html
+    #fairlearn.reductions.ExponentiatedGradient>`_.
 
     :param fairness: Type of fairness to enforce.
     :param classifier: Type of classifier to use.

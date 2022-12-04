@@ -41,7 +41,7 @@ def load_results(
     topic: str | None = None,
     outdir: Path = Path(".") / "results",
 ) -> Results | None:
-    """Load results from a CSV file that was created by `evaluate_models`.
+    """Load results from a CSV file that was created by :func:`evaluate_models`.
 
     :param dataset_name: name of the dataset of the results
     :param transform_name: name of the transformation that was used for the results
