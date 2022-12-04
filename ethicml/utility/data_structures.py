@@ -416,6 +416,9 @@ TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
 EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
 """Union of :class:`LabelTuple` and :class:`DataTuple`."""
 
+HyperParamValue: TypeAlias = Union[bool, int, float, str]
+HyperParamType: TypeAlias = Dict[str, HyperParamValue]
+
 T = TypeVar("T", SubgroupTuple, DataTuple)
 
 
@@ -725,7 +728,3 @@ class ModelType(StrEnum):
     """Deep neural network."""
     linear = auto()
     """Linear model."""
-
-
-HyperParamValue: TypeAlias = Union[bool, int, float, str]
-HyperParamType: TypeAlias = Dict[str, HyperParamValue]
