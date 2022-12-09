@@ -20,9 +20,6 @@ except ImportError as e:
         "please install it following the instructions at https://pytorch.org/ . "
     ) from e
 
-
-from joblib import dump, load
-
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
