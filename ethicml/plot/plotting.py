@@ -225,7 +225,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
 
     file_path.parent.mkdir(exist_ok=True)
-    fig.savefig(file_path)
+    fig.savefig(file_path)  # type: ignore
     fig.clf()
 
 
@@ -388,7 +388,7 @@ def plot_results(
 
                 if save:
                     fig.savefig(
-                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",
+                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",  # type: ignore
                         bbox_inches="tight",
                     )
                 plt.close(fig)

@@ -12,6 +12,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
+import torch.utils.data
 
 from ethicml.implementations.pytorch_common import (
     DeepModel,
