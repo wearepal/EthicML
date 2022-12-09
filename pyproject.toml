@@ -156,7 +156,6 @@ module = [
     "setuptools.*",
     "scipy.spatial.distance",
     "sklearn.*",
-    "torch.*",
 ]
 ignore_missing_imports = true
 
@@ -172,7 +171,6 @@ reportMissingTypeArgument = "none"
 reportCallInDefaultInitializer = "warning"
 reportPropertyTypeMismatch = "warning"
 reportUninitializedInstanceVariable = "warning"
-reportUnusedCallResult = "warning"
 # these errors are a bit annoying
 reportUnknownMemberType = "none"
 reportUnknownVariableType = "none"
@@ -215,5 +213,5 @@ target-version = "py38"
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F403"]
 [tool.ruff.isort]
-known-third-party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch"]
+known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
 extra-standard-library = ["__future__", "typing_extensions"]

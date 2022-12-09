@@ -16,6 +16,7 @@ from torch import Tensor, nn
 from torch.autograd import Function
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ExponentialLR
+from torch.utils.data import DataLoader
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
 from ethicml.preprocessing.splits import train_test_split
@@ -176,9 +177,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple
 def transform(data: SubgroupTuple, enc: torch.nn.Module, flags: BeutelArgs) -> SubgroupTuple:
     """Transform the test data using the trained autoencoder."""
     test_data = TestDataset(data)
-    test_loader = torch.utils.data.DataLoader(
-        dataset=test_data, batch_size=flags["batch_size"], shuffle=False
-    )
+    test_loader = DataLoader(dataset=test_data, batch_size=flags["batch_size"], shuffle=False)
     return encode_testset(enc, test_loader, data)
 
 
@@ -211,9 +210,7 @@ def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
     return mask
 
 
-def encode_dataset(
-    enc: nn.Module, dataloader: torch.utils.data.DataLoader, datatuple: DataTuple
-) -> DataTuple:
+def encode_dataset(enc: nn.Module, dataloader: DataLoader, datatuple: DataTuple) -> DataTuple:
     """Encode a dataset."""
     data_to_return: list[Any] = []
 
@@ -224,7 +221,7 @@ def encode_dataset(
 
 
 def encode_testset(
-    enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: SubgroupTuple
+    enc: nn.Module, dataloader: DataLoader, testtuple: SubgroupTuple
 ) -> SubgroupTuple:
     """Encode a dataset."""
     data_to_return: list[Any] = []

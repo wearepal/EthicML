@@ -36,7 +36,7 @@ class Upsampler(PreAlgorithm):
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
 
     def __post_init__(self) -> None:
-        self._out_size: Optional[int] = None
+        self._out_size: Optional[int] = None  # pyright: ignore
 
     @property
     @override
@@ -173,14 +173,11 @@ def upsample(
                 .iloc[: int(percentages[key] * weight)]
             )
 
-        upsampled_dataframes: pd.DataFrame
-        for i, df in enumerate(selected):
-            if i == 0:
-                upsampled_dataframes = df.drop(["preds"], axis="columns")
-            else:
-                upsampled_dataframes = pd.concat(
-                    [upsampled_dataframes, df.drop(["preds"], axis="columns")], axis="index"
-                ).reset_index(drop=True)
+        upsampled_dataframes = selected[0].drop(["preds"], axis="columns")
+        for df in selected[1:]:  # iterate over the remaining selected
+            upsampled_dataframes = pd.concat(
+                [upsampled_dataframes, df.drop(["preds"], axis="columns")], axis="index"
+            ).reset_index(drop=True)
         upsampled_datatuple = dataset.replace_data(
             upsampled_dataframes, name=f"{name}: {dataset.name}"
         )

@@ -11,6 +11,7 @@ from ethicml.utility import DataTuple, TestTuple
 try:
     import torch
     from torch import Tensor, nn
+    import torch.utils.data
     from torch.utils.data import Dataset, TensorDataset
 except ImportError as e:
     raise RuntimeError(
