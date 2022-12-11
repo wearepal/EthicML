@@ -62,7 +62,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "^0.0.149"
+ruff = "0.0.176"
 
 [tool.black]
 line-length = 100
