@@ -94,7 +94,7 @@ def _joint_3(
 
 
 def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kde]) -> np.ndarray:
-    """An estimator of the function :math:`z\to HGR(x|z, y|z)`.
+    r"""An estimator of the function :math:`z\to HGR(x|z, y|z)`.
 
     Where HGR is the Hirschfeld-Gebelein-Renyi maximum correlation
     coefficient computed using Witsenhausen’s Characterization: HGR(x,y) is the second highest
