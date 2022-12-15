@@ -715,7 +715,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "ranzen"
-version = "2.0.5"
+version = "2.0.6"
 description = "A toolkit facilitating machine-learning experimentation."
 category = "main"
 optional = false
@@ -1647,8 +1647,8 @@ pyyaml = [
     {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
 ]
 ranzen = [
-    {file = "ranzen-2.0.5-py3-none-any.whl", hash = "sha256:c92bae51177f596b1e2bd7d687d42ea0f3dfb2105b11b0174202c1d4e798537c"},
-    {file = "ranzen-2.0.5.tar.gz", hash = "sha256:15d3dfddc45c78ff4b59e507c782bdd60ec7849c258ee8251d1c8eb49793c8a9"},
+    {file = "ranzen-2.0.6-py3-none-any.whl", hash = "sha256:cc6354684036a698a11525ee36d07366db88cb801f4ffa052d11843007103340"},
+    {file = "ranzen-2.0.6.tar.gz", hash = "sha256:c8aa6babe08d78ff49a22ac606a7ef907e3da3a0f18c6f469b86bbaa80fe0524"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
