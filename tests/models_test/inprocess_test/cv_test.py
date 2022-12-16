@@ -45,8 +45,8 @@ def test_cv(
     assert isinstance(best_model, InAlgorithm)
 
     preds: Prediction = best_model.run(train, test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
 @pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
@@ -66,5 +66,5 @@ def test_parallel_cv(
     assert isinstance(best_model, InAlgorithm)
 
     preds: Prediction = best_model.run(train, test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos

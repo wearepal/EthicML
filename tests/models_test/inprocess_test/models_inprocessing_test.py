@@ -123,8 +123,8 @@ def test_inprocess(toy_train_val: TrainValPair, name: str, model: InAlgorithm, n
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
-    assert np.count_nonzero(predictions.hard.values == 1) == num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - num_pos
 
 
 def test_kamiran_weights(toy_train_test: TrainTestPair):
@@ -157,8 +157,8 @@ def test_inprocess_sep_train_pred(
 
     model = model.fit(train)
     predictions: Prediction = model.predict(test)
-    assert np.count_nonzero(predictions.hard.values == 1) == num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - num_pos
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
@@ -176,8 +176,8 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 428
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
@@ -225,13 +225,13 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> N
     assert model is not None
 
     predictions: Prediction = model.run(train, test)
-    assert np.count_nonzero(predictions.hard.values == 1) == 42
-    assert np.count_nonzero(predictions.hard.values == 0) == 38
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 42
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == 38
 
     another_model = Kamishima()
     new_predictions: Prediction = another_model.fit(train).predict(test)
-    assert np.count_nonzero(new_predictions.hard.values == 1) == 42
-    assert np.count_nonzero(new_predictions.hard.values == 0) == 38
+    assert np.count_nonzero(new_predictions.hard.to_numpy() == 1) == 42
+    assert np.count_nonzero(new_predictions.hard.to_numpy() == 0) == 38
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
@@ -261,8 +261,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
     predictions: Prediction = model.run(train, test, seed=0)
     expected_num_pos = 44
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
 
 @pytest.mark.slow
@@ -278,8 +278,8 @@ def test_threaded_agarwal():
 
         def score(self, prediction, actual) -> float:
             return (
-                np.count_nonzero(prediction.hard.values == 1) == 45
-                and np.count_nonzero(prediction.hard.values == 0) == 35
+                np.count_nonzero(prediction.hard.to_numpy() == 1) == 45
+                and np.count_nonzero(prediction.hard.to_numpy() == 0) == 35
             )
 
     results = evaluate_models(

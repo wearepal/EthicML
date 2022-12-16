@@ -185,6 +185,7 @@ select = [
     "F", # pyflakes
     # "I", # isort
     # "UP", # pyupgrade
+    # "PDV", # pandas-vet
 ]
 ignore = [
     "D105", # magic methods
@@ -208,6 +209,7 @@ ignore = [
     "D416",
     "D417",
     "TID252", # relative imports
+    "PDV901", # forbidding "df" as a variable name
 ]
 target-version = "py38"
 [tool.ruff.per-file-ignores]

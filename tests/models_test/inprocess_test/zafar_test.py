@@ -40,18 +40,18 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 41
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     predictions = model.fit(train).predict(test)
     expected_num_pos = 41
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     predictions = model.run(train, test)
     expected_num_pos = 41
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     hyperparams: Dict[str, List[float]] = {"gamma": [1, 1e-1, 1e-2]}
 
@@ -77,13 +77,13 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     predictions = model.run(train, test)
     expected_num_pos = 40
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     predictions = model.fit(train).predict(test)
     expected_num_pos = 40
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     model = ZafarFairness()
     assert model.name == "ZafarFairness, C=0.001"
@@ -92,13 +92,13 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     predictions = model.run(train, test)
     expected_num_pos = 51
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     predictions = model.fit(train).predict(test)
     expected_num_pos = 51
-    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
-    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
     hyperparams = {"C": [1, 1e-1, 1e-2]}
 
@@ -122,17 +122,17 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_opp.run(train, test)
-    assert np.count_nonzero(predictions.hard.values == 1) == 40
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 40
 
     predictions = zafar_eq_opp.fit(train).predict(test)
-    assert np.count_nonzero(predictions.hard.values == 1) == 40
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 40
 
     # ==================== Zafar Equalised Odds ========================
     zafar_eq_odds: InAlgorithm = ZafarEqOdds()
     assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_odds.run(train, test)
-    assert np.count_nonzero(predictions.hard.values == 1) == 40
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 40
 
     predictions = zafar_eq_odds.fit(train).predict(test)
-    assert np.count_nonzero(predictions.hard.values == 1) == 40
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 40
