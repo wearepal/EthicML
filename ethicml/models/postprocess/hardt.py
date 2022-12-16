@@ -1,11 +1,11 @@
 """Post-processing method by Hardt et al."""
 from __future__ import annotations
 from dataclasses import dataclass
+from typing_extensions import override
 
 import numpy as np
 from numpy.random import RandomState
 import pandas as pd
-from ranzen import implements
 from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
 
 from ethicml.metrics.per_sensitive_attribute import metric_per_sens
@@ -26,20 +26,20 @@ class Hardt(PostAlgorithm):
     favorable_label: int = 1
 
     @property
-    @implements(PostAlgorithm)
+    @override
     def name(self) -> str:
         return "Hardt"
 
-    @implements(PostAlgorithm)
+    @override
     def fit(self, train_predictions: Prediction, train: DataTuple) -> Hardt:
         self.model_params = self._fit(train_predictions, train)
         return self
 
-    @implements(PostAlgorithm)
+    @override
     def predict(self, test_predictions: Prediction, test: TestTuple, seed: int = 888) -> Prediction:
         return self._predict(self.model_params, test_predictions, test, seed)
 
-    @implements(PostAlgorithm)
+    @override
     def run(
         self,
         train_predictions: Prediction,

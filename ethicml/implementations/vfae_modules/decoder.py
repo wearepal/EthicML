@@ -34,7 +34,6 @@ class Decoder(nn.Module):
             n_dims = len(feature_group)
             categorical = n_dims > 1  # feature is categorical if it has more than 1 possible output
 
-            layer: nn.Module
             return (
                 Categorical(in_features, n_dims)
                 if categorical
@@ -42,7 +41,7 @@ class Decoder(nn.Module):
             )
 
         self.grouped_features = [
-            list(group) for key, group in groupby(self.features, lambda x: x.split("_")[0])
+            list(group) for _, group in groupby(self.features, lambda x: x.split("_")[0])
         ]
         self.output_layers = nn.ModuleList(
             [_add_output_layer(feature) for feature in self.grouped_features]

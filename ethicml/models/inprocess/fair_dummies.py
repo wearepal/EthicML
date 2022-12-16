@@ -1,12 +1,14 @@
-"""Paper: "Achieving Equalized Odds by Resampling Sensitive Attributes," Y. Romano, S. Bates, and E. J. Candès, 2020.
+"""Fair dummies.
+
+Paper: "Achieving Equalized Odds by Resampling Sensitive Attributes,"
+Y. Romano, S. Bates, and E. J. Candès, 2020.
 
 https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
 from ethicml.utility.data_structures import HyperParamType, ModelType
@@ -44,11 +46,11 @@ class FairDummies(InAlgorithmSubprocess):
     lambda_vec: float = 0.9
     second_moment_scaling: float = 1e-5
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.fair_dummies_romano"]
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> FairDummiesArgs:
         return {
             "lr": self.lr,
@@ -64,7 +66,7 @@ class FairDummies(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
@@ -80,6 +82,6 @@ class FairDummies(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return f"Fair Dummies {self.model_type}_model"

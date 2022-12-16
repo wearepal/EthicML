@@ -3,8 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Final, Type
-
-from ranzen import implements
+from typing_extensions import override
 
 from ..dataset import LabelSpecsPair, StaticCSVDataset
 from ..util import (
@@ -49,7 +48,7 @@ class Adult(StaticCSVDataset):
     binarize_race: bool = False
 
     @property
-    @implements(StaticCSVDataset)
+    @override
     def name(self) -> str:
         name = f"Adult {self.split.value}"
         if self.binarize_nationality:
@@ -58,7 +57,7 @@ class Adult(StaticCSVDataset):
             name += ", binary race"
         return name
 
-    @implements(StaticCSVDataset)
+    @override
     def get_label_specs(self) -> LabelSpecsPair:
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
@@ -94,7 +93,7 @@ class Adult(StaticCSVDataset):
         return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec, to_remove=label_feature_groups)
 
     @property
-    @implements(StaticCSVDataset)
+    @override
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
@@ -129,7 +128,7 @@ class Adult(StaticCSVDataset):
         return dfgs
 
     @property
-    @implements(StaticCSVDataset)
+    @override
     def continuous_features(self) -> list[str]:
         feats = [
             "age",

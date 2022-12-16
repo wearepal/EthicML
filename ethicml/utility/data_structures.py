@@ -416,6 +416,9 @@ TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
 EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
 """Union of :class:`LabelTuple` and :class:`DataTuple`."""
 
+HyperParamValue: TypeAlias = Union[bool, int, float, str]
+HyperParamType: TypeAlias = Dict[str, HyperParamValue]
+
 T = TypeVar("T", SubgroupTuple, DataTuple)
 
 
@@ -464,8 +467,8 @@ class Prediction:
         :returns: A :class:`Prediction` object with the loaded data.
         """
         info = None
-        if (npz_path.parent / "info.json").exists():
-            with open(npz_path.parent / "info.json", encoding="utf-8") as json_file:
+        if (json_path := npz_path.parent / "info.json").exists():
+            with open(json_path, encoding="utf-8") as json_file:
                 info = json.load(json_file)
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)
@@ -701,7 +704,8 @@ def aggregate_results(
         (Default: ("mean", "std"))
     :returns: The aggregated results as a ``pd.DataFrame``.
     """
-    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]
+    grouped = results.groupby(["dataset", "scaler", "transform", "model"])
+    return grouped.agg(aggregator)[metrics]  # type: ignore[arg-type]
 
 
 class KernelType(StrEnum):
@@ -724,7 +728,3 @@ class ModelType(StrEnum):
     """Deep neural network."""
     linear = auto()
     """Linear model."""
-
-
-HyperParamValue: TypeAlias = Union[bool, int, float, str]
-HyperParamType: TypeAlias = Dict[str, HyperParamValue]

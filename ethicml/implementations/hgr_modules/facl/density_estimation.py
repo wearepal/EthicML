@@ -8,8 +8,8 @@ import torch
 class Kde:
     """A Gaussian KDE implemented in pytorch for the gradients to flow in pytorch optimization.
 
-    Keep in mind that KDE are not scaling well with the number of dimensions and this implementation is not really
-    optimized...
+    Keep in mind that KDE are not scaling well with the number of dimensions and this implementation
+    is not really optimized...
     """
 
     def __init__(self, x_train: torch.Tensor):
@@ -46,10 +46,11 @@ class Kde:
 def _unsqueeze_multiple_times(input: torch.Tensor, axis: int, times: int) -> torch.Tensor:
     """Utils function to unsqueeze tensor to avoid cumbersome code.
 
-    :param input: A pytorch Tensor of dimensions (D_1,..., D_k)
-    :param axis: the axis to unsqueeze repeatedly
-    :param times: the number of repetitions of the unsqueeze
-    :return: the unsqueezed tensor. ex: dimensions (D_1,... D_i, 0,0,0, D_{i+1}, ... D_k) for unsqueezing 3x axis i.
+    :param input: A PyTorch tensor of dimensions (D_1,..., D_k).
+    :param axis: The axis to unsqueeze repeatedly.
+    :param times: The number of repetitions of the unsqueeze.
+    :returns: The unsqueezed tensor. ex: dimensions (D_1,... D_i, 0,0,0, D_{i+1}, ... D_k) for
+        unsqueezing 3x axis i.
     """
     output = input
     for _ in range(times):

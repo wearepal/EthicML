@@ -26,7 +26,7 @@ __all__ = [
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
 
-def maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
+def _maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
     columns = data.x.columns
 
     if len(columns) > 2:
@@ -50,7 +50,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     """Make 2D plot."""
     file_path = Path(filepath)
 
-    amalgamated, x1_name, x2_name = maybe_tsne(data)
+    amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
     plot = sns.scatterplot(  # type: ignore[attr-defined]
         x=x1_name,
@@ -74,14 +74,16 @@ def save_jointplot(data: DataTuple, filepath: str, dims: tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")  # type: ignore[attr-defined]
+    plot = sns.jointplot(  # type: ignore[attr-defined]
+        x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde"
+    )
 
     file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
     plt.clf()
 
 
-def multivariate_grid(
+def _multivariate_grid(
     col_x: str,
     col_y: str,
     sens_col: str,
@@ -107,8 +109,12 @@ def multivariate_grid(
     for name, df_group in df.groupby([sens_col, outcome_col]):
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
-        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)  # type: ignore[attr-defined]
-        sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)  # type: ignore[attr-defined]
+        sns.distplot(  # type: ignore[attr-defined]
+            df_group[col_x].values, ax=g.ax_marg_x, color=color
+        )
+        sns.distplot(  # type: ignore[attr-defined]
+            df_group[col_y].values, ax=g.ax_marg_y, vertical=True
+        )
     # Do also global Hist:
     # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
     # sns.distplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
@@ -120,9 +126,9 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
     file_path = Path(filepath)
     data.x.columns
 
-    amalgamated, x1_name, x2_name = maybe_tsne(data)
+    amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
-    multivariate_grid(
+    _multivariate_grid(
         col_x=x1_name,
         col_y=x2_name,
         sens_col=str(data.s.name),
@@ -219,7 +225,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
 
     file_path.parent.mkdir(exist_ok=True)
-    fig.savefig(file_path)
+    fig.savefig(file_path)  # type: ignore
     fig.clf()
 
 
@@ -310,14 +316,16 @@ def plot_results(
 ) -> list[tuple[figure.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
-    :param results: a DataFrame that already contains the values of the metrics
-    :param metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
-    :param metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
-    :param ptype: plot type (Default: "box")
-    :param save: if True, save the plot as a PDF (Default: True)
+    :param results: A DataFrame that already contains the values of the metrics.
+    :param metric_y: A Metric object or a column name that defines which metric to plot on the
+        y-axis.
+    :param metric_x: A Metric object or a column name that defines which metric to plot on the
+        x-axis.
+    :param ptype: Plot type (Default: "box")
+    :param save: If ``True``, save the plot as a PDF. (Default: True)
     :param dpi: DPI of the plots (Default: 300)
-    :param transforms_separately: if True, each transform gets its own plot (Default: True)
-    :returns: A list of all figures and plots
+    :param transforms_separately: If ``True``, each transform gets its own plot (Default: True)
+    :returns: A list of all figures and plots.
     :raises ValueError: If no columns matching ``metric_y`` and ``metric_x`` are found.
     """
     directory = Path(".") / "plots"
@@ -380,7 +388,7 @@ def plot_results(
 
                 if save:
                     fig.savefig(
-                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",
+                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",  # type: ignore
                         bbox_inches="tight",
                     )
                 plt.close(fig)

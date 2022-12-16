@@ -2,14 +2,12 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
 from .fpr import FPR
-from .metric import Metric
 from .per_sensitive_attribute import diff_per_sens, metric_per_sens
 from .tpr import TPR
 
@@ -28,7 +26,7 @@ class AverageOddsDiff(CfmMetric):
     _name: ClassVar[str] = "AverageOddsDiff"
     apply_per_sensitive: ClassVar[bool] = False
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         tpr = TPR(pos_class=self.pos_class, labels=self.labels)
         tpr_per_sens = metric_per_sens(prediction, actual, tpr)

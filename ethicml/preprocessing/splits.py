@@ -3,11 +3,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 import itertools
 from typing import Iterator, Literal
+from typing_extensions import override
 
 import numpy as np
 from numpy.random import RandomState
 import pandas as pd
-from ranzen import implements
 
 from ethicml.utility import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
@@ -44,7 +44,7 @@ class SequentialSplit(DataSplitter):
     def __init__(self, train_percentage: float):
         self.train_percentage = train_percentage
 
-    @implements(DataSplitter)
+    @override
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
@@ -69,10 +69,12 @@ def train_test_split(
 ) -> tuple[DataTuple, DataTuple]:
     """Split a data tuple into two datatuple along the rows of the DataFrames.
 
-    :param data: data tuple to split
-    :param train_percentage: percentage for train split. Must be `None` if `num_test_samples` given. (Default: 0.8)
-    :param random_seed: seed to make splitting reproducible (Default: 0)
-    :param num_test_samples: Number of samples to make the test set. Must be `None` if `train_percentage` given. (Default: None)
+    :param data: Data tuple to split.
+    :param train_percentage: Percentage for train split. Must be ``None`` if ``num_test_samples``
+        given. (Default: 0.8)
+    :param random_seed: Seed to make splitting reproducible (Default: 0)
+    :param num_test_samples: Number of samples to make the test set. Must be ``None`` if
+        ``train_percentage`` given. (Default: None)
     :returns: train split and test split
     """
     if train_percentage is None:
@@ -143,7 +145,7 @@ class RandomSplit(DataSplitter):
     def _get_seed(self, split_id: int) -> int:
         return self.start_seed + 2410 * split_id if self.start_seed is not None else 0
 
-    @implements(DataSplitter)
+    @override
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
@@ -194,7 +196,7 @@ def generate_proportional_split_indices(
 class ProportionalSplit(RandomSplit):
     """Split into train and test while preserving the proportion of s and y."""
 
-    @implements(DataSplitter)
+    @override
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
@@ -236,7 +238,7 @@ class BalancedTestSplit(RandomSplit):
         super().__init__(start_seed=start_seed, train_percentage=train_percentage)
         self.balance_type = balance_type
 
-    @implements(DataSplitter)
+    @override
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> tuple[DataTuple, DataTuple, dict[str, float]]:

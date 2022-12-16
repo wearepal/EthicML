@@ -4,8 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import ClassVar, Type
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.data.dataset import CSVDatasetDC, LabelSpecsPair
 from ethicml.data.util import DiscFeatureGroups, single_col_spec
@@ -59,32 +58,32 @@ class Synthetic(CSVDatasetDC):
         assert 0 < self.num_samples <= 100_000
 
     @property
-    @implements(CSVDatasetDC)
+    @override
     def continuous_features(self) -> list[str]:
         return ["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"]
 
     @property
-    @implements(CSVDatasetDC)
+    @override
     def name(self) -> str:
         return (
             f"Synthetic - Scenario {self.scenario.value}, "
             f"target {self.target.value}{' fair' if self.fair else ''}"
         )
 
-    @implements(CSVDatasetDC)
+    @override
     def get_label_specs(self) -> LabelSpecsPair:
         y = single_col_spec(f"y{self.target.value}{'f' if self.fair else ''}")
         return LabelSpecsPair(s=single_col_spec("s"), y=y)
 
-    @implements(CSVDatasetDC)
+    @override
     def get_num_samples(self) -> int:
         return self.num_samples
 
-    @implements(CSVDatasetDC)
+    @override
     def get_filename_or_path(self) -> str | Path:
         return f"synthetic_scenario_{self.scenario.value}.csv"
 
     @property
-    @implements(CSVDatasetDC)
+    @override
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return {}

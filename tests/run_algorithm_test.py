@@ -237,10 +237,10 @@ def test_run_alg_suite_err_handling():
         C: int = 4
 
         def fit(self: _I, train: DataTuple, seed: int = 888) -> _I:
-            pass
+            raise NotImplementedError("This won't run.")
 
         def predict(self, test: TestTuple) -> Prediction:
-            pass
+            raise NotImplementedError("This won't run.")
 
         def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
             raise NotImplementedError("This won't run.")

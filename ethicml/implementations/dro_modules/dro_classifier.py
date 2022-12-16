@@ -1,7 +1,7 @@
 """Fairness without Demographics Classifier."""
 from __future__ import annotations
+from typing_extensions import override
 
-from ranzen import implements
 from ranzen.torch import CrossEntropyLoss
 from torch import Tensor, nn
 
@@ -35,6 +35,6 @@ class DROClassifier(nn.Module):
                 )
             self.seq.add_module("DRO Model last layer", nn.Linear(network_size[-1], out_size))
 
-    @implements(nn.Module)
+    @override
     def forward(self, x: Tensor) -> Tensor:
         return self.seq(x)

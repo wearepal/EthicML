@@ -2,8 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
 from ethicml.models.inprocess.shared import settings_for_svm_lr
@@ -31,8 +30,9 @@ class AgarwalArgs(TypedDict):
 class Agarwal(InAlgorithmSubprocess):
     """Agarwal class.
 
-    A wrapper around the Exponentiated Gradient method documented
-    `on this website <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+    A wrapper around the `Exponentiated Gradient method
+    <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html
+    #fairlearn.reductions.ExponentiatedGradient>`_.
 
     :param fairness: Type of fairness to enforce.
     :param classifier: Type of classifier to use.
@@ -52,7 +52,7 @@ class Agarwal(InAlgorithmSubprocess):
     def __post_init__(self) -> None:
         assert self.fairness in (FairnessType.dp, FairnessType.eq_odds)
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> AgarwalArgs:
         chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
         # TODO: replace this with dataclasses.asdict()
@@ -66,7 +66,7 @@ class Agarwal(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def hyperparameters(self) -> HyperParamType:
         chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
         _hyperparameters: HyperParamType = {
@@ -81,10 +81,10 @@ class Agarwal(InAlgorithmSubprocess):
         return _hyperparameters
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return f"Agarwal, {self.classifier}, {self.fairness}, {self.eps}"
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.agarwal"]

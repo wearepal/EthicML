@@ -6,9 +6,10 @@ from enum import auto
 from pathlib import Path
 import typing
 from typing import ClassVar, Sequence, TypedDict, final
+from typing_extensions import override
 
 import pandas as pd
-from ranzen import StrEnum, implements
+from ranzen import StrEnum
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
@@ -173,7 +174,7 @@ class CSVDataset(Dataset, ABC):
         """Get the list of class labels."""
         return label_spec_to_feature_list(self.get_label_specs().y)
 
-    @implements(Dataset)
+    @override
     def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
         if self.load_discrete_only:
             x = self.discrete_features
@@ -199,14 +200,14 @@ class CSVDataset(Dataset, ABC):
         dfgs = self.unfiltered_disc_feat_groups
         # select those feature groups that are not for the x and y labels
         to_remove = self.get_label_specs().to_remove
-        assert all(group in dfgs for group in to_remove), f"can't remove all groups"
+        assert all(group in dfgs for group in to_remove), "can't remove all groups"
         return {group: v for group, v in dfgs.items() if group not in to_remove}
 
-    @implements(Dataset)
+    @override
     def __len__(self) -> int:
         return self.get_num_samples()
 
-    @implements(Dataset)
+    @override
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
@@ -219,7 +220,8 @@ class CSVDataset(Dataset, ABC):
         else:
             feature_split_x = feature_split["x"]
 
-        dataframe = self._generate_missing_columns(dataframe)
+        for feature_group in self.unfiltered_disc_feat_groups.values():
+            dataframe = _generate_complementary_column(dataframe, feature_group)
 
         x_data = dataframe[feature_split_x]
         s_df = dataframe[feature_split["s"]]
@@ -249,34 +251,6 @@ class CSVDataset(Dataset, ABC):
 
         return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
 
-    def _generate_missing_columns(self, dataframe: pd.DataFrame) -> pd.DataFrame:
-        """Check whether we have to generate some complementary columns for binary features.
-
-        This happens when we have, for example, several races: race-asian-pac-islander, etc, but we
-        want to have an attribute called "race_other" that summarizes them all. Now, the problem
-        is that this cannot be done before this point, because only here have we actually loaded
-        the data. So, we have to do it here, with all the information we can piece together.
-        """
-        for group in self.unfiltered_disc_feat_groups.values():
-            if len(group) == 1:
-                continue
-            for feature in group:
-                if feature in dataframe.columns:
-                    continue  # nothing to do
-                missing_feature = feature
-
-                existing_features = [other for other in group if other in dataframe.columns]
-                assert len(existing_features) == len(group) - 1, "at most 1 feature missing"
-                # the dummy feature is the inverse of the existing feature
-                or_combination = dataframe[existing_features[0]] == 1
-                for other in existing_features[1:]:
-                    or_combination |= dataframe[other] == 1
-                inverse: pd.Series = 1 - or_combination
-                dataframe = pd.concat(
-                    [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
-                )
-        return dataframe
-
     @typing.no_type_check
     def load_aif(self):  # Returns aif.360 Standard Dataset
         """Load the dataset as an AIF360 dataset.
@@ -303,6 +277,33 @@ class CSVDataset(Dataset, ABC):
             privileged_classes=[lambda x: x == 1],
             categorical_features=disc_feature_groups.keys(),
         )
+
+
+def _generate_complementary_column(
+    dataframe: pd.DataFrame, feature_group: list[str]
+) -> pd.DataFrame:
+    """Check whether we have to generate some complementary columns for binary features.
+
+    This happens when we have, for example, several races: race-asian-pac-islander, etc, but we want
+    to have an attribute called "race_other" that summarizes them all. Now, the problem is that this
+    cannot be done before this point, because only here have we actually loaded the data. So, we
+    have to do it here, with all the information we can piece together.
+    """
+    for feature in feature_group:
+        if feature in dataframe.columns:
+            continue  # nothing to do
+        missing_feature = feature
+
+        existing_features = [other for other in feature_group if other in dataframe.columns]
+        assert existing_features, f"no column from this feature group seems to exist: {feature}"
+        assert len(existing_features) == len(feature_group) - 1, "at most 1 feature missing"
+        # the dummy feature is the inverse of the existing feature
+        or_combination = dataframe[existing_features[0]] == 1
+        for other in existing_features[1:]:
+            or_combination |= dataframe[other] == 1
+        inverse: pd.Series = 1 - or_combination
+        dataframe = pd.concat([dataframe, inverse.to_frame(name=missing_feature)], axis="columns")
+    return dataframe
 
 
 def one_hot_encode_and_combine(
@@ -394,11 +395,11 @@ class StaticCSVDataset(CSVDatasetDC, ABC):
     num_samples: ClassVar[int] = 0
     csv_file: ClassVar[str] = "<overwrite me>"
 
-    @implements(CSVDataset)
+    @override
     def get_num_samples(self) -> int:
         return self.num_samples
 
-    @implements(CSVDataset)
+    @override
     def get_filename_or_path(self) -> str | Path:
         return self.csv_file
 
@@ -444,21 +445,21 @@ class LegacyDataset(CSVDataset):
         self._cont_features = list(cont_features)
 
     @property
-    @implements(CSVDataset)
+    @override
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return self._unfiltered_disc_feat_groups
 
     @property
-    @implements(CSVDataset)
+    @override
     def continuous_features(self) -> list[str]:
         return self._cont_features
 
     @property
-    @implements(CSVDataset)
+    @override
     def name(self) -> str:
         return self._name
 
-    @implements(CSVDataset)
+    @override
     def get_label_specs(self) -> LabelSpecsPair:
         s_spec = self._sens_attr_spec
         y_spec = self._class_label_spec
@@ -468,11 +469,11 @@ class LegacyDataset(CSVDataset):
             to_remove=list(self._s_prefix) + list(self._class_label_prefix),
         )
 
-    @implements(CSVDataset)
+    @override
     def get_num_samples(self) -> int:
         return self._num_samples
 
-    @implements(CSVDataset)
+    @override
     def get_filename_or_path(self) -> str | Path:
         return self._raw_file_name_or_path
 

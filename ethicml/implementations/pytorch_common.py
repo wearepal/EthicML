@@ -11,10 +11,12 @@ from ethicml.utility import DataTuple, TestTuple
 try:
     import torch
     from torch import Tensor, nn
+    import torch.utils.data
     from torch.utils.data import Dataset, TensorDataset
 except ImportError as e:
     raise RuntimeError(
-        "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
+        "In order to use PyTorch, "
+        "please install it following the instructions as https://pytorch.org/ . "
     ) from e
 
 
@@ -149,8 +151,12 @@ def compute_projection_gradients(
     :param loss_a: Adversarial loss.
     :param alpha: Pre-factor for adversarial loss.
     """
-    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
-    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
+    grad_p = torch.autograd.grad(
+        loss_p, model.parameters(), retain_graph=True  # type: ignore[arg-type]
+    )
+    grad_a = torch.autograd.grad(
+        loss_a, model.parameters(), retain_graph=True  # type: ignore[arg-type]
+    )
 
     def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)

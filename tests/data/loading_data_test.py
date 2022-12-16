@@ -35,6 +35,7 @@ from ethicml.data import (
     one_hot_encode_and_combine,
     spec_from_binary_cols,
 )
+from ethicml.data.dataset import _generate_complementary_column
 
 
 def test_can_load_test_data(data_root: Path):
@@ -988,6 +989,29 @@ def test_expand_s():
         one_hot_encode_and_combine(raw_df, sens_attr_spec, False)[0], compact_df
     )
     pd.testing.assert_frame_equal(_expand_labels(compact_df).astype("int64"), multilevel_df)
+
+
+def test_complementary_column() -> None:
+    """Test complementary column."""
+    data_partial = pd.DataFrame(
+        [[0, 0, 1], [1, 0, 1], [0, 1, 1]], columns=["blond", "black", "female"]
+    )
+    hair_color_group = ["blond", "black", "other"]
+    data_full = pd.DataFrame(
+        [[0, 0, 1, 1], [1, 0, 1, 0], [0, 1, 1, 0]], columns=["blond", "black", "female", "other"]
+    )
+    pd.testing.assert_frame_equal(
+        _generate_complementary_column(data_partial, hair_color_group), data_full
+    )
+    pd.testing.assert_frame_equal(
+        _generate_complementary_column(data_full, hair_color_group), data_full
+    )
+    gender_group = ["female"]
+    pd.testing.assert_frame_equal(
+        _generate_complementary_column(data_full, gender_group), data_full
+    )
+    with pytest.raises(AssertionError):
+        _generate_complementary_column(data_full, ["non existent"])
 
 
 def test_simple_spec():

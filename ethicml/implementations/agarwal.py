@@ -43,8 +43,8 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
         )
     except ImportError as e:
         raise RuntimeError(
-            f"In order to use Agarwal, install fairlearn==0.7.0. "
-            f"Consider installing EthicML with the extras 'all' specified."
+            "In order to use Agarwal, install fairlearn==0.7.0. "
+            "Consider installing EthicML with the extras 'all' specified."
         ) from e
 
     fairness_class: UtilityParity
@@ -89,8 +89,8 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
-    if preds["preds"].min() != preds["preds"].max():
-        preds = preds.replace(preds["preds"].min(), exponentiated_gradient.min_class_label)
+    if (min_val := preds["preds"].min()) != preds["preds"].max():
+        preds = preds.replace(min_val, exponentiated_gradient.min_class_label)
     return preds
 
 

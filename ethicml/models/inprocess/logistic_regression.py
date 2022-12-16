@@ -2,10 +2,10 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
@@ -20,8 +20,8 @@ class LR(InAlgorithmDC):
     """Logistic regression with hard predictions.
 
     This is a wrapper around Sci-Kit Learn's LogisticRegression.
-    See `the documentation <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_
-    for details.
+    See `the sklearn documentation <https://scikit-learn.org/stable/modules/generated/
+    sklearn.linear_model.LogisticRegression.html>`_ for details.
 
     :param C: The regularization parameter.
     """
@@ -30,11 +30,11 @@ class LR(InAlgorithmDC):
     C: float = field(default_factory=lambda: LogisticRegression().C)
 
     @property
-    @implements(InAlgorithmDC)
+    @override
     def name(self) -> str:
         return f"Logistic Regression (C={self.C})"
 
-    @implements(InAlgorithmDC)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> LR:
         random_state = np.random.RandomState(seed=seed)
         self.clf = LogisticRegression(
@@ -43,11 +43,11 @@ class LR(InAlgorithmDC):
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithmDC)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
-    @implements(InAlgorithmDC)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> SoftPrediction:
         random_state = np.random.RandomState(seed=seed)
         clf = LogisticRegression(
@@ -68,11 +68,11 @@ class LRCV(InAlgorithmDC):
     n_splits: int = 3
 
     @property
-    @implements(InAlgorithmDC)
+    @override
     def name(self) -> str:
         return "LRCV"
 
-    @implements(InAlgorithmDC)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> LRCV:
         random_state = np.random.RandomState(seed=seed)
         folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)
@@ -82,13 +82,13 @@ class LRCV(InAlgorithmDC):
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithmDC)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         params = self.hyperparameters
         params["C"] = self.clf.C_[0]
         return SoftPrediction(soft=self.clf.predict_proba(test.x), info=params)
 
-    @implements(InAlgorithmDC)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         random_state = np.random.RandomState(seed=seed)
         folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)

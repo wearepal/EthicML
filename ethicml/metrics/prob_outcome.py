@@ -2,12 +2,11 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction, SoftPrediction
 
-from .metric import Metric, MetricStaticName
+from .metric import MetricStaticName
 
 __all__ = ["ProbOutcome"]
 
@@ -19,7 +18,7 @@ class ProbOutcome(MetricStaticName):
     _name: ClassVar[str] = "prob_outcome"
     pos_class: int = 1
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         return (
             (prediction.soft.sum(axis=0)[self.pos_class] / prediction.hard.size).item()

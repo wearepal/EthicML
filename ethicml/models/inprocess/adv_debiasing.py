@@ -1,12 +1,14 @@
-"""Paper: "Achieving Equalized Odds by Resampling Sensitive Attributes," Y. Romano, S. Bates, and E. J. Candès, 2020.
+"""Adversarial debiasing.
+
+Paper: "Achieving Equalized Odds by Resampling Sensitive Attributes,"
+Y. Romano, S. Bates, and E. J. Candès, 2020.
 
 https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypedDict
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
 from ethicml.utility.data_structures import HyperParamType, ModelType
@@ -38,11 +40,11 @@ class AdvDebiasing(InAlgorithmSubprocess):
     model_type: ModelType = ModelType.deep
     lambda_vec = 0.999999
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.adv_debiasing_method"]
 
-    @implements(InAlgorithmSubprocess)
+    @override
     def _get_flags(self) -> AdvDebArgs:
         return {
             "lr": self.lr,
@@ -55,7 +57,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
@@ -68,6 +70,6 @@ class AdvDebiasing(InAlgorithmSubprocess):
         }
 
     @property
-    @implements(InAlgorithmSubprocess)
+    @override
     def name(self) -> str:
         return "Adversarial Debiasing"

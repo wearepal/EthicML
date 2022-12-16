@@ -17,9 +17,9 @@ def settings_for_svm_lr(
         return 1.0, None
     if C is None:
         if classifier is ClassifierType.lr:
-            C = LogisticRegression().C
+            C = LogisticRegression().C  # pyright: ignore
         elif classifier is ClassifierType.svm:
-            C = SVC().C
+            C = SVC().C  # pyright: ignore
         else:
             raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 

@@ -2,13 +2,11 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-
-from ranzen import implements
+from typing_extensions import override
 
 from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
-from .metric import Metric
 from .tnr import TNR
 from .tpr import TPR
 
@@ -21,7 +19,7 @@ class BCR(CfmMetric):
 
     _name: ClassVar[str] = "BCR"
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         tpr = TPR(pos_class=self.pos_class, labels=self.labels).score(prediction, actual)
         tnr = TNR(pos_class=self.pos_class, labels=self.labels).score(prediction, actual)

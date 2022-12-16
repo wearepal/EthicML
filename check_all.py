@@ -19,7 +19,7 @@ subprocess.call(
         "pydocstyle",
         "--convention=google",
         "--add-ignore=D105,D107",
-        "--ignore-decorators=implements|overload",
+        "--ignore-decorators=override|overload",
         "--count",
         "-e",
         "ethicml",

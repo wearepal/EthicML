@@ -16,11 +16,9 @@ try:
 
 except ImportError as e:
     raise RuntimeError(
-        "In order to use PyTorch, please install it following the instructions at https://pytorch.org/ . "
+        "In order to use PyTorch, "
+        "please install it following the instructions at https://pytorch.org/ . "
     ) from e
-
-
-from joblib import dump, load
 
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier

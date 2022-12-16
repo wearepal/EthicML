@@ -3,12 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import NamedTuple
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-from ranzen import implements
 
-from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.inprocess.installed_model import InstalledModel
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
@@ -42,18 +41,18 @@ class Kamishima(InstalledModel):
         self._fit_info: _FitInfo | None = None
 
     @property
-    @implements(InAlgorithm)
+    @override
     def hyperparameters(self) -> HyperParamType:
         return {"eta": self.eta}
 
-    @implements(InAlgorithm)
+    @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             fit_info = self._fit(train, tmp_path, seed)
             return self._predict(test, fit_info, tmp_path)
 
-    @implements(InAlgorithm)
+    @override
     def fit(self, train: DataTuple, seed: int = 888) -> Kamishima:
         with TemporaryDirectory() as tmpdir:
             self._fit_info = self._fit(train, Path(tmpdir), seed, model_dir=self._code_path)
@@ -72,7 +71,7 @@ class Kamishima(InstalledModel):
         self.call_script([str(e) for e in cmd])
         return _FitInfo(min_class_label=min_class_label, model_path=model_path)
 
-    @implements(InAlgorithm)
+    @override
     def predict(self, test: TestTuple) -> Prediction:
         assert self._fit_info is not None, "call fit() before calling predict()"
         with TemporaryDirectory() as tmpdir:
@@ -93,8 +92,8 @@ class Kamishima(InstalledModel):
         to_return = pd.Series(predictions)
         to_return = to_return.astype(int)
 
-        if to_return.min() != to_return.max():
-            to_return = to_return.replace(to_return.min(), fit_info.min_class_label)
+        if (min_val := to_return.min()) != to_return.max():
+            to_return = to_return.replace(min_val, fit_info.min_class_label)
         return Prediction(hard=to_return)
 
 

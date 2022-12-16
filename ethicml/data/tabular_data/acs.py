@@ -6,15 +6,15 @@ Paper: https://arxiv.org/abs/2108.04884
 # pylint: skip-file
 # Pylint will go crazy as we're reimplementing the Dataset Init.
 from __future__ import annotations
+from collections.abc import Sequence
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Iterable, Literal
+from typing import Generator, Literal, get_args
+from typing_extensions import TypeAlias, override
 
-from folktables import ACSDataSource, adult_filter, folktables, state_list
 import numpy as np
 import pandas as pd
-from ranzen import implements
 
 from ethicml.utility.data_helpers import undo_one_hot
 from ethicml.utility.data_structures import DataTuple
@@ -32,9 +32,63 @@ from ..util import (
 
 __all__ = ["AcsIncome", "AcsEmployment"]
 
+StateList: TypeAlias = Literal[
+    'AL',
+    'AK',
+    'AZ',
+    'AR',
+    'CA',
+    'CO',
+    'CT',
+    'DE',
+    'FL',
+    'GA',
+    'HI',
+    'ID',
+    'IL',
+    'IN',
+    'IA',
+    'KS',
+    'KY',
+    'LA',
+    'ME',
+    'MD',
+    'MA',
+    'MI',
+    'MN',
+    'MS',
+    'MO',
+    'MT',
+    'NE',
+    'NV',
+    'NH',
+    'NJ',
+    'NM',
+    'NY',
+    'NC',
+    'ND',
+    'OH',
+    'OK',
+    'OR',
+    'PA',
+    'RI',
+    'SC',
+    'SD',
+    'TN',
+    'TX',
+    'UT',
+    'VT',
+    'VA',
+    'WA',
+    'WV',
+    'WI',
+    'WY',
+    'PR',
+]
+
 
 @contextlib.contextmanager
-def download_dir(root: Path) -> Generator[None, None, None]:
+def _download_dir(root: Path) -> Generator[None, None, None]:
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve())
     try:
@@ -43,7 +97,7 @@ def download_dir(root: Path) -> Generator[None, None, None]:
         os.chdir(curdir)
 
 
-class AcsBase(Dataset):
+class _AcsBase(Dataset):
     split: str
     target: str
 
@@ -53,7 +107,7 @@ class AcsBase(Dataset):
         root: str | Path,
         year: str,
         horizon: int,
-        states: list[str],
+        states: list[StateList],
         class_label_spec: str,
         class_label_prefix: list[str],
         discrete_only: bool = False,
@@ -70,6 +124,7 @@ class AcsBase(Dataset):
         self.states = states
         self._invert_s = invert_s
 
+        state_list: tuple[str, ...] = get_args(StateList)
         assert all(state in state_list for state in states)
 
         state_string = "_".join(states)
@@ -119,7 +174,7 @@ class AcsBase(Dataset):
             to_remove += self.continuous_features
         return to_remove
 
-    @implements(Dataset)
+    @override
     def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
         features_to_remove = self.features_to_remove
 
@@ -234,7 +289,7 @@ class AcsBase(Dataset):
         return combination
 
 
-class AcsIncome(AcsBase):
+class AcsIncome(_AcsBase):
     """The ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
 
     def __init__(
@@ -242,7 +297,7 @@ class AcsIncome(AcsBase):
         root: str | Path,
         year: str,
         horizon: int,
-        states: list[str],
+        states: list[StateList],
         split: str = "Sex",
         target_threshold: int = 50_000,
         discrete_only: bool = False,
@@ -268,7 +323,7 @@ class AcsIncome(AcsBase):
         )
 
     @staticmethod
-    def cat_lookup(key: str) -> Iterable:
+    def cat_lookup(key: str) -> Sequence[int]:
         """Look up categories."""
         table = {
             "COW": range(1, 9),
@@ -281,15 +336,17 @@ class AcsIncome(AcsBase):
 
         return table[key]
 
-    @implements(Dataset)
+    @override
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
+        from folktables import ACSDataSource, adult_filter, folktables
+
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
 
-        with download_dir(self.root):
+        with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
 
         disc_feats = [
@@ -384,7 +441,7 @@ class AcsIncome(AcsBase):
         return self._backend_load(dataframe, labels_as_features=labels_as_features)
 
 
-class AcsEmployment(AcsBase):
+class AcsEmployment(_AcsBase):
     """The ACS Employmment Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
 
     def __init__(
@@ -392,7 +449,7 @@ class AcsEmployment(AcsBase):
         root: str | Path,
         year: str,
         horizon: int,
-        states: list[str],
+        states: list[StateList],
         split: str = "Sex",
         discrete_only: bool = False,
         invert_s: bool = False,
@@ -416,7 +473,7 @@ class AcsEmployment(AcsBase):
         )
 
     @staticmethod
-    def cat_lookup(key: str) -> Iterable:
+    def cat_lookup(key: str) -> Sequence[int]:
         """Look up categories."""
         table = {
             'SCHL': range(1, 25),
@@ -439,15 +496,17 @@ class AcsEmployment(AcsBase):
 
         return table[key]
 
-    @implements(Dataset)
+    @override
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
+        from folktables import ACSDataSource, folktables
+
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
 
-        with download_dir(self.root):
+        with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
 
         disc_feats = [

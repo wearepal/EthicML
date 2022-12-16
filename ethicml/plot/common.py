@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Literal, NamedTuple
 from typing_extensions import TypeAlias
 
-import matplotlib as mpl
+from matplotlib import legend
 from matplotlib import pyplot as plt
 import pandas as pd
 
@@ -30,7 +30,7 @@ class PlotDef(NamedTuple):
 
 def common_plotting_settings(
     plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
-) -> mpl.legend.Legend | None:
+) -> legend.Legend | None:
     """Commonly used settings for plots.
 
     :param plot: a pyplot plot object
@@ -41,8 +41,8 @@ def common_plotting_settings(
     """
     plot.set_xlabel(xaxis_title)
     plot.set_ylabel(yaxis_title)
-    if plot_def.title:
-        plot.set_title(plot_def.title)
+    if title := plot_def.title:
+        plot.set_title(title)
     plot.grid(True)
 
     # get handles and labels for the legend
@@ -68,7 +68,7 @@ def errorbox(
     firstshape: int = 0,
     markersize: int = 6,
     use_cross: bool = False,
-) -> mpl.legend.Legend | None:
+) -> legend.Legend | None:
     """Generate a figure with errorboxes that reflect the std dev of an entry.
 
     :param plot: a pyplot Axes object
@@ -179,7 +179,7 @@ def scatter(
     startindex: int = 0,
     markersize: int = 6,
     connect_dots: bool = False,
-) -> mpl.legend.Legend | None:
+) -> legend.Legend | None:
     """Generate a scatter plot.
 
     :param plot: a pyplot plot object

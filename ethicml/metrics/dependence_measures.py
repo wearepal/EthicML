@@ -4,9 +4,10 @@ from abc import ABC
 from dataclasses import dataclass
 from enum import auto
 from typing import ClassVar
+from typing_extensions import override
 
 import numpy as np
-from ranzen import StrEnum, implements
+from ranzen import StrEnum
 from sklearn.metrics import normalized_mutual_info_score
 
 from ethicml.utility import EvalTuple, Prediction
@@ -30,7 +31,7 @@ class _DependenceMeasure(Metric, ABC):
     _base_name: ClassVar[str]
     apply_per_sensitive: ClassVar[bool] = False
 
-    @implements(Metric)
+    @override
     def get_name(self) -> str:
         return f"{self._base_name} preds and {self.base}"
 
@@ -45,7 +46,7 @@ class NMI(_DependenceMeasure):
     base: DependencyTarget = DependencyTarget.s
     _base_name: ClassVar[str] = "NMI"
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return normalized_mutual_info_score(
@@ -65,7 +66,7 @@ class Yanovich(_DependenceMeasure):
     base: DependencyTarget = DependencyTarget.s
     _base_name: ClassVar[str] = "Yanovich"
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._dependence(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
@@ -93,9 +94,9 @@ class Yanovich(_DependenceMeasure):
             # i < j
             for j in range(i + 1, len(x_vals)):
                 for k in range(len(y_vals)):
-                    # k < l
-                    for l in range(k + 1, len(y_vals)):
-                        determinant = joint[i, k] * joint[j, l] - joint[j, k] * joint[i, l]
+                    # k < m
+                    for m in range(k + 1, len(y_vals)):
+                        determinant = joint[i, k] * joint[j, m] - joint[j, k] * joint[i, m]
                         sum_sq_determinants += determinant**2
 
         marginal = np.sum(joint, axis=1)
@@ -120,7 +121,7 @@ class RenyiCorrelation(_DependenceMeasure):
     base: DependencyTarget = DependencyTarget.s
     _base_name: ClassVar[str] = "Renyi"
 
-    @implements(Metric)
+    @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._corr(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())

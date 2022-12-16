@@ -41,10 +41,11 @@ def run_in_parallel(
 ) -> InResult | PreResult:
     """Run the given algorithms (embarrassingly) parallel.
 
-    :param algos: list of algorithms
-    :param data: list of pairs of data tuples (train and test)
-    :param seeds: list of seeds to use when running the model
-    :param num_jobs: how many jobs can run in parallel at most. if None, use number of CPUs (Default: None)
+    :param algos: List of algorithms.
+    :param data: List of pairs of data tuples (train and test).
+    :param seeds: List of seeds to use when running the model.
+    :param num_jobs: How many jobs can run in parallel at most. If ``None``, use the number of CPUs
+        (Default: None).
     :returns: list of the results
     """
     if not algos or not data:
@@ -68,6 +69,7 @@ class Algorithm(Protocol[_RT]):
     """Protocol for making `arrange_in_parallel` generic."""
 
     def run(self, train: DataTuple, test: DataTuple, seed: int) -> _RT:
+        """Generic run-method."""
         ...
 
 
