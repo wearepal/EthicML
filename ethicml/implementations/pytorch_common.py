@@ -177,7 +177,7 @@ class PandasDataSet(TensorDataset):
     def _df_to_tensor(self, df):
         if isinstance(df, pd.Series):
             df = df.to_frame('dummy')
-        return torch.from_numpy(df.values).float()
+        return torch.from_numpy(df.to_numpy()).float()
 
 
 class LinearModel(torch.nn.Module):

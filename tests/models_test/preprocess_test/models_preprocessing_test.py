@@ -105,8 +105,8 @@ def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_p
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
@@ -133,8 +133,8 @@ def test_pre_sep_fit_transform(
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
 def test_calders():
