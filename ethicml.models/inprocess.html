@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="Algorithms base" href="base.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Inprocess algorithms - EthicML 1.0.1 documentation</title>
+    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Inprocess algorithms - EthicML 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,10 +146,10 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
-  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
@@ -523,8 +523,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Agarwal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps=0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">InAlgorithmSubprocess</span></code></p>
 <p>Agarwal class.</p>
-<p>A wrapper around the Exponentiated Gradient method documented
-<a class="reference external" href="https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient">on this website</a>.</p>
+<p>A wrapper around the <a class="reference external" href="https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient">Exponentiated Gradient method</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -589,7 +588,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -601,7 +600,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -737,7 +736,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -749,7 +748,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -897,7 +896,7 @@ simply the last part of the repository URL).</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -981,7 +980,8 @@ simply the last part of the repository URL).</p></li>
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Reweighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a></p>
-<p>An implementation of the Reweighing method from <a class="reference external" href="https://link.springer.com/article/10.1007/s10115-011-0463-8">Kamiran and Calders 2012</a>.</p>
+<p>An implementation of the Reweighing method from Kamiran&amp;Calders, 2012.</p>
+<p><a class="reference external" href="https://link.springer.com/article/10.1007/s10115-011-0463-8">Kamiran and Calders 2012</a>.</p>
 <p>Each sample is assigned an instance-weight based on the joing probability of S and Y which is
 used during training of a classifier.</p>
 <dl class="field-list simple">
@@ -1015,13 +1015,13 @@ used during training of a classifier.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1177,13 +1177,13 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1269,8 +1269,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC" title="ethicml.models.inprocess.in_algorithm.InAlgorithmDC"><code class="xref py py-class docutils literal notranslate"><span class="pre">InAlgorithmDC</span></code></a></p>
 <p>Logistic regression with hard predictions.</p>
 <p>This is a wrapper around Sci-Kit Learn’s LogisticRegression.
-See <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">the documentation</a>
-for details.</p>
+See <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">the sklearn documentation</a> for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>C</strong> (<em>float</em>) – The regularization parameter.</p>
@@ -1304,7 +1303,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1407,7 +1406,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1511,7 +1510,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1617,7 +1616,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1690,9 +1689,10 @@ for details.</p>
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_layer_sizes=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC" title="ethicml.models.inprocess.in_algorithm.InAlgorithmDC"><code class="xref py py-class docutils literal notranslate"><span class="pre">InAlgorithmDC</span></code></a></p>
-<p>Multi-layer Perceptron.</p>
+<p>Multi-layer perceptron.</p>
 <p>This is a wraper around the SKLearn implementation of the MLP.
-Documentation: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html</a></p>
+Documentation:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1730,7 +1730,7 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1837,7 +1837,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1940,7 +1940,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2052,7 +2052,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2180,13 +2180,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2318,13 +2318,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2463,13 +2463,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2608,13 +2608,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2749,13 +2749,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2871,9 +2871,7 @@ but can be useful if you want to either do a sanity check, or report potential v
             
           </div>
           <div class="right-details">
-            <div class="icons">
-              
-            </div>
+            
           </div>
         </div>
         

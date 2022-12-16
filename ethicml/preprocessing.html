@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utils" href="utility.html" /><link rel="prev" title="ethicml" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Data preprocessing - EthicML 1.0.1 documentation</title>
+    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Data preprocessing - EthicML 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,10 +146,10 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
-  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
@@ -341,8 +341,6 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelBinarizer</span></span><a class="headerlink" href="#ethicml.preprocessing.LabelBinarizer" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>If a dataset has labels [-1,1], then this will make it so the labels = [0,1].</p>
-<dl class="field-list simple">
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.preprocessing.LabelBinarizer.adjust">
 <span class="sig-name descname"><span class="pre">adjust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.LabelBinarizer.adjust" title="Permalink to this definition">#</a></dt>
@@ -560,19 +558,20 @@ unbiased.</p>
 <p>The two subsets don’t generally sum up to the whole set.</p>
 <p>Example behavior:</p>
 <ul class="simple">
-<li><p>mixing_factor=0.0: in biased, s=y everywhere; in debiased, 50% s=y and 50% s!=y</p></li>
-<li><p>mixing_factor=0.5: biased is just a subset of <cite>data</cite>; in debiased, 50% s=y and 50% s!=y</p></li>
-<li><p>mixing_factor=1.0: in biased, s!=y everywhere; in debiased, 50% s=y and 50% s!=y</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixing_factor=0.0</span></code>: in biased, s=y everywhere; in debiased, 50% s=y and 50% s!=y</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixing_factor=0.5</span></code>: biased is just a subset of <cite>data</cite>; in debiased, 50% s=y and 50% s!=y</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixing_factor=1.0</span></code>: in biased, s!=y everywhere; in debiased, 50% s=y and 50% s!=y</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – data in form of a DataTuple</p></li>
-<li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If this
-factor is 0, the biased subset is maximally biased.</p></li>
-<li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – how much of the data should be reserved for the unbiased subset</p></li>
+<li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If
+this factor is 0, the biased subset is maximally biased.</p></li>
+<li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – How much of the data should be reserved for the unbiased subset?</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – random seed for the splitting (Default: 42)</p></li>
-<li><p><strong>fixed_unbiased</strong> (<em>bool</em>) – if True, then the unbiased dataset is independent from the mixing factor (Default: True)</p></li>
+<li><p><strong>fixed_unbiased</strong> (<em>bool</em>) – if True, then the unbiased dataset is independent from the mixing factor
+(Default: True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -591,16 +590,16 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <p>The two subsets don’t generally sum up to the whole set.</p>
 <p>Example behavior:</p>
 <ul class="simple">
-<li><p>mixing_factor=0.0: in biased, s=y everywhere; unbiased is just a subset of <cite>data</cite></p></li>
-<li><p>mixing_factor=0.5: biased and unbiased are both just subsets of <cite>data</cite></p></li>
-<li><p>mixing_factor=1.0: in biased, s!=y everywhere; unbiased is just a subset of <cite>data</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixing_factor=0.0</span></code>: in biased, s=y everywhere; unbiased is just a subset of <cite>data</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixing_factor=0.5</span></code>: biased and unbiased are both just subsets of <cite>data</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixing_factor=1.0</span></code>: in biased, s!=y everywhere; unbiased is just a subset of <cite>data</cite></p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – data in form of a DataTuple</p></li>
-<li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If this
-factor is 0, the biased subset is maximally biased.</p></li>
+<li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If
+this factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – how much of the data should be reserved for the unbiased subset</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – random seed for the splitting (Default: 42)</p></li>
 <li><p><strong>data_efficient</strong> (<em>bool</em>) – if True, try to keep as many data points as possible (Default: True)</p></li>
@@ -672,10 +671,12 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – data tuple to split</p></li>
-<li><p><strong>train_percentage</strong> (<em>float</em><em> | </em><em>None</em>) – percentage for train split. Must be <cite>None</cite> if <cite>num_test_samples</cite> given. (Default: 0.8)</p></li>
-<li><p><strong>random_seed</strong> (<em>int</em>) – seed to make splitting reproducible (Default: 0)</p></li>
-<li><p><strong>num_test_samples</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of samples to make the test set. Must be <cite>None</cite> if <cite>train_percentage</cite> given. (Default: None)</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple to split.</p></li>
+<li><p><strong>train_percentage</strong> (<em>float</em><em> | </em><em>None</em>) – Percentage for train split. Must be <code class="docutils literal notranslate"><span class="pre">None</span></code> if <code class="docutils literal notranslate"><span class="pre">num_test_samples</span></code>
+given. (Default: 0.8)</p></li>
+<li><p><strong>random_seed</strong> (<em>int</em>) – Seed to make splitting reproducible (Default: 0)</p></li>
+<li><p><strong>num_test_samples</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of samples to make the test set. Must be <code class="docutils literal notranslate"><span class="pre">None</span></code> if
+<code class="docutils literal notranslate"><span class="pre">train_percentage</span></code> given. (Default: None)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -726,9 +727,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
             
           </div>
           <div class="right-details">
-            <div class="icons">
-              
-            </div>
+            
           </div>
         </div>
         
