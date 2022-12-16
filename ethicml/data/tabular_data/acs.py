@@ -6,13 +6,13 @@ Paper: https://arxiv.org/abs/2108.04884
 # pylint: skip-file
 # Pylint will go crazy as we're reimplementing the Dataset Init.
 from __future__ import annotations
+from collections.abc import Sequence
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Iterable, Literal
-from typing_extensions import override
+from typing import Generator, Literal, get_args
+from typing_extensions import TypeAlias, override
 
-from folktables import ACSDataSource, adult_filter, folktables, state_list
 import numpy as np
 import pandas as pd
 
@@ -31,6 +31,60 @@ from ..util import (
 )
 
 __all__ = ["AcsIncome", "AcsEmployment"]
+
+StateList: TypeAlias = Literal[
+    'AL',
+    'AK',
+    'AZ',
+    'AR',
+    'CA',
+    'CO',
+    'CT',
+    'DE',
+    'FL',
+    'GA',
+    'HI',
+    'ID',
+    'IL',
+    'IN',
+    'IA',
+    'KS',
+    'KY',
+    'LA',
+    'ME',
+    'MD',
+    'MA',
+    'MI',
+    'MN',
+    'MS',
+    'MO',
+    'MT',
+    'NE',
+    'NV',
+    'NH',
+    'NJ',
+    'NM',
+    'NY',
+    'NC',
+    'ND',
+    'OH',
+    'OK',
+    'OR',
+    'PA',
+    'RI',
+    'SC',
+    'SD',
+    'TN',
+    'TX',
+    'UT',
+    'VT',
+    'VA',
+    'WA',
+    'WV',
+    'WI',
+    'WY',
+    'PR',
+]
 
 
 @contextlib.contextmanager
@@ -53,7 +107,7 @@ class _AcsBase(Dataset):
         root: str | Path,
         year: str,
         horizon: int,
-        states: list[str],
+        states: list[StateList],
         class_label_spec: str,
         class_label_prefix: list[str],
         discrete_only: bool = False,
@@ -70,6 +124,7 @@ class _AcsBase(Dataset):
         self.states = states
         self._invert_s = invert_s
 
+        state_list: tuple[str, ...] = get_args(StateList)
         assert all(state in state_list for state in states)
 
         state_string = "_".join(states)
@@ -242,7 +297,7 @@ class AcsIncome(_AcsBase):
         root: str | Path,
         year: str,
         horizon: int,
-        states: list[str],
+        states: list[StateList],
         split: str = "Sex",
         target_threshold: int = 50_000,
         discrete_only: bool = False,
@@ -268,7 +323,7 @@ class AcsIncome(_AcsBase):
         )
 
     @staticmethod
-    def cat_lookup(key: str) -> Iterable:
+    def cat_lookup(key: str) -> Sequence[int]:
         """Look up categories."""
         table = {
             "COW": range(1, 9),
@@ -285,6 +340,8 @@ class AcsIncome(_AcsBase):
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
+        from folktables import ACSDataSource, adult_filter, folktables
+
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
@@ -392,7 +449,7 @@ class AcsEmployment(_AcsBase):
         root: str | Path,
         year: str,
         horizon: int,
-        states: list[str],
+        states: list[StateList],
         split: str = "Sex",
         discrete_only: bool = False,
         invert_s: bool = False,
@@ -416,7 +473,7 @@ class AcsEmployment(_AcsBase):
         )
 
     @staticmethod
-    def cat_lookup(key: str) -> Iterable:
+    def cat_lookup(key: str) -> Sequence[int]:
         """Look up categories."""
         table = {
             'SCHL': range(1, 25),
@@ -443,6 +500,8 @@ class AcsEmployment(_AcsBase):
     def load(
         self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
     ) -> DataTuple:
+        from folktables import ACSDataSource, folktables
+
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
