@@ -20,9 +20,6 @@ on:
     - make_release.sh
     - CITATION.cff
 
-env:
-  PYTHON_VERSION: "3.8"
-
 
 jobs:
 
@@ -35,7 +32,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version: '3.11'
     - name: Install pylint
       run: |
         python -m pip install --upgrade pip
@@ -54,15 +51,15 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version: '3.8'
     - name: Install black
       run: |
         python -m pip install --upgrade pip
         pip install 'black<=23' isort
     - name: Format with black
       run: |
-        python -m black --check -l 100 -t py37 -S ethicml/
-        python -m black --check -l 100 -t py37 -S tests/
+        python -m black --check -l 100 -t py38 -S ethicml/
+        python -m black --check -l 100 -t py38 -S tests/
     - name: Format with isort
       run: |
         isort . --check --diff
@@ -100,7 +97,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version: '3.8'
     - name: Install darglint
       run: |
         python -m pip install --upgrade pip
@@ -112,33 +109,16 @@ jobs:
   test_minimal_dependencies:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v4
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install Poetry
-        uses: snok/install-poetry@v1.2
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-      - name: Set ENV VARS
-        run: |
-          echo "POETRY_VERSION=$(poetry -V | cut -d' ' -f3)" >> $GITHUB_ENV
-
-      #----------------------------------------------
-      # cache the directory where poetry caches packages
-      #----------------------------------------------
-      - name: Cache Poetry cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
+          python-version: '3.8'
       - name: Install dependencies
         run: |
-          poetry install --no-interaction --no-root
+          poetry env use 3.8
+          poetry install --no-interaction --no-root --without dev
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -151,50 +131,23 @@ jobs:
       #----------------------------------------------
       #  ---  check-out repo and set-up python ---
       #----------------------------------------------
-      - name: Check out repository
-        uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v4
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      #----------------------------------------------
-      #  -----  install & configure poetry  -----
-      #----------------------------------------------
-      - name: Install Poetry
-        uses: snok/install-poetry@v1.2
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-      - name: Set ENV VARS
-        run: |
-          echo "POETRY_VERSION=$(poetry -V | cut -d' ' -f3)" >> $GITHUB_ENV
-
-      #----------------------------------------------
-      # cache the directory where poetry caches packages
-      #----------------------------------------------
-      - name: Cache Poetry cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
-
-      #----------------------------------------------
-      # cache the directory where pip caches packages
-      #----------------------------------------------
-      - name: Cache Pip cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: pip-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+          python-version: '3.8'
+          cache: 'poetry'
 
       #----------------------------------------------
       #  ---------  install dependencies  --------
       #----------------------------------------------
       - name: Install dependencies
         run: |
+          poetry env use 3.8
           poetry install -E ci --no-interaction --no-root
+      - name: Install pytorch
+        run: |
           poetry run pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
 
 

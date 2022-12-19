@@ -35,7 +35,7 @@ def covariance_diff_biased(z: torch.Tensor, w: torch.Tensor, scale: float = 1.0)
 class RegDiscriminator(nn.Module):
     """Regression Discriminator."""
 
-    def __init__(self, inp, out=1):
+    def __init__(self, inp: int, out: int = 1):
 
         super().__init__()
         self.net = nn.Sequential(

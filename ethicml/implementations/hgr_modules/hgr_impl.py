@@ -34,7 +34,7 @@ def chi_squared_l1_kde(x, y, z):
 class HgrRegLearner:
     """HGR Regression."""
 
-    def __init__(self, lr, epochs, mu, cost_pred, in_shape, out_shape, batch_size, model_type):
+    def __init__(self, lr, epochs: int, mu, cost_pred, in_shape, out_shape, batch_size, model_type):
 
         self.in_shape = in_shape
         self.model_type = model_type
