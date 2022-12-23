@@ -1,7 +1,7 @@
 """File For feature binning."""
 from __future__ import annotations
 from itertools import groupby
-from typing import Sequence, cast, List
+from typing import List, Sequence, cast
 
 import pandas as pd
 
