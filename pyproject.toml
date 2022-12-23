@@ -134,6 +134,7 @@ show_error_codes = true
 warn_unused_ignores = true
 mypy_path = "typings"
 implicit_reexport = false
+warn_redundant_casts = true
 
 # ===== the following modules in EthicML aren't ready to be type checked so strictly =====
 [[tool.mypy.overrides]]
