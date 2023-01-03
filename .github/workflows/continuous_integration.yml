@@ -137,6 +137,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # keep the following in sync with `test_with_pytest`!
           poetry env use 3.8
           poetry install --no-interaction --no-root -E all --with ci --with torchcpu
       - name: Test import
@@ -164,6 +165,7 @@ jobs:
       #----------------------------------------------
       - name: Install dependencies
         run: |
+          # keep the following in sync with `test_full_dependencies`!
           poetry env use 3.8
           poetry install --no-interaction --no-root -E all --with ci --with torchcpu
 
