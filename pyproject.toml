@@ -30,7 +30,6 @@ GitPython = { version = "^3.1.20", optional = true }
 joblib = "^1.1.0"
 matplotlib = { version = ">=3.0.2", optional = true }
 numpy = ">=1.20.1"
-omegaconf = { version = ">=2.2.2", optional = true }
 pandas = "^1.0"
 # pipenv from 2022.8.5 is broken for python2
 pipenv = { version = ">=2018.11.26,<2022.8.5", optional = true }
@@ -48,7 +47,6 @@ plot = ["matplotlib","seaborn"]
 data = ["folktables"]
 models = ["scipy","GitPython","pipenv","scikit-learn","fairlearn","cloudpickle","gitdb2","smmap2"]
 all = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2"]
-ci = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2","omegaconf"]
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.6"
@@ -62,7 +60,26 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.176"
+ruff = "0.0.209"
+
+[tool.poetry.group.ci]
+optional = true
+
+[tool.poetry.group.ci.dependencies]
+omegaconf = ">=2.2.2"
+
+[tool.poetry.group.torchcpu]
+optional = true
+
+[tool.poetry.group.torchcpu.dependencies]
+torch = { version = "*", source = "torchcpu", markers = "sys_platform == 'linux'" }
+torchvision = { version = "*", source = "torchcpu", markers = "sys_platform == 'linux'" }
+
+[[tool.poetry.source]]
+name = "torchcpu"
+url = "https://download.pytorch.org/whl/cpu"
+default = false
+secondary = true
 
 [tool.black]
 line-length = 100
@@ -177,6 +194,7 @@ reportUnknownMemberType = "none"
 reportUnknownVariableType = "none"
 reportUnknownParameterType = "none"
 reportUnknownArgumentType = "none"
+ reportUnnecessaryTypeIgnoreComment = "warn"
 
 [tool.ruff]
 line-length = 100
@@ -211,7 +229,7 @@ ignore = [
     "D416",
     "D417",
     "TID252", # relative imports
-    "PDV901", # forbidding "df" as a variable name
+    "PD901", # forbidding "df" as a variable name
     "ANN101",
     "ANN102",
 ]

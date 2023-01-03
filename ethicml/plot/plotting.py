@@ -2,7 +2,7 @@
 from __future__ import annotations
 import itertools
 from pathlib import Path
-from typing import Any, Callable, Literal
+from typing import Any, Callable, List, Literal, cast
 
 from matplotlib import figure, legend
 import matplotlib.pyplot as plt
@@ -175,7 +175,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,
+        height=y_s0[y_0_label] * 100,  # type: ignore[index]
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -332,7 +332,7 @@ def plot_results(
     directory.mkdir(exist_ok=True)
 
     def _get_columns(metric: Metric) -> list[str]:
-        cols = [col for col in results.columns if metric.name in col]
+        cols = [col for col in cast(List[str], results.columns) if metric.name in col]
         if not cols:
             raise ValueError(f'No matching columns found for Metric "{metric.name}".')
         # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
