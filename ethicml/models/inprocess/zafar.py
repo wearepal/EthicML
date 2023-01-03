@@ -17,8 +17,8 @@ from .installed_model import InstalledModel
 __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
 
 
-SUB_DIR_IMPACT: Final = Path(".") / "disparate_impact" / "run-classifier"
-SUB_DIR_MISTREAT: Final = Path(".") / "disparate_mistreatment" / "run_classifier"
+SUB_DIR_IMPACT: Final = Path(".") / "src" / "disparate_impact" / "run_classifier"
+SUB_DIR_MISTREAT: Final = Path(".") / "src" / "disparate_mistreatment" / "run_classifier"
 
 
 class _FitParams(NamedTuple):
