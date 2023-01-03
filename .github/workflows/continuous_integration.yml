@@ -123,8 +123,28 @@ jobs:
         run: |
           poetry run python -c "import ethicml"
 
+  test_full_dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          cache: 'poetry'
+
+      - name: Install dependencies
+        run: |
+          poetry env use 3.8
+          poetry install --no-interaction --no-root -E all --with ci --with torchcpu
+      - name: Test import
+        run: |
+          poetry run python -c "import ethicml"
+
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint, test_minimal_dependencies]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint, test_minimal_dependencies, test_full_dependencies]
     runs-on: ubuntu-latest
 
     steps:
