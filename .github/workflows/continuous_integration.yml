@@ -145,7 +145,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use 3.8
-          poetry install --no-interaction --no-root -E all --with ci
+          poetry install --no-interaction --no-root -E all --with ci --with torchcpu
 
       #----------------------------------------------
       #  -----           Run MyPy             -----
