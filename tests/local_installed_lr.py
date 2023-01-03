@@ -1,4 +1,4 @@
-"""Implementation of logistic regression (actually just a wrapper around sklearn)"""
+"""Implementation of logistic regression (actually just a wrapper around sklearn)."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 def main():
-    """This function runs the logistic regression model as a standalone program"""
+    """This function runs the logistic regression model as a standalone program."""
     args: InAlgoArgs = json.loads(sys.argv[1])
     assert args["mode"] == "run", "model doesn’t support the fit/predict split yet"
     train, test = np.load(Path(args["train"])), np.load(Path(args["test"]))

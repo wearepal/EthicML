@@ -19,7 +19,7 @@ class PostprocessTest(NamedTuple):
 
 
 @pytest.mark.parametrize(
-    "post_model,name,num_pos",
+    ("post_model", "name", "num_pos"),
     [
         PostprocessTest(post_model=DPFlip(), name="DemPar. Post Process", num_pos=57),
         PostprocessTest(post_model=Hardt(), name="Hardt", num_pos=35),
@@ -55,7 +55,7 @@ def test_post(
 
 
 @pytest.mark.parametrize(
-    "post_model,name,num_pos",
+    ("post_model", "name", "num_pos"),
     [
         PostprocessTest(post_model=DPFlip(), name="DemPar. Post Process", num_pos=57),
         PostprocessTest(post_model=Hardt(), name="Hardt", num_pos=35),

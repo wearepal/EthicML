@@ -25,7 +25,6 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
 
 def test_run_parallel(toy_train_val: em.TrainValPair):
     """Test run parallel."""
-
     data0 = toy_train_val
     data1 = toy_train_val
     result = run_in_parallel(
@@ -267,7 +266,7 @@ def test_run_alg_suite_err_handling():
     assert len(results) == 4
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_no_pipeline():

@@ -83,7 +83,7 @@ METHOD_LIST_EXTENSION = [
 ]
 
 
-@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST + METHOD_LIST_EXTENSION)
+@pytest.mark.parametrize(("model", "name", "num_pos"), METHOD_LIST + METHOD_LIST_EXTENSION)
 def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test preprocessing."""
     train, test = toy_train_test
@@ -109,7 +109,7 @@ def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_p
     assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
-@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
+@pytest.mark.parametrize(("model", "name", "num_pos"), METHOD_LIST)
 @pytest.mark.xdist_group("pre_model_files")
 def test_pre_sep_fit_transform(
     toy_train_val: TrainValPair, model: PreAlgorithm, name: str, num_pos: int

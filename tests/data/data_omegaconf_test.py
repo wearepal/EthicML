@@ -8,7 +8,7 @@ import ethicml.data as emda
 
 
 @pytest.mark.parametrize(
-    "data_class,value,should_pass",
+    ("data_class", "value", "should_pass"),
     [
         (emda.Admissions, emda.Admissions.Splits.GENDER, True),
         (emda.Adult, "Race", False),

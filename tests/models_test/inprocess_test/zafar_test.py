@@ -28,7 +28,7 @@ def zafar_teardown() -> Generator[None, None, None]:
     ZafarBaseline().remove()
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     """Test zafar."""
     train, test = toy_train_test
