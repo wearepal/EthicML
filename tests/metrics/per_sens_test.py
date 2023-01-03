@@ -159,7 +159,9 @@ PER_SENS = [
 ]
 
 
-@pytest.mark.parametrize("dataset,classifier,metric,expected_values", PER_SENS, ids=get_id)
+@pytest.mark.parametrize(
+    ("dataset", "classifier", "metric", "expected_values"), PER_SENS, ids=get_id
+)
 def test_metric_per_sens_attr(
     dataset: Dataset, classifier: InAlgorithm, metric: Metric, expected_values: Dict[str, float]
 ):

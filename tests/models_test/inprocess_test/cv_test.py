@@ -28,7 +28,7 @@ CV_PARAMS = [
 ]
 
 
-@pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
+@pytest.mark.parametrize(("model", "hyperparams", "num_pos"), CV_PARAMS)
 def test_cv(
     toy_train_test: TrainTestPair,
     model: Type[InAlgorithm],
@@ -49,7 +49,7 @@ def test_cv(
     assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
-@pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
+@pytest.mark.parametrize(("model", "hyperparams", "num_pos"), CV_PARAMS)
 def test_parallel_cv(
     toy_train_test: TrainTestPair,
     model: Type[InAlgorithm],

@@ -18,7 +18,7 @@ from ethicml.plot import (
 from ethicml.run import evaluate_models
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
 @pytest.mark.xdist_group("results_files")
 def test_plot_tsne(toy_train_test: TrainTestPair):
@@ -44,7 +44,7 @@ def test_joint_plot(toy_train_test: TrainTestPair):
     save_jointplot(train, "./plots/joint.png")
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.usefixtures("plot_cleanup")
 @pytest.mark.xdist_group("results_files")
 def test_multijoint_plot(toy_train_test: TrainTestPair):

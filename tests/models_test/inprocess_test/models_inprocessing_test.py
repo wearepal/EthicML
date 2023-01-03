@@ -113,7 +113,7 @@ INPROCESS_TESTS = [
 ]
 
 
-@pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
+@pytest.mark.parametrize(("name", "model", "num_pos"), INPROCESS_TESTS)
 def test_inprocess(toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int):
     """Test an inprocess model."""
     train, test = toy_train_val
@@ -143,7 +143,7 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
     }
 
 
-@pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
+@pytest.mark.parametrize(("name", "model", "num_pos"), INPROCESS_TESTS)
 @pytest.mark.xdist_group("in_model_files")
 def test_inprocess_sep_train_pred(
     toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
@@ -213,7 +213,7 @@ def kamishima_gen() -> Generator[Kamishima, None, None]:
     Kamishima().remove()  # delete the downloaded code
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.xdist_group("in_model_files")
 def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
@@ -265,7 +265,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.xdist_group("results_files")
 def test_threaded_agarwal():
     """Test threaded agarwal."""
