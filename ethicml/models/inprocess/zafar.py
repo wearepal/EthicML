@@ -17,8 +17,8 @@ from .installed_model import InstalledModel
 __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
 
 
-SUB_DIR_IMPACT: Final = Path(".") / "disparate_impact" / "run-classifier"
-SUB_DIR_MISTREAT: Final = Path(".") / "disparate_mistreatment" / "run_classifier"
+SUB_DIR_IMPACT: Final = "src.disparate_impact.run_classifier"
+SUB_DIR_MISTREAT: Final = "src.disparate_mistreatment.run_classifier"
 
 
 class _FitParams(NamedTuple):
@@ -27,15 +27,15 @@ class _FitParams(NamedTuple):
 
 
 class _ZafarAlgorithmBase(InstalledModel):
-    def __init__(self, name: str, sub_dir: Path):
+    def __init__(self, name: str, module: str):
         super().__init__(
             name=name,
             dir_name="zafar",
-            url="https://github.com/predictive-analytics-lab/fair-classification.git",
+            url="https://github.com/wearepal/fair-classification.git",
             top_dir="fair-classification",
-            use_poetry=True,
+            use_pdm=True,
         )
-        self._sub_dir = sub_dir
+        self._module = module
         self._fit_params: _FitParams | None = None
 
     @staticmethod
@@ -88,7 +88,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         self._create_file_in_zafar_format(train, train_path, label_converter)
 
         cmd = self._get_fit_cmd(str(train_path), str(model_path))
-        working_dir = self._code_path.resolve() / self._sub_dir
+        working_dir = self._code_path.resolve()
         self.call_script(cmd, cwd=working_dir)
 
         return _FitParams(model_path, label_converter)
@@ -100,7 +100,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         cmd = self._get_predict_cmd(
             str(test_path), str(fit_params.model_path), str(predictions_path)
         )
-        working_dir = self._code_path.resolve() / self._sub_dir
+        working_dir = self._code_path.resolve()
         self.call_script(cmd, cwd=working_dir)
         predictions = predictions_path.open().read()
         predictions = json.loads(predictions)
@@ -113,7 +113,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         pass
 
     def _get_predict_cmd(self, test_name: str, model_path: str, output_file: str) -> list[str]:
-        return ["predict.py", test_name, model_path, output_file]
+        return ["-m", f"{self._module}.predict", test_name, model_path, output_file]
 
 
 class ZafarBaseline(_ZafarAlgorithmBase):
@@ -122,7 +122,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     is_fairness_algo: ClassVar[bool] = False
 
     def __init__(self) -> None:
-        super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
+        super().__init__(name="ZafarBaseline", module=SUB_DIR_IMPACT)
 
     @property
     @override
@@ -131,14 +131,14 @@ class ZafarBaseline(_ZafarAlgorithmBase):
 
     @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
-        return ["fit.py", train_name, model_path, "baseline", "0"]
+        return ["-m", f"{self._module}.fit", train_name, model_path, "baseline", "0"]
 
 
 class ZafarAccuracy(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, *, gamma: float = 0.5):
-        super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
+        super().__init__(name=f"ZafarAccuracy, γ={gamma}", module=SUB_DIR_IMPACT)
         self.gamma = gamma
 
     @property
@@ -148,14 +148,14 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
 
     @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
-        return ["fit.py", train_name, model_path, "gamma", str(self.gamma)]
+        return ["-m", f"{self._module}.fit", train_name, model_path, "gamma", str(self.gamma)]
 
 
 class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, *, C: float = 0.001):
-        super().__init__(name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT)
+        super().__init__(name=f"ZafarFairness, C={C}", module=SUB_DIR_IMPACT)
         self._c = C
 
     @property
@@ -165,7 +165,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
 
     @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
-        return ["fit.py", train_name, model_path, "c", str(self._c)]
+        return ["-m", f"{self._module}.fit", train_name, model_path, "c", str(self._c)]
 
 
 class ZafarEqOpp(_ZafarAlgorithmBase):
@@ -176,7 +176,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
 
     def __init__(self, *, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
         name = f"{self._base_name}, τ={tau}, μ={mu} ε={eps}"
-        super().__init__(name=name, sub_dir=SUB_DIR_MISTREAT)
+        super().__init__(name=name, module=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu
         self._eps = eps
@@ -189,7 +189,8 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     @override
     def _get_fit_cmd(self, train_name: str, model_path: str) -> list[str]:
         return [
-            "fit.py",
+            "-m",
+            f"{self._module}.fit",
             train_name,
             model_path,
             self._mode,

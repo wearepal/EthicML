@@ -132,7 +132,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_odds.run(train, test)
-    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 40
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 42
 
     predictions = zafar_eq_odds.fit(train).predict(test)
-    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 40
+    assert np.count_nonzero(predictions.hard.to_numpy() == 1) == 42
