@@ -31,9 +31,9 @@ class _ZafarAlgorithmBase(InstalledModel):
         super().__init__(
             name=name,
             dir_name="zafar",
-            url="https://github.com/predictive-analytics-lab/fair-classification.git",
+            url="https://github.com/wearepal/fair-classification.git",
             top_dir="fair-classification",
-            use_poetry=True,
+            use_pdm=True,
         )
         self._module = module
         self._fit_params: _FitParams | None = None
