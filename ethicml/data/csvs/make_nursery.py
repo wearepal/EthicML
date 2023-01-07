@@ -6,7 +6,6 @@ from typing import Hashable, List
 import pandas as pd
 
 if __name__ == "__main__":
-
     df = pd.read_csv(
         "raw/nursery_raw.csv",
         names=[

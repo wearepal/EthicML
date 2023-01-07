@@ -203,7 +203,6 @@ class AdvDebiasingClassLearner:
         num_classes: int,
         lambda_vec: float,
     ):
-
         self.lr = lr
         self.batch_size = batch_size
         self.in_shape = in_shape
@@ -295,7 +294,6 @@ class AdvDebiasingRegLearner:
         out_shape: int,
         lambda_vec: float,
     ):
-
         self.lr = lr
         self.batch_size = batch_size
         self.in_shape = in_shape

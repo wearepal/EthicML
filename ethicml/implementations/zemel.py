@@ -90,7 +90,7 @@ def get_xhat_y_hat(
 
 def train_and_transform(
     train: DataTuple, test: SubgroupTuple, flags: ZemelArgs, seed: int
-) -> (tuple[DataTuple, SubgroupTuple]):
+) -> tuple[DataTuple, SubgroupTuple]:
     """Train and transform."""
     prototypes, w = fit(train, flags, seed=seed)
 

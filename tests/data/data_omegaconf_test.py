@@ -25,7 +25,6 @@ import ethicml.data as emda
 def test_datasets_with_split(
     data_class: Type[emda.Dataset], value: Union[str, Enum], should_pass: bool
 ) -> None:
-
     # This will fail if the supplied `data_class` has types other than bool, int, float, enum, str.
     # OmegaConf is what hydra uses internally.
     conf = OmegaConf.structured(data_class)

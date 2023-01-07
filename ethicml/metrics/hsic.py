@@ -90,7 +90,6 @@ class Hsic(MetricStaticName):
         start = 0
 
         for _ in range(num_batches):
-
             end = start + batchs_size
 
             preds_to_test = prediction_shuffled[start:end]

@@ -303,7 +303,6 @@ class AcsIncome(_AcsBase):
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
-
         self.split = split
         self.target = "PINCP"
         self.target_threshold = target_threshold
@@ -454,7 +453,6 @@ class AcsEmployment(_AcsBase):
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
-
         self.split = split
         self.target = "ESR"
 

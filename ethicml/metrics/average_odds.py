@@ -39,7 +39,7 @@ class AverageOddsDiff(CfmMetric):
         tpr_sum = 0.0
         fpr_sum = 0.0
         total = 0
-        for ((_, tpr_v), (_, fpr_v)) in zip(tpr_diff.items(), fpr_diff.items()):
+        for (_, tpr_v), (_, fpr_v) in zip(tpr_diff.items(), fpr_diff.items()):
             total += 1
             tpr_sum += tpr_v
             fpr_sum += fpr_v

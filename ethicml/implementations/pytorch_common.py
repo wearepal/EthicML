@@ -287,7 +287,6 @@ class GeneralLearner:
         model_type: Literal["deep_proba", "deep_regression"],
         out_shape: int = 1,
     ):
-
         # input dim
         self.in_shape = in_shape
 
