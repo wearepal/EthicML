@@ -104,7 +104,6 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
 
         venv_directory = self._code_path.resolve() / ".venv"
         if not venv_directory.exists():
-
             environ = os.environ.copy()
             environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
             environ["PIPENV_VENV_IN_PROJECT"] = "true"

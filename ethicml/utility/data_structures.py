@@ -519,9 +519,11 @@ def write_as_npz(
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
     column_names: dict[str, np.ndarray] = {
-        f"{entry}_names": np.array(values.columns.tolist())
-        if isinstance(values, pd.DataFrame)
-        else np.array([values.name])
+        f"{entry}_names": (
+            np.array(values.columns.tolist())
+            if isinstance(values, pd.DataFrame)
+            else np.array([values.name])
+        )
         for entry, values in data.items()
     }
 

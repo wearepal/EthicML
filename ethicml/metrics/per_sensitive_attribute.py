@@ -32,7 +32,7 @@ def metric_per_sens(
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
             f"Metric {metric.name} is not applicable per sensitive "
-            f"attribute, apply to whole dataset instead"
+            "attribute, apply to whole dataset instead"
         )
 
     assert actual.s.shape[0] == actual.y.shape[0]

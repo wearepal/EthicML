@@ -36,7 +36,6 @@ class RegDiscriminator(nn.Module):
     """Regression Discriminator."""
 
     def __init__(self, inp: int, out: int = 1):
-
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(inp, 10 * inp),
@@ -619,7 +618,6 @@ class EquiRegLearner:
         out_shape: int,
         use_standardscaler: bool = True,
     ):
-
         self.lr = lr
         self.batch_size = batch_size
         self.in_shape = in_shape

@@ -35,7 +35,6 @@ class HgrRegLearner:
     """HGR Regression."""
 
     def __init__(self, lr, epochs: int, mu, cost_pred, in_shape, out_shape, batch_size, model_type):
-
         self.in_shape = in_shape
         self.model_type = model_type
 
@@ -140,7 +139,6 @@ class HgrClassLearner:
         batch_size: int,
         model_type: ModelType,
     ):
-
         self.in_shape = in_shape
         self.num_classes = out_shape
 
