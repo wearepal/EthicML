@@ -21,7 +21,7 @@ on:
     - CITATION.cff
 
 jobs:
-  lint_with_pylint:
+  lint_with_ruff:
 
     runs-on: ubuntu-latest
 
@@ -30,7 +30,7 @@ jobs:
       run: |
         echo "pass!"
 
-  format_with_black_and_isort:
+  format_with_black:
 
     runs-on: ubuntu-latest
 
@@ -70,6 +70,15 @@ jobs:
         echo "pass!"
 
   test_minimal_dependencies:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check with darglint
+      run: |
+        echo "pass!"
+
+  test_full_dependencies:
 
     runs-on: ubuntu-latest
 

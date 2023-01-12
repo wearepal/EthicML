@@ -34,6 +34,7 @@ from ethicml import metrics
     ],
 )
 def test_omegaconf(metric_class: Type[metrics.Metric]):
+    """Test metric classes with OmegaConf."""
     # This will fail if the supplied `data_class` has types other than bool, int, float, enum, str.
     # OmegaConf is what hydra uses internally.
     OmegaConf.structured(metric_class)
