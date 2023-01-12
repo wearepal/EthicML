@@ -7,20 +7,20 @@ from pytest import approx
 
 from ethicml import LabelTuple, Prediction, TrainValPair
 from ethicml.metrics import (
-    Accuracy,
     AS,
+    CV,
+    F1,
+    NMI,
+    Accuracy,
     AverageOddsDiff,
     BalancedAccuracy,
-    CV,
     DependencyTarget,
-    F1,
     Hsic,
     Metric,
-    NMI,
     RobustAccuracy,
     Theil,
 )
-from ethicml.models import InAlgorithm, LR, Reweighting, SVM
+from ethicml.models import LR, SVM, InAlgorithm, Reweighting
 from tests.conftest import get_id
 
 
@@ -88,6 +88,7 @@ METRICS = [
 
 @pytest.mark.parametrize(("metric", "expected"), METRICS)
 def test_on_label_tuple(metric: Metric, expected: float) -> None:
+    """Test on label tuple."""
     preds = Prediction.from_np(np.array([0, 0, 1, 1]))
     targets = LabelTuple.from_np(s=np.array([0, 1, 1, 1]), y=np.array([0, 1, 0, 1]))
     score = metric.score(preds, targets)

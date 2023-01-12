@@ -7,7 +7,7 @@ import pytest
 import ethicml as em
 from ethicml import Prediction, TrainValPair
 from ethicml.metrics import ProbPos, diff_per_sens, metric_per_sens
-from ethicml.models import DPFlip, Hardt, InAlgorithm, LR, PostAlgorithm
+from ethicml.models import LR, DPFlip, Hardt, InAlgorithm, PostAlgorithm
 
 
 class PostprocessTest(NamedTuple):

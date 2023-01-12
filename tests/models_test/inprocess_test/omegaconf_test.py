@@ -38,5 +38,6 @@ def test_hydra_compatibility(algo_class: Type[models.InAlgorithm]) -> None:
 
 @pytest.mark.parametrize(("algo_class", "hidden_attr"), [(models.Reweighting, "group_weights")])
 def test_dont_leak_impl_detail(algo_class: Type[models.InAlgorithm], hidden_attr: str) -> None:
+    """Verify that the implementation details are not leaked into the OmegaConf dict."""
     conf = OmegaConf.structured(algo_class)
     assert not hasattr(conf, hidden_attr)

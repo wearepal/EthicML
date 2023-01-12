@@ -10,6 +10,7 @@ from pytest import approx
 from ethicml import DataTuple, KernelType, Prediction, train_test_split
 from ethicml.data import Adult, Dataset, NonBinaryToy, Toy, load_data
 from ethicml.metrics import (
+    TPR,
     Accuracy,
     Metric,
     PerSens,
@@ -17,10 +18,9 @@ from ethicml.metrics import (
     ProbOutcome,
     ProbPos,
     Theil,
-    TPR,
     metric_per_sens,
 )
-from ethicml.models import InAlgorithm, LR, SVM
+from ethicml.models import LR, SVM, InAlgorithm
 from tests.conftest import get_id
 
 
@@ -34,7 +34,11 @@ class PerSensMetricTest(NamedTuple):
 
 
 def test_issue_431():
-    """This issue highlighted that error would be raised due to not all values existing in subsets of the data."""
+    """Test issue 431.
+
+    This issue highlighted that an error would be raised due to not all values existing in subsets
+    of the data.
+    """
     x = pd.DataFrame(np.random.randn(100), columns=["x"])
     s = pd.Series(np.random.randn(100), name="s")
     y = pd.Series(np.random.randint(0, 5, 100), name="y")
