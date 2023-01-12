@@ -468,7 +468,7 @@ class Prediction:
         """
         info = None
         if (json_path := npz_path.parent / "info.json").exists():
-            with open(json_path, encoding="utf-8") as json_file:
+            with json_path.open(encoding="utf-8") as json_file:
                 info = json.load(json_file)
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)
@@ -485,7 +485,7 @@ class Prediction:
             for v in self.info.values():
                 assert isinstance(v, float), "Info must be Dict[str, float]"
             json_path = npz_path.parent / "info.json"
-            with open(json_path, "w") as json_file:
+            with json_path.open("w") as json_file:
                 json.dump(self.info, json_file)
 
         np.savez(npz_path, hard=self.hard.to_numpy())

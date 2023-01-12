@@ -23,7 +23,7 @@ on:
 
 jobs:
 
-  lint_with_pylint:
+  lint_with_ruff:
 
     runs-on: ubuntu-latest
 
@@ -32,17 +32,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
-    - name: Install pylint
+        python-version: '3.8'
+    - name: Install ruff
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
-    - name: Lint with pylint
+        pip install ruff
+    - name: Lint with ruff
       run: |
-        pylint --fail-under=8.5 ethicml/
-        pylint --fail-under=8.5 tests/
+        ruff ethicml
+    - name: Lint with ruff
+      run: |
+        ruff tests
 
-  format_with_black_and_isort:
+  format_with_black:
 
     runs-on: ubuntu-latest
 
@@ -70,21 +72,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.10
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
-    - name: Install ruff
+        python-version: "3.11"
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install wheel
-        pip install ruff
         pip install -r docs/requirements.txt
     - name: Install pandoc
       run: sudo apt-get install -y pandoc
-    - name: Check code with ruff
-      run: |
-        ruff ethicml
     - name: Build with sphinx
       run: |
         sphinx-build -W -b html ./docs ./docs/_build
@@ -145,7 +143,7 @@ jobs:
           poetry run python -c "import ethicml"
 
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint, test_minimal_dependencies, test_full_dependencies]
+    needs: [lint_with_ruff, format_with_black, check_docstrings, check_with_darglint, test_minimal_dependencies, test_full_dependencies]
     runs-on: ubuntu-latest
 
     steps:

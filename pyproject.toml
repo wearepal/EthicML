@@ -202,7 +202,7 @@ select = [
     "D", # pydocstyle
     "E", # pycodestyle
     "F", # pyflakes
-    # "I", # isort
+    "I", # isort
     # "UP", # pyupgrade
     # "PD", # pandas-vet
     # "ANN", # flake8-annotations
@@ -242,5 +242,6 @@ target-version = "py38"
 [tool.ruff.isort]
 known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
 extra-standard-library = ["__future__", "typing_extensions"]
+force-sort-within-sections = true
 [tool.ruff.flake8-annotations]
 mypy-init-return = true
