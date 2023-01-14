@@ -15,26 +15,26 @@ from ethicml import (
 )
 from ethicml.data import Adult, NonBinaryToy, load_data
 from ethicml.metrics import (
+    Accuracy,
     BCR,
     CV,
-    NMI,
-    NPV,
-    PPV,
-    TNR,
-    TPR,
-    Accuracy,
     LabelOutOfBounds,
     MetricNotApplicable,
+    NMI,
+    NPV,
     PerSens,
+    PPV,
     ProbPos,
     RenyiCorrelation,
+    TNR,
+    TPR,
     Yanovich,
     diff_per_sens,
     metric_per_sens,
     ratio_per_sens,
     run_metrics,
 )
-from ethicml.models import LR, LRCV, SVM, InAlgorithm
+from ethicml.models import InAlgorithm, LR, LRCV, SVM
 
 
 def test_tpr_diff(toy_train_val: TrainValPair):

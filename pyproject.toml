@@ -60,7 +60,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.209"
+ruff = "0.0.221"
 
 [tool.poetry.group.ci]
 optional = true
@@ -207,7 +207,10 @@ select = [
     # "PD", # pandas-vet
     # "ANN", # flake8-annotations
     # "PT", # pytest-style
-    # "PLR", # pylint
+    "PLE", # pylint error
+    "PLW", # pylint warning
+    "PLC", # pylint convention
+    "PLR", # pylint refactor
 ]
 ignore = [
     "D105", # magic methods
@@ -236,14 +239,23 @@ ignore = [
     "ANN102",
     "PT004", # fixture naming
     "PT013", # don't allow `from pytest import ...`
+    "PLR0402", # useless import alias
+    "PLR2004", # magic number comparison
 ]
 target-version = "py38"
+
 [tool.ruff.per-file-ignores]
-"__init__.py" = ["F403"]
+"__init__.py" = [
+    "F403",
+    "PLC0414", # reexporting
+]
+
 [tool.ruff.isort]
 known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
 extra-standard-library = ["__future__", "typing_extensions"]
 force-sort-within-sections = true
 split-on-trailing-comma = false
+classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "TPR", "TNR", "CV", "NMI", "BCR", "PPV", "NPV", "AS", "F1", "HGR"]
+
 [tool.ruff.flake8-annotations]
 mypy-init-return = true
