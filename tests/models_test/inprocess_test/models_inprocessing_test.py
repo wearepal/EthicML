@@ -21,24 +21,24 @@ from ethicml import (
 from ethicml.data import Adult, Compas, Toy, load_data
 from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
 from ethicml.models import (
-    DRO,
-    HGR,
-    LR,
-    LRCV,
-    MLP,
-    SVM,
     AdvDebiasing,
     Agarwal,
     Blind,
     Corels,
     DPOracle,
+    DRO,
     FairDummies,
+    HGR,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamishima,
+    LR,
+    LRCV,
     Majority,
+    MLP,
     Oracle,
     Reweighting,
+    SVM,
 )
 from ethicml.run import CrossValidator, evaluate_models
 

@@ -6,7 +6,7 @@ import pytest
 
 from ethicml import KernelType, Prediction, TrainTestPair
 from ethicml.metrics import Accuracy
-from ethicml.models import LR, SVM, InAlgorithm
+from ethicml.models import InAlgorithm, LR, SVM
 from ethicml.run import CrossValidator, CVResults
 
 
