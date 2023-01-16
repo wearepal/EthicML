@@ -36,6 +36,7 @@ class Kamishima(InstalledModel):
             dir_name="kamishima",
             url="https://github.com/wearepal/kamfadm.git",
             top_dir="kamfadm",
+            use_pdm=True,
         )
         self.eta = eta
         self._fit_info: _FitInfo | None = None
