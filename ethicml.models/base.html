@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Inprocess algorithms" href="inprocess.html" /><link rel="prev" title="ethicml.models" href="index.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Algorithms base - EthicML 1.0.2 documentation</title>
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>Algorithms base - EthicML 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.1.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -253,8 +253,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -268,7 +268,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.algorithm_base.SubprocessAlgorithmMixin.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
@@ -354,9 +354,6 @@
     </aside>
   </div>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>

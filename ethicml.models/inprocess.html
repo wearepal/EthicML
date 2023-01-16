@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="Algorithms base" href="base.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Inprocess algorithms - EthicML 1.0.2 documentation</title>
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>Inprocess algorithms - EthicML 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.1.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -261,7 +261,7 @@
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -280,7 +280,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -301,7 +301,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -360,7 +360,7 @@
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -379,7 +379,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -400,7 +400,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -459,7 +459,7 @@
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -478,7 +478,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -499,7 +499,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -531,8 +531,8 @@
 <li><p><strong>classifier</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.ClassifierType" title="ethicml.utility.data_structures.ClassifierType"><em>ClassifierType</em></a>) – Type of classifier to use.</p></li>
 <li><p><strong>eps</strong> (<em>float</em>) – Epsilon fo.</p></li>
 <li><p><strong>iters</strong> (<em>int</em>) – Number of iterations for the DP algorithm.</p></li>
-<li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – C parameter for the SVM algorithm.</p></li>
-<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.KernelType" title="ethicml.utility.data_structures.KernelType"><em>KernelType</em></a><em>]</em>) – Kernel type for the SVM algorithm.</p></li>
+<li><p><strong>C</strong> (<em>float</em><em> | </em><em>None</em>) – C parameter for the SVM algorithm.</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.KernelType" title="ethicml.utility.data_structures.KernelType"><em>KernelType</em></a><em> | </em><em>None</em>) – Kernel type for the SVM algorithm.</p></li>
 <li><p><strong>dir</strong> (<em>Path</em>) – </p></li>
 </ul>
 </dd>
@@ -545,8 +545,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -560,7 +560,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
@@ -610,7 +610,7 @@
 <dd><p>Make predictions in a subprocess on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -629,7 +629,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -650,7 +650,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -693,8 +693,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -708,7 +708,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
@@ -758,7 +758,7 @@
 <dd><p>Make predictions in a subprocess on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -777,7 +777,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -798,7 +798,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -823,7 +823,7 @@ be dependency clashes, python clashes, clashes galore. This approach downloads a
 in its own venv and makes everyone happy.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_poetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pdm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#ethicml.models.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.models.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>The model that does the magic.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -835,8 +835,8 @@ in its own venv and makes everyone happy.</p>
 <li><p><strong>top_dir</strong> (<em>str</em>) – Top directory of the repository where the Pipfile can be found (this is usually
 simply the last part of the repository URL).</p></li>
 <li><p><strong>url</strong> (<em>str</em><em> | </em><em>None</em>) – URL of the repository. (Default: None)</p></li>
-<li><p><strong>executable</strong> (<em>str</em><em> | </em><em>None</em>) – Path to a Python executable. (Default: None.</p></li>
-<li><p><strong>use_poetry</strong> (<em>bool</em>) – If True, will try to use poetry instead of pipenv. (Default: False)</p></li>
+<li><p><strong>executable</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Path to a Python executable. (Default: None.</p></li>
+<li><p><strong>use_pdm</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will try to use pdm instead of pipenv. (Default: False)</p></li>
 </ul>
 </dd>
 </dl>
@@ -848,8 +848,8 @@ simply the last part of the repository URL).</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -863,7 +863,7 @@ simply the last part of the repository URL).</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -906,7 +906,7 @@ simply the last part of the repository URL).</p></li>
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -936,7 +936,7 @@ simply the last part of the repository URL).</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -957,7 +957,7 @@ simply the last part of the repository URL).</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -988,8 +988,8 @@ used during training of a classifier.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>classifier</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.ClassifierType" title="ethicml.utility.data_structures.ClassifierType"><em>ClassifierType</em></a>) – The classifier to use.</p></li>
-<li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The C parameter for the classifier.</p></li>
-<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.KernelType" title="ethicml.utility.data_structures.KernelType"><em>KernelType</em></a><em>]</em>) – The kernel to use for the classifier if SVM selected.</p></li>
+<li><p><strong>C</strong> (<em>float</em><em> | </em><em>None</em>) – The C parameter for the classifier.</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.KernelType" title="ethicml.utility.data_structures.KernelType"><em>KernelType</em></a><em> | </em><em>None</em>) – The kernel to use for the classifier if SVM selected.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1031,7 +1031,7 @@ used during training of a classifier.</p>
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1050,7 +1050,7 @@ used during training of a classifier.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1071,7 +1071,7 @@ used during training of a classifier.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1136,8 +1136,8 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -1151,7 +1151,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -1193,7 +1193,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1223,7 +1223,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1244,7 +1244,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1313,7 +1313,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1332,7 +1332,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1353,7 +1353,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1416,7 +1416,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1435,7 +1435,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1456,7 +1456,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1520,7 +1520,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1539,7 +1539,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1560,7 +1560,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1626,7 +1626,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1645,7 +1645,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1666,7 +1666,7 @@ See <a class="reference external" href="https://scikit-learn.org/stable/modules/
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1740,7 +1740,7 @@ Documentation:
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1759,7 +1759,7 @@ Documentation:
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1780,7 +1780,7 @@ Documentation:
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1847,7 +1847,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1866,7 +1866,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1887,7 +1887,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1950,7 +1950,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -1969,7 +1969,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -1990,7 +1990,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2062,7 +2062,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -2081,7 +2081,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2102,7 +2102,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2139,8 +2139,8 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -2154,7 +2154,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -2196,7 +2196,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -2226,7 +2226,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2247,7 +2247,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2277,8 +2277,8 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -2292,7 +2292,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -2334,7 +2334,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -2364,7 +2364,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2385,7 +2385,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2422,8 +2422,8 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -2437,7 +2437,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -2479,7 +2479,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -2509,7 +2509,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2530,7 +2530,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2567,8 +2567,8 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -2582,7 +2582,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -2624,7 +2624,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -2654,7 +2654,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2675,7 +2675,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2708,8 +2708,8 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>env</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Path</em><em> | </em><em>None</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -2723,7 +2723,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.executable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.executable" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
 
@@ -2765,7 +2765,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Predictions on the test data.</p>
@@ -2795,7 +2795,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -2816,7 +2816,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data tuple of the training data.</p></li>
-<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – Data to evaluate on.</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em> | </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – Data to evaluate on.</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
@@ -3158,9 +3158,6 @@ but can be useful if you want to either do a sanity check, or report potential v
     </aside>
   </div>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
