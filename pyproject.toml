@@ -203,7 +203,7 @@ select = [
     "F", # pyflakes
     "I", # isort
     # "UP", # pyupgrade
-    "PD", # pandas-vet
+    # "PD", # pandas-vet
     # "ANN", # flake8-annotations
     # "PT", # pytest-style
     "PLE", # pylint error
