@@ -251,7 +251,7 @@ class _AcsBase(Dataset):
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
         if self._invert_s:
-            assert s_data.nunique().values[0] == 2, "s must be binary"
+            assert s_data.nunique().to_numpy()[0] == 2, "s must be binary"
             s_data = 1 - s_data
 
         # the following operations remove rows if a label group is not properly one-hot encoded
@@ -303,7 +303,6 @@ class AcsIncome(_AcsBase):
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
-
         self.split = split
         self.target = "PINCP"
         self.target_threshold = target_threshold
@@ -454,7 +453,6 @@ class AcsEmployment(_AcsBase):
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
-
         self.split = split
         self.target = "ESR"
 

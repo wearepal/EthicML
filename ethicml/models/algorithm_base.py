@@ -21,12 +21,12 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
     """Mixin for running algorithms in a subprocess, to be used with :class:`Algorithm`."""
 
     @property
-    def executable(self) -> str:
+    def executable(self) -> list[str]:
         """Path to a (Python) executable.
 
         By default, the Python executable that called this script is used.
         """
-        return sys.executable
+        return [sys.executable]
 
     def call_script(
         self, cmd_args: list[str], env: dict[str, str] | None = None, cwd: Path | None = None
@@ -41,7 +41,7 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
         two_hours = 60 * 60 * 2  # 60secs * 60mins * 2 hours
         try:
             process = subprocess.run(  # wait for process creation to finish
-                [self.executable] + cmd_args,
+                self.executable + cmd_args,
                 capture_output=True,
                 env=env,
                 cwd=cwd,

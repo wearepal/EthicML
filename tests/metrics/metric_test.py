@@ -54,7 +54,7 @@ METRIC_TESTS = [
 ]
 
 
-@pytest.mark.parametrize("model,metric,name,expected", METRIC_TESTS, ids=get_id)
+@pytest.mark.parametrize(("model", "metric", "name", "expected"), METRIC_TESTS, ids=get_id)
 def test_get_score_of_predictions(
     toy_train_val: TrainValPair, model: InAlgorithm, name: str, metric: Metric, expected: float
 ) -> None:
@@ -86,8 +86,9 @@ METRICS = [
 ]
 
 
-@pytest.mark.parametrize("metric,expected", METRICS)
+@pytest.mark.parametrize(("metric", "expected"), METRICS)
 def test_on_label_tuple(metric: Metric, expected: float) -> None:
+    """Test on label tuple."""
     preds = Prediction.from_np(np.array([0, 0, 1, 1]))
     targets = LabelTuple.from_np(s=np.array([0, 1, 1, 1]), y=np.array([0, 1, 0, 1]))
     score = metric.score(preds, targets)

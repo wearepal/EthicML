@@ -35,8 +35,7 @@ def covariance_diff_biased(z: torch.Tensor, w: torch.Tensor, scale: float = 1.0)
 class RegDiscriminator(nn.Module):
     """Regression Discriminator."""
 
-    def __init__(self, inp, out=1):
-
+    def __init__(self, inp: int, out: int = 1):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(inp, 10 * inp),
@@ -619,7 +618,6 @@ class EquiRegLearner:
         out_shape: int,
         use_standardscaler: bool = True,
     ):
-
         self.lr = lr
         self.batch_size = batch_size
         self.in_shape = in_shape
@@ -655,9 +653,9 @@ class EquiRegLearner:
         fast_loader = self.batch_size >= train.x.shape[0]
         p_success, dummy = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())
 
-        x = torch.from_numpy(train.x.values).float()
-        y = torch.from_numpy(train.y.values).float()
-        a = torch.from_numpy(train.s.values).float()
+        x = torch.from_numpy(train.x.to_numpy()).float()
+        y = torch.from_numpy(train.y.to_numpy()).float()
+        a = torch.from_numpy(train.s.to_numpy()).float()
 
         rng = np.random.default_rng(seed)
         g = torch.Generator()
@@ -713,7 +711,7 @@ class EquiRegLearner:
                     x=x,
                     y=y,
                     a=a,
-                    at=torch.from_numpy(zt_train.values).float(),
+                    at=torch.from_numpy(zt_train.to_numpy()).float(),
                     optimizer=self.adv_optimizer,
                     criterion=self.dis_loss,
                     lambdas=self.lambdas,
@@ -748,7 +746,7 @@ class EquiRegLearner:
                     x=x,
                     y=y,
                     a=a,
-                    at=torch.from_numpy(zt_train.values).float(),
+                    at=torch.from_numpy(zt_train.to_numpy()).float(),
                     pred_loss=self.pred_loss,
                     dis_loss=self.dis_loss,
                     clf_optimizer=self.clf_optimizer,

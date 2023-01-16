@@ -232,7 +232,7 @@ class CSVDataset(Dataset, ABC):
             y_df = (y_df + 1) // 2  # map from {-1, 1} to {0, 1}
 
         if self.invert_sens_attr:
-            assert s_df.nunique().values[0] == 2, "s must be binary"
+            assert s_df.nunique().to_numpy()[0] == 2, "s must be binary"
             s_df = 1 - s_df
 
         label_specs = self.get_label_specs()

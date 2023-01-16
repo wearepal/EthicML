@@ -1,7 +1,7 @@
 """File For feature binning."""
 from __future__ import annotations
 from itertools import groupby
-from typing import Sequence
+from typing import List, Sequence, cast
 
 import pandas as pd
 
@@ -20,7 +20,8 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     :returns: A DataTuple where the ordinal columns have been replaced.
     """
     groups: Sequence[list[str]] = [
-        list(group) for _, group in groupby(data.x.columns, lambda x: x.split("_")[0])
+        list(group)
+        for _, group in groupby(cast(List[str], data.x.columns), lambda x: x.split("_")[0])
     ]
 
     copy: pd.DataFrame = data.x.copy()

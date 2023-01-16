@@ -25,7 +25,6 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
 
 def test_run_parallel(toy_train_val: em.TrainValPair):
     """Test run parallel."""
-
     data0 = toy_train_val
     data1 = toy_train_val
     result = run_in_parallel(
@@ -35,20 +34,20 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
         num_jobs=2,
     )
     # LR
-    assert np.count_nonzero(result[0][0].hard.values == 1) == 44
-    assert np.count_nonzero(result[0][0].hard.values == 0) == 36
-    assert np.count_nonzero(result[0][1].hard.values == 1) == 44
-    assert np.count_nonzero(result[0][1].hard.values == 0) == 36
+    assert np.count_nonzero(result[0][0].hard.to_numpy() == 1) == 44
+    assert np.count_nonzero(result[0][0].hard.to_numpy() == 0) == 36
+    assert np.count_nonzero(result[0][1].hard.to_numpy() == 1) == 44
+    assert np.count_nonzero(result[0][1].hard.to_numpy() == 0) == 36
     # SVM
-    assert np.count_nonzero(result[1][0].hard.values == 1) == 45
-    assert np.count_nonzero(result[1][0].hard.values == 0) == 35
-    assert np.count_nonzero(result[1][1].hard.values == 1) == 45
-    assert np.count_nonzero(result[1][1].hard.values == 0) == 35
+    assert np.count_nonzero(result[1][0].hard.to_numpy() == 1) == 45
+    assert np.count_nonzero(result[1][0].hard.to_numpy() == 0) == 35
+    assert np.count_nonzero(result[1][1].hard.to_numpy() == 1) == 45
+    assert np.count_nonzero(result[1][1].hard.to_numpy() == 0) == 35
     # Majority
-    assert np.count_nonzero(result[2][0].hard.values == 1) == 80
-    assert np.count_nonzero(result[2][0].hard.values == 0) == 0
-    assert np.count_nonzero(result[2][1].hard.values == 1) == 80
-    assert np.count_nonzero(result[2][1].hard.values == 0) == 0
+    assert np.count_nonzero(result[2][0].hard.to_numpy() == 1) == 80
+    assert np.count_nonzero(result[2][0].hard.to_numpy() == 0) == 0
+    assert np.count_nonzero(result[2][1].hard.to_numpy() == 1) == 80
+    assert np.count_nonzero(result[2][1].hard.to_numpy() == 0) == 0
 
 
 @pytest.mark.usefixtures("results_cleanup")
@@ -267,7 +266,7 @@ def test_run_alg_suite_err_handling():
     assert len(results) == 4
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_no_pipeline():

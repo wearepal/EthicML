@@ -2,7 +2,7 @@
 from __future__ import annotations
 import itertools
 from pathlib import Path
-from typing import Any, Callable, Literal
+from typing import Any, Callable, List, Literal, cast
 
 from matplotlib import figure, legend
 import matplotlib.pyplot as plt
@@ -110,10 +110,10 @@ def _multivariate_grid(
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
         sns.distplot(  # type: ignore[attr-defined]
-            df_group[col_x].values, ax=g.ax_marg_x, color=color
+            df_group[col_x].to_numpy(), ax=g.ax_marg_x, color=color
         )
         sns.distplot(  # type: ignore[attr-defined]
-            df_group[col_y].values, ax=g.ax_marg_y, vertical=True
+            df_group[col_y].to_numpy(), ax=g.ax_marg_y, vertical=True
         )
     # Do also global Hist:
     # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
@@ -175,7 +175,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,
+        height=y_s0[y_0_label] * 100,  # type: ignore[index]
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -280,7 +280,7 @@ def single_plot(
             mask_for_transform = results.index.get_level_values("transform") == transform_
             data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
             if (
-                data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any()
+                data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isna().any().any()
             ) and not include_nan_entries:
                 continue  # this entry has missing values
             model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
@@ -332,7 +332,7 @@ def plot_results(
     directory.mkdir(exist_ok=True)
 
     def _get_columns(metric: Metric) -> list[str]:
-        cols = [col for col in results.columns if metric.name in col]
+        cols = [col for col in cast(List[str], results.columns) if metric.name in col]
         if not cols:
             raise ValueError(f'No matching columns found for Metric "{metric.name}".')
         # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this

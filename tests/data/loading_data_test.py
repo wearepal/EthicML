@@ -811,7 +811,7 @@ def test_load_adult_education():
     assert (45222,) == data.s.shape
     assert data.s.nunique() == 3
     assert (45222,) == data.y.shape
-    assert "education" == data.s.name
+    assert data.s.name == "education"
 
     # not ordered
     data = adult_data.load()
@@ -819,7 +819,7 @@ def test_load_adult_education():
     assert (45222,) == data.s.shape
     assert data.s.nunique() == 3
     assert (45222,) == data.y.shape
-    assert "education" == data.s.name
+    assert data.s.name == "education"
 
 
 def test_load_adult_education_drop():
@@ -836,7 +836,7 @@ def test_load_adult_education_drop():
     assert (45222,) == data.s.shape
     assert data.s.nunique() == 3
     assert (45222,) == data.y.shape
-    assert "education" == data.s.name
+    assert data.s.name == "education"
 
     # not ordered
     data = adult_data.load()
@@ -844,7 +844,7 @@ def test_load_adult_education_drop():
     assert (45222,) == data.s.shape
     assert data.s.nunique() == 3
     assert (45222,) == data.y.shape
-    assert "education" == data.s.name
+    assert data.s.name == "education"
 
 
 def test_additional_columns_load(data_root: Path):
@@ -1024,7 +1024,7 @@ def test_simple_spec():
     }
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.parametrize("data", [Adult, Admissions, Compas, Credit, Crime, German])
 def test_aif_conversion(data: Callable[[], LegacyDataset]):
     """Load a dataset in AIF form.

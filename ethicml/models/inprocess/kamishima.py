@@ -34,8 +34,9 @@ class Kamishima(InstalledModel):
         super().__init__(
             name="Kamishima",
             dir_name="kamishima",
-            url="https://github.com/predictive-analytics-lab/kamfadm.git",
+            url="https://github.com/wearepal/kamfadm.git",
             top_dir="kamfadm",
+            use_pdm=True,
         )
         self.eta = eta
         self._fit_info: _FitInfo | None = None

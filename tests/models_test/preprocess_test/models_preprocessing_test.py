@@ -83,7 +83,7 @@ METHOD_LIST_EXTENSION = [
 ]
 
 
-@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST + METHOD_LIST_EXTENSION)
+@pytest.mark.parametrize(("model", "name", "num_pos"), METHOD_LIST + METHOD_LIST_EXTENSION)
 def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test preprocessing."""
     train, test = toy_train_test
@@ -105,11 +105,11 @@ def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_p
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
-@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
+@pytest.mark.parametrize(("model", "name", "num_pos"), METHOD_LIST)
 @pytest.mark.xdist_group("pre_model_files")
 def test_pre_sep_fit_transform(
     toy_train_val: TrainValPair, model: PreAlgorithm, name: str, num_pos: int
@@ -133,8 +133,8 @@ def test_pre_sep_fit_transform(
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 1) == num_pos
+    assert np.count_nonzero(preds.hard.to_numpy() == 0) == len(preds) - num_pos
 
 
 def test_calders():

@@ -62,5 +62,5 @@ def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
         if not metric.apply_per_sensitive:
             raise MetricNotApplicable(
                 f"Metric {metric.name} is not applicable per sensitive "
-                f"attribute, apply to whole dataset instead"
+                "attribute, apply to whole dataset instead"
             )

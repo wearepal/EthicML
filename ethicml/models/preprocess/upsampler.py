@@ -155,7 +155,6 @@ def upsample(
         )
 
         for key in data:
-
             s_val = key[0]
             y_val = key[1]
             s_y_mask = (dataset.s == s_val) & (dataset.y == y_val)

@@ -34,7 +34,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         simply the last part of the repository URL).
     :param url: URL of the repository. (Default: None)
     :param executable: Path to a Python executable. (Default: None.
-    :param use_poetry: If True, will try to use poetry instead of pipenv. (Default: False)
+    :param use_pdm: If ``True``, will try to use pdm instead of pipenv. (Default: False)
     """
 
     def __init__(
@@ -43,8 +43,8 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         dir_name: str,
         top_dir: str,
         url: str | None = None,
-        executable: str | None = None,
-        use_poetry: bool = False,
+        executable: list[str] | None = None,
+        use_pdm: bool = False,
     ):
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
         self._store_dir: Path = Path(".") / dir_name  # directory where code and venv are stored
@@ -56,10 +56,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
 
         if executable is None:
             # create virtual environment
-            del use_poetry  # see https://github.com/python-poetry/poetry/issues/4055
-            # self._create_venv(use_poetry=use_poetry)
-            self._create_venv(use_poetry=False)
-            self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
+            self.__executable = self._create_venv(use_pdm=use_pdm)
         else:
             self.__executable = executable
         self.__name = name
@@ -75,7 +72,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         return self._store_dir / self._top_dir
 
     @property
-    def executable(self) -> str:
+    def executable(self) -> list[str]:
         """Python executable from the virtualenv associated with the model."""
         return self.__executable
 
@@ -88,22 +85,25 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             self._store_dir.mkdir()
             git.cmd.Git(self._store_dir).clone(url)
 
-    def _create_venv(self, use_poetry: bool) -> None:
+    def _create_venv(self, use_pdm: bool) -> list[str]:
         """Create a venv based on the Pipfile in the repository.
 
-        :param use_poetry: Whether to use poetry instead of pipenv.
+        :param use_pdm: Whether to use pdm instead of pipenv.
+        :returns: Shell command to execute python scripts.
+        :raises RuntimeError: If the required package manager isn't found.
         """
-        venv_directory = self._code_path / ".venv"
-        if not venv_directory.exists():
-            if use_poetry and shutil.which("poetry") is not None:  # use poetry instead of pipenv
+        if use_pdm:  # use pdm instead of pipenv
+            pypackages_dir = self._code_path / "__pypackages__"
+            if not pypackages_dir.exists():
+                if shutil.which("pdm") is None:
+                    raise RuntimeError("pdm must be installed")
                 environ = os.environ.copy()
-                environ["POETRY_VIRTUALENVS_CREATE"] = "true"
-                environ["POETRY_VIRTUALENVS_IN_PROJECT"] = "true"
-                subprocess.run(
-                    ["poetry", "install", "--no-root"], env=environ, check=True, cwd=self._code_path
-                )
-                return
+                environ["PDM_USE_VENV"] = "0"
+                subprocess.run(["pdm", "install"], env=environ, check=True, cwd=self._code_path)
+            return ["pdm", "run", "python"]
 
+        venv_directory = self._code_path.resolve() / ".venv"
+        if not venv_directory.exists():
             environ = os.environ.copy()
             environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
             environ["PIPENV_VENV_IN_PROJECT"] = "true"
@@ -111,6 +111,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             environ["PIPENV_PIPFILE"] = str(self._code_path / "Pipfile")
 
             subprocess.run([sys.executable, "-m", "pipenv", "install"], env=environ, check=True)
+        return [str(venv_directory / "bin" / "python")]
 
     def remove(self) -> None:
         """Remove the directory that we created in :meth:`_clone_directory()`."""

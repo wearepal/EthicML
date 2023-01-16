@@ -34,7 +34,11 @@ class PerSensMetricTest(NamedTuple):
 
 
 def test_issue_431():
-    """This issue highlighted that error would be raised due to not all values existing in subsets of the data."""
+    """Test issue 431.
+
+    This issue highlighted that an error would be raised due to not all values existing in subsets
+    of the data.
+    """
     x = pd.DataFrame(np.random.randn(100), columns=["x"])
     s = pd.Series(np.random.randn(100), name="s")
     y = pd.Series(np.random.randint(0, 5, 100), name="y")
@@ -159,7 +163,9 @@ PER_SENS = [
 ]
 
 
-@pytest.mark.parametrize("dataset,classifier,metric,expected_values", PER_SENS, ids=get_id)
+@pytest.mark.parametrize(
+    ("dataset", "classifier", "metric", "expected_values"), PER_SENS, ids=get_id
+)
 def test_metric_per_sens_attr(
     dataset: Dataset, classifier: InAlgorithm, metric: Metric, expected_values: Dict[str, float]
 ):
