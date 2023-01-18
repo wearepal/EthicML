@@ -60,6 +60,7 @@ pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
 ruff = "0.0.221"
+pip = "^22.3.1"
 
 [tool.poetry.group.ci]
 optional = true
@@ -198,48 +199,32 @@ reportUnknownArgumentType = "none"
 [tool.ruff]
 line-length = 100
 select = [
+    # "ANN", # flake8-annotations
     "D", # pydocstyle
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort
-    # "UP", # pyupgrade
     # "PD", # pandas-vet
-    # "ANN", # flake8-annotations
-    # "PT", # pytest-style
-    "PLE", # pylint error
-    "PLW", # pylint warning
     "PLC", # pylint convention
+    "PLE", # pylint error
     "PLR", # pylint refactor
+    "PLW", # pylint warning
+    # "PT", # pytest-style
+    # "UP", # pyupgrade
+    "W",
 ]
 ignore = [
-    "D105", # magic methods
-    "D107", # __init__
-    "D203",
-    "D208", # over indentation
-    "D212",
-    "D213",
-    "D214",
-    "D215",
-    "D404",
-    "D405",
-    "D406",
-    "D407",
-    "D408",
-    "D409",
-    "D410",
-    "D411",
-    "D413",
-    "D415",
-    "D416",
-    "D417",
-    "TID252", # relative imports
-    "PD901", # forbidding "df" as a variable name
     "ANN101",
     "ANN102",
-    "PT004", # fixture naming
-    "PT013", # don't allow `from pytest import ...`
+    "D105", # magic methods
+    "D107", # __init__
+    "D208", # over indentation
+    "PD901", # forbidding "df" as a variable name
     "PLR0402", # useless import alias
     "PLR2004", # magic number comparison
+    "PT004", # fixture naming
+    "PT013", # don't allow `from pytest import ...`
+    "TID252", # relative imports
 ]
 target-version = "py38"
 
@@ -248,6 +233,9 @@ target-version = "py38"
     "F403",
     "PLC0414", # reexporting
 ]
+
+[tool.ruff.pydocstyle]
+convention = "pep257"
 
 [tool.ruff.isort]
 known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
