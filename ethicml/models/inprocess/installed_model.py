@@ -99,7 +99,9 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
                     raise RuntimeError("pdm must be installed")
                 environ = os.environ.copy()
                 environ["PDM_USE_VENV"] = "0"
-                subprocess.run(["pdm", "install"], env=environ, check=True, cwd=self._code_path)
+                subprocess.run(
+                    ["pdm", "install", "--no-self"], env=environ, check=True, cwd=self._code_path
+                )
             return ["pdm", "run", "python"]
 
         venv_directory = self._code_path.resolve() / ".venv"
