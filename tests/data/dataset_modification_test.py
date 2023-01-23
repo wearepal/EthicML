@@ -39,7 +39,7 @@ def test_scaling(
 
 
 @pytest.mark.parametrize("dataset_name", available_tabular())
-@pytest.mark.parametrize("scaler", [StandardScaler, MinMaxScaler])
+@pytest.mark.parametrize("scaler_type", [StandardScaler, MinMaxScaler])
 def test_scaling_separate_test(
     dataset_name: str, scaler_type: Union[Type[StandardScaler], Type[MinMaxScaler]]
 ) -> None:
