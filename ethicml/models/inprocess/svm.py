@@ -66,9 +66,4 @@ def select_svm(C: float, kernel: KernelType, seed: int) -> LinearSVC | SVC:
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=random_state)
-    return SVC(
-        C=C,
-        kernel=kernel.name,  # type: ignore[arg-type]
-        gamma="auto",
-        random_state=random_state,
-    )
+    return SVC(C=C, kernel=kernel.value, gamma="auto", random_state=random_state)
