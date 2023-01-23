@@ -4,7 +4,8 @@ Original implementation is modified to handle regression and multi-class
 classification problems
 """
 from __future__ import annotations
-from typing_extensions import Self, override
+from typing import TypeVar
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd
@@ -187,6 +188,9 @@ def pretrain_regressor(
     return clf
 
 
+SelfC = TypeVar("SelfC", bound="AdvDebiasingClassLearner")
+
+
 class AdvDebiasingClassLearner:
     """Adversarial Debiasing classifier."""
 
@@ -231,9 +235,9 @@ class AdvDebiasingClassLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self: SelfC, train: DataTuple, seed: int) -> SelfC:
         """Fit."""
-        train_data, train_loader = make_dataset_and_loader(
+        _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
 
@@ -268,14 +272,17 @@ class AdvDebiasingClassLearner:
     @torch.no_grad()
     def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
-        x = torch.from_numpy(x.to_numpy()).float()
+        x_ = torch.from_numpy(x.to_numpy()).float()
         self.clf.eval()
-        yhat = self.clf(x)
+        yhat = self.clf(x_)
         sm = nn.Softmax(dim=1)
         yhat = sm(yhat)
         yhat = yhat.detach().numpy()
 
         return yhat
+
+
+SelfR = TypeVar("SelfR", bound="AdvDebiasingRegLearner")
 
 
 class AdvDebiasingRegLearner:
@@ -322,7 +329,7 @@ class AdvDebiasingRegLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self: SelfR, train: DataTuple, seed: int) -> SelfR:
         """Fit."""
         # The features are X[:,1:]
 
@@ -361,9 +368,9 @@ class AdvDebiasingRegLearner:
     @torch.no_grad()
     def predict(self, x: pd.DataFrame) -> torch.Tensor:
         """Predict."""
-        x = torch.from_numpy(x.to_numpy()).float()
+        x_ = torch.from_numpy(x.to_numpy()).float()
         self.clf.eval()
-        yhat = self.clf(x).squeeze().detach().numpy()
+        yhat = self.clf(x_).squeeze().detach().numpy()
         if self.out_shape == 1:
             out = yhat
         else:

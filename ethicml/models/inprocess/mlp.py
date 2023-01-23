@@ -26,7 +26,7 @@ class MLP(InAlgorithmDC):
 
     is_fairness_algo: ClassVar[bool] = False
     hidden_layer_sizes: Tuple[int, ...] = field(
-        default_factory=lambda: MLPClassifier().hidden_layer_sizes
+        default_factory=lambda: MLPClassifier().hidden_layer_sizes  # type: ignore[attr-defined]
     )
     batch_size: int = 32
     lr: float = 1e-3
@@ -41,7 +41,7 @@ class MLP(InAlgorithmDC):
         self.clf = select_mlp(
             self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size
         )
-        self.clf.fit(train.x, train.y.to_numpy().ravel())
+        self.clf.fit(train.x.to_numpy(), train.y.to_numpy().ravel())
         return self
 
     @override
@@ -51,7 +51,7 @@ class MLP(InAlgorithmDC):
     @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = select_mlp(self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size)
-        clf.fit(train.x, train.y.to_numpy().ravel())
+        clf.fit(train.x.to_numpy(), train.y.to_numpy().ravel())
         return SoftPrediction(soft=clf.predict_proba(test.x), info=self.hyperparameters)
 
 

@@ -1,16 +1,17 @@
 """Kamiran and Calders 2012."""
 from __future__ import annotations
+from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 from typing_extensions import override
 
 import numpy as np
 import pandas as pd
-import sklearn
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
-from ethicml.models.inprocess.shared import settings_for_svm_lr
+from ethicml.models.inprocess.shared import LinearModel, settings_for_svm_lr
 from ethicml.models.inprocess.svm import select_svm
 from ethicml.utility import (
     ClassifierType,
@@ -47,7 +48,7 @@ class Reweighting(InAlgorithm):
     kernel: Optional[KernelType] = None
 
     def __post_init__(self) -> None:
-        self.group_weights: Optional[Dict[str, Any]] = None
+        self.group_weights: Optional[Dict[Hashable, Any]] = None
         self.chosen_c, self.chosen_kernel = settings_for_svm_lr(
             self.classifier, self.C, self.kernel
         )
@@ -97,7 +98,8 @@ class Reweighting(InAlgorithm):
         C: float,
         kernel: KernelType | None,
         seed: int,
-    ) -> sklearn.linear_model._base.LinearModel:
+    ) -> LinearModel:
+        model: LinearModel
         if classifier is ClassifierType.svm:
             assert kernel is not None
             model = select_svm(C=C, kernel=kernel, seed=seed)
@@ -122,10 +124,15 @@ class Reweighting(InAlgorithm):
         self.group_weights = pd.merge(weights, groups, on="count").T.to_dict()
         return model
 
-    def _predict(
-        self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
-    ) -> Prediction:
-        return SoftPrediction((model.predict_proba(test.x)), info=self.hyperparameters)
+    def _predict(self, model: LinearModel, test: TestTuple) -> Prediction:
+        if isinstance(model, LinearSVC):
+            return Prediction(
+                hard=pd.Series(model.predict(test.x.to_numpy())), info=self.hyperparameters
+            )
+        return SoftPrediction(
+            soft=model.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            info=self.hyperparameters,
+        )
 
 
 def compute_instance_weights(

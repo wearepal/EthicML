@@ -49,13 +49,11 @@ all = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktabl
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.6"
-isort = "5.10.1"
-mypy = ">=0.950"
+mypy = ">=0.990"
 pre-commit = "^2.20.0"
-pylint = "^2.14.5"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
-python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "530d077"}
+python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "417b03b"}
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"

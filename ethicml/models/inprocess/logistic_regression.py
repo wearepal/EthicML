@@ -27,7 +27,7 @@ class LR(InAlgorithmDC):
     """
 
     is_fairness_algo: ClassVar[bool] = False
-    C: float = field(default_factory=lambda: LogisticRegression().C)
+    C: float = field(default_factory=lambda: LogisticRegression().C)  # type: ignore[attr-defined]
 
     @property
     @override
@@ -54,7 +54,10 @@ class LR(InAlgorithmDC):
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.hyperparameters)
+        return SoftPrediction(
+            soft=clf.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            info=self.hyperparameters,
+        )
 
 
 @dataclass
@@ -85,8 +88,11 @@ class LRCV(InAlgorithmDC):
     @override
     def predict(self, test: TestTuple) -> Prediction:
         params = self.hyperparameters
-        params["C"] = self.clf.C_[0]
-        return SoftPrediction(soft=self.clf.predict_proba(test.x), info=params)
+        params["C"] = self.clf.C_[0]  # type: ignore[attr-defined]
+        return SoftPrediction(
+            soft=self.clf.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            info=params,
+        )
 
     @override
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
@@ -97,5 +103,8 @@ class LRCV(InAlgorithmDC):
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
         params = self.hyperparameters
-        params["C"] = clf.C_[0]
-        return SoftPrediction(soft=clf.predict_proba(test.x), info=params)
+        params["C"] = clf.C_[0]  # type: ignore[attr-defined]
+        return SoftPrediction(
+            soft=clf.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            info=params,
+        )
