@@ -43,16 +43,16 @@ class Kde:
         )
 
 
-def _unsqueeze_multiple_times(input: torch.Tensor, axis: int, times: int) -> torch.Tensor:
+def _unsqueeze_multiple_times(input_: torch.Tensor, axis: int, times: int) -> torch.Tensor:
     """Utils function to unsqueeze tensor to avoid cumbersome code.
 
-    :param input: A PyTorch tensor of dimensions (D_1,..., D_k).
+    :param input_: A PyTorch tensor of dimensions (D_1,..., D_k).
     :param axis: The axis to unsqueeze repeatedly.
     :param times: The number of repetitions of the unsqueeze.
     :returns: The unsqueezed tensor. ex: dimensions (D_1,... D_i, 0,0,0, D_{i+1}, ... D_k) for
         unsqueezing 3x axis i.
     """
-    output = input
+    output = input_
     for _ in range(times):
         output = output.unsqueeze(axis)
     return output

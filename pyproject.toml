@@ -59,7 +59,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.221"
+ruff = "0.0.230"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -199,26 +199,31 @@ reportUnknownArgumentType = "none"
 [tool.ruff]
 line-length = 100
 select = [
+    "A", # builtins
     # "ANN", # flake8-annotations
     "D", # pydocstyle
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort
+    # "N", # naming
     # "PD", # pandas-vet
     "PLC", # pylint convention
     "PLE", # pylint error
     "PLR", # pylint refactor
     "PLW", # pylint warning
     # "PT", # pytest-style
+    # "PTH", # use-pathlib
     # "UP", # pyupgrade
     "W",
 ]
 ignore = [
+    "A003", # builtins as class attribute
     "ANN101",
     "ANN102",
     "D105", # magic methods
     "D107", # __init__
     "D208", # over indentation
+    "D401", # imperative mood
     "PD901", # forbidding "df" as a variable name
     "PLR0402", # useless import alias
     "PLR2004", # magic number comparison
@@ -246,3 +251,6 @@ classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "TPR", "TNR", "CV", "NMI",
 
 [tool.ruff.flake8-annotations]
 mypy-init-return = true
+
+[tool.ruff.pep8-naming]
+ignore-names = ["C"]
