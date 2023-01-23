@@ -5,7 +5,7 @@
 # https://github.com/criteo-research/continuous-fairness/tree/master/facl/independence
 from __future__ import annotations
 import random
-from typing_extensions import Self
+from typing import TypeVar
 
 import numpy as np
 import pandas as pd
@@ -125,6 +125,9 @@ class HgrRegLearner:
         return out
 
 
+Self = TypeVar("Self", bound="HgrClassLearner")
+
+
 class HgrClassLearner:
     """HGR Class."""
 
@@ -190,7 +193,7 @@ class HgrClassLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self: Self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         torch.manual_seed(seed)
         random.seed(seed)

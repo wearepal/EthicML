@@ -1,8 +1,7 @@
 """FairDummies Models."""
 from __future__ import annotations
 import random
-from typing import Callable
-from typing_extensions import Self
+from typing import Callable, TypeVar
 
 import numpy as np
 import pandas as pd
@@ -430,11 +429,14 @@ def train_regressor(
     return model, dis
 
 
-def seed_worker(worker_id):
+def seed_worker(worker_id: int) -> None:
     """Seed the Dataloader worker."""
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
+
+
+Self = TypeVar("Self", bound="EquiClassLearner")
 
 
 class EquiClassLearner:
@@ -499,7 +501,7 @@ class EquiClassLearner:
 
         self.scaler = StandardScaler()
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self: Self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
         p_success, dummy = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())

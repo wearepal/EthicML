@@ -713,13 +713,13 @@ def aggregate_results(
 class KernelType(StrEnum):
     """Values for SVM Kernel."""
 
-    linear = auto()
+    linear = "linear"
     """Linear kernel."""
-    poly = auto()
+    poly = "poly"
     """Polynomial kernel."""
-    rbf = auto()
+    rbf = "rbf"
     """Radial basis function kernel."""
-    sigmoid = auto()
+    sigmoid = "sigmoid"
     """Sigmoid kernel."""
 
 

@@ -28,8 +28,10 @@ class SVM(InAlgorithmDC):
     """
 
     is_fairness_algo: ClassVar[bool] = False
-    C: float = field(default_factory=lambda: SVC().C)
-    kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
+    C: float = field(default_factory=lambda: SVC().C)  # type: ignore[attr-defined]
+    kernel: KernelType = field(
+        default_factory=lambda: KernelType[SVC().kernel],  # type: ignore[attr-defined]
+    )
 
     @property
     @override
@@ -64,4 +66,9 @@ def select_svm(C: float, kernel: KernelType, seed: int) -> LinearSVC | SVC:
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=random_state)
-    return SVC(C=C, kernel=kernel.name, gamma="auto", random_state=random_state)
+    return SVC(
+        C=C,
+        kernel=kernel.name,  # type: ignore[arg-type]
+        gamma="auto",
+        random_state=random_state,
+    )

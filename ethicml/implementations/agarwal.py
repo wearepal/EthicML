@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import random
 import sys
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Generator, Union
 
 from joblib import dump, load
 import numpy as np
@@ -30,6 +30,7 @@ if TYPE_CHECKING:
 
     from ethicml.models.inprocess.agarwal_reductions import AgarwalArgs
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.shared import LinearModel
 
 
 def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
@@ -57,6 +58,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     else:
         fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
+    model: Union[LinearModel, GradientBoostingClassifier]
     if classifier_type is ClassifierType.svm:
         assert kernel_type is not None
         model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
