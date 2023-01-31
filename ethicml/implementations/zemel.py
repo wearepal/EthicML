@@ -28,6 +28,7 @@ class Model(NamedTuple):
 
 
 def LFR_optim_objective(
+    *,
     parameters: np.ndarray,
     x_unprivileged: np.ndarray,
     x_privileged: np.ndarray,

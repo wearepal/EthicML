@@ -107,7 +107,7 @@ def train_and_predict(
 @contextlib.contextmanager
 def working_dir(root: Path) -> Generator[None, None, None]:
     """Change the working directory to the given path."""
-    curdir = os.getcwd()
+    curdir = Path.cwd()
     os.chdir(root.expanduser().resolve().parent)
     try:
         yield

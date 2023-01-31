@@ -238,6 +238,7 @@ def single_plot(
     yaxis: tuple[str, str],
     dataset: str,
     transform: str | None,
+    *,
     ptype: PlotType = "box",
     legend_pos: LegendType | None = "outside",
     legend_yanchor: float = 1.0,

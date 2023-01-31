@@ -196,6 +196,7 @@ class AdvDebiasingClassLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         n_clf_epochs: int,
         n_adv_epochs: int,
@@ -290,6 +291,7 @@ class AdvDebiasingRegLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         n_clf_epochs: int,
         n_adv_epochs: int,
