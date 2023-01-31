@@ -11,10 +11,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from ethicml.utility.data_structures import ModelType
+from ethicml.implementations.pytorch_common import (
+    DeepModel,
+    DeepRegModel,
+    LinearModel,
+    PandasDataSet,
+)
+from ethicml.utility.data_structures import DataTuple, ModelType
 
-from ... import DataTuple
-from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, PandasDataSet
 from .utility_functions import density_estimation
 
 
@@ -101,7 +105,7 @@ def pretrain_adversary(
     dis: nn.Module,
     *,
     model: nn.Module,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     criterion: Callable[[torch.Tensor, torch.Tensor], torch.Tensor],
     lambdas: torch.Tensor,
@@ -125,7 +129,7 @@ def pretrain_adversary(
 def pretrain_classifier(
     model: nn.Module,
     *,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     criterion: nn.Module,
 ) -> nn.Module:
@@ -142,7 +146,7 @@ def pretrain_classifier(
 def pretrain_regressor(
     model: nn.Module,
     *,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     criterion: nn.Module,
 ) -> nn.Module:
@@ -177,7 +181,7 @@ def train_classifier(
     model: nn.Module,
     *,
     dis: nn.Module,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     pred_loss: nn.Module,
     dis_loss: nn.Module,
     clf_optimizer: torch.optim.Optimizer,
@@ -375,7 +379,7 @@ def train_regressor(
     model: nn.Module,
     *,
     dis: nn.Module,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     pred_loss: nn.Module,
     dis_loss: nn.Module,
     clf_optimizer: torch.optim.Optimizer,
@@ -444,6 +448,7 @@ class EquiClassLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         pretrain_pred_epochs: int,
         pretrain_dis_epochs: int,
@@ -605,6 +610,7 @@ class EquiRegLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         pretrain_pred_epochs: int,
         pretrain_dis_epochs: int,

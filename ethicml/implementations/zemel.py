@@ -27,7 +27,7 @@ class Model(NamedTuple):
     w: np.ndarray
 
 
-def LFR_optim_objective(
+def LFR_optim_objective(  # noqa: PLR0913
     parameters: np.ndarray,
     x_unprivileged: np.ndarray,
     x_privileged: np.ndarray,

@@ -417,6 +417,7 @@ class LegacyDataset(CSVDataset):
 
     def __init__(
         self,
+        *,
         name: str,
         filename_or_path: str | Path,
         features: Sequence[str],
