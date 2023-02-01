@@ -48,7 +48,7 @@ models = ["scipy","GitPython","pdm","scikit-learn","fairlearn","cloudpickle","gi
 all = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pdm","gitdb2","smmap2"]
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.6"
+black = "^23.1"
 mypy = ">=0.990"
 pre-commit = "^2.20.0"
 pytest = ">=6.2.2,<8.0.0"
