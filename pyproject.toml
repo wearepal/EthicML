@@ -57,7 +57,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.238"
+ruff = "0.0.241"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -197,20 +197,22 @@ reportUnnecessaryTypeIgnoreComment = "warning"
 [tool.ruff]
 line-length = 100
 select = [
-    "A", # builtins
+    "A", # flake8-builtins
     # "ANN", # flake8-annotations
+    "ARG", # flake8-unused-args
     "D", # pydocstyle
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort
-    # "N", # naming
-    # "PD", # pandas-vet
+    # "N", # pep8-naming
+    "PD", # pandas-vet
     "PLC", # pylint convention
     "PLE", # pylint error
     "PLR", # pylint refactor
     "PLW", # pylint warning
-    # "PT", # pytest-style
-    "PTH", # use-pathlib
+    "PT", # pytest-style
+    "PTH", # flake8-use-pathlib
+    "SIM", # flake8-simplify
     # "UP", # pyupgrade
     "W",
 ]
@@ -222,6 +224,8 @@ ignore = [
     "D107", # __init__
     "D208", # over indentation
     "D401", # imperative mood
+    "PD002", # no inplace
+    "PD015", # no pd.merge
     "PD901", # forbidding "df" as a variable name
     "PLR0402", # useless import alias
     "PLR2004", # magic number comparison
@@ -235,6 +239,9 @@ target-version = "py38"
 "__init__.py" = [
     "F403",
     "PLC0414", # reexporting
+]
+"ethicml/*" = [
+    "PT018",
 ]
 
 [tool.ruff.pydocstyle]
@@ -255,3 +262,4 @@ ignore-names = ["C"]
 
 [tool.ruff.pylint]
 max-args = 10
+max-statements = 60

@@ -250,14 +250,9 @@ def inner_train_adversary_regression(
     y: torch.Tensor,
     a: torch.Tensor,
     at: torch.Tensor,
-    pred_loss: nn.Module,
     dis_loss: nn.Module,
-    clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-    second_moment_scaling: torch.Tensor,
-    dis_steps: int,
-    loss_steps: int,
 ) -> nn.Module:
     """Inner train."""
     yhat = model(x)
@@ -286,11 +281,8 @@ def inner_train_model_regression(
     pred_loss: nn.Module,
     dis_loss: nn.Module,
     clf_optimizer: torch.optim.Optimizer,
-    adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
     second_moment_scaling: torch.Tensor,
-    dis_steps: int,
-    loss_steps: int,
 ) -> nn.Module:
     """Inner train."""
     yhat = model(x)
@@ -343,14 +335,9 @@ def train_regressor_fast_loader(
             y=y,
             a=a,
             at=at,
-            pred_loss=pred_loss,
             dis_loss=dis_loss,
-            clf_optimizer=clf_optimizer,
             adv_optimizer=adv_optimizer,
             lambdas=lambdas,
-            second_moment_scaling=second_moment_scaling,
-            dis_steps=dis_steps,
-            loss_steps=loss_steps,
         )
 
     # Train predictor
@@ -365,11 +352,8 @@ def train_regressor_fast_loader(
             pred_loss=pred_loss,
             dis_loss=dis_loss,
             clf_optimizer=clf_optimizer,
-            adv_optimizer=adv_optimizer,
             lambdas=lambdas,
             second_moment_scaling=second_moment_scaling,
-            dis_steps=dis_steps,
-            loss_steps=loss_steps,
         )
 
     return model, dis
@@ -400,14 +384,9 @@ def train_regressor(
                 y=y,
                 a=a,
                 at=at,
-                pred_loss=pred_loss,
                 dis_loss=dis_loss,
-                clf_optimizer=clf_optimizer,
                 adv_optimizer=adv_optimizer,
                 lambdas=lambdas,
-                second_moment_scaling=second_moment_scaling,
-                dis_steps=dis_steps,
-                loss_steps=loss_steps,
             )
 
     # Train predictor
@@ -423,17 +402,14 @@ def train_regressor(
                 pred_loss=pred_loss,
                 dis_loss=dis_loss,
                 clf_optimizer=clf_optimizer,
-                adv_optimizer=adv_optimizer,
                 lambdas=lambdas,
                 second_moment_scaling=second_moment_scaling,
-                dis_steps=dis_steps,
-                loss_steps=loss_steps,
             )
 
     return model, dis
 
 
-def seed_worker(worker_id: int) -> None:
+def seed_worker(worker_id: int) -> None:  # noqa: ARG001
     """Seed the Dataloader worker."""
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)

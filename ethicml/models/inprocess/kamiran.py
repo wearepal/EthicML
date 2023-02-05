@@ -157,14 +157,15 @@ def compute_instance_weights(
         group_ids, return_inverse=True, return_counts=True
     )
     if balance_groups:
-        # Upweight samples according to the cardinality of their intersectional group
-        if upweight:
-            group_weights = num_samples / counts_joint
-        # Downweight samples according to the cardinality of their intersectional group
-        # - this approach should be preferred due to being more numerically stable
-        # (very small counts can lead to very large weighted loss values when upweighting)
-        else:
-            group_weights = 1 - (counts_joint / num_samples)
+        group_weights = (
+            # Upweight samples according to the cardinality of their intersectional group
+            num_samples / counts_joint
+            if upweight
+            # Downweight samples according to the cardinality of their intersectional group
+            # - this approach should be preferred due to being more numerically stable
+            # (very small counts can lead to very large weighted loss values when upweighting)
+            else 1 - (counts_joint / num_samples)
+        )
     else:
         counts_factorized = np.outer(counts_y, counts_s).flatten()
         group_weights = counts_factorized[gi_unique] / (num_samples * counts_joint)

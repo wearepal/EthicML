@@ -15,7 +15,7 @@ class DataEntry(NamedTuple):
     """Defines one element in a plot."""
 
     label: str
-    values: pd.DataFrame
+    vals: pd.DataFrame
     do_fill: bool
 
 
@@ -106,15 +106,15 @@ def errorbox(
             color = pale_colors[i + firstcolor - filled_counter]
         i_shp = firstshape + i
 
-        xmean: float = entry.values[xaxis_measure].mean()
-        xstd: float = entry.values[xaxis_measure].std()
+        xmean: float = entry.vals[xaxis_measure].mean()
+        xstd: float = entry.vals[xaxis_measure].std()
         if xmean + (0.5 * xstd) > max_xmean:
             max_xmean = xmean + (0.5 * xstd)
         if xmean - (0.5 * xstd) < min_xmean:
             min_xmean = xmean - (0.5 * xstd)
 
-        ymean: float = entry.values[yaxis_measure].mean()
-        ystd: float = entry.values[yaxis_measure].std()
+        ymean: float = entry.vals[yaxis_measure].mean()
+        ystd: float = entry.vals[yaxis_measure].std()
         if ymean + (0.5 * ystd) > max_ymean:
             max_ymean = ymean + (0.5 * ystd)
         if ymean - (0.5 * ystd) < min_ymean:
@@ -206,8 +206,8 @@ def scatter(
             additional_params = dict(markerfacecolor="none")
             shp_index = i + startindex - filled_counter
         plot.plot(
-            entry.values[xaxis_measure].to_numpy(),
-            entry.values[yaxis_measure].to_numpy(),
+            entry.vals[xaxis_measure].to_numpy(),
+            entry.vals[yaxis_measure].to_numpy(),
             marker=shapes[shp_index],
             linestyle="-" if connect_dots else "",
             label=entry.label,
