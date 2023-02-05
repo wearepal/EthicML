@@ -50,18 +50,16 @@ class Kamishima(InstalledModel):
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            fit_info = self._fit(train, tmp_path, seed)
+            fit_info = self._fit(train, tmp_path)
             return self._predict(test, fit_info, tmp_path)
 
     @override
     def fit(self, train: DataTuple, seed: int = 888) -> Kamishima:
         with TemporaryDirectory() as tmpdir:
-            self._fit_info = self._fit(train, Path(tmpdir), seed, model_dir=self._code_path)
+            self._fit_info = self._fit(train, Path(tmpdir), model_dir=self._code_path)
         return self
 
-    def _fit(
-        self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Path | None = None
-    ) -> _FitInfo:
+    def _fit(self, train: DataTuple, tmp_path: Path, model_dir: Path | None = None) -> _FitInfo:
         train_path = tmp_path / "train.txt"
         _create_file_in_kamishima_format(train, train_path)
         min_class_label: int = train.y.min()

@@ -1,6 +1,7 @@
 """EthicML Tests."""
 from pathlib import Path
 from typing import Any, ClassVar, Dict, Final, Generator, List, Mapping, NamedTuple
+from typing_extensions import override
 
 import numpy as np
 import pytest
@@ -276,6 +277,7 @@ def test_threaded_agarwal():
     class AssertResult(MetricStaticName):
         _name: ClassVar[str] = "assert_result"
 
+        @override
         def score(self, prediction, actual) -> float:
             return (
                 np.count_nonzero(prediction.hard.to_numpy() == 1) == 45

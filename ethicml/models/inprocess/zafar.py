@@ -62,15 +62,13 @@ class _ZafarAlgorithmBase(InstalledModel):
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            fit_params = self._fit(train, tmp_path, seed)
+            fit_params = self._fit(train, tmp_path)
             return self._predict(test, tmp_path, fit_params)
 
     @override
     def fit(self, train: DataTuple, seed: int = 888) -> _ZafarAlgorithmBase:
         with TemporaryDirectory() as tmpdir:
-            self._fit_params = self._fit(
-                train, tmp_path=Path(tmpdir), seed=seed, model_dir=self._code_path
-            )
+            self._fit_params = self._fit(train, tmp_path=Path(tmpdir), model_dir=self._code_path)
         return self
 
     @override
@@ -79,9 +77,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         with TemporaryDirectory() as tmpdir:
             return self._predict(test, tmp_path=Path(tmpdir), fit_params=params)
 
-    def _fit(
-        self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Path | None = None
-    ) -> _FitParams:
+    def _fit(self, train: DataTuple, tmp_path: Path, model_dir: Path | None = None) -> _FitParams:
         model_path = (model_dir.resolve() if model_dir is not None else tmp_path) / "model.npy"
         label_converter = LabelBinarizer()
         train_path = tmp_path / "train.json"
