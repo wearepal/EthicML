@@ -1040,14 +1040,14 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.4.1"
+version = "2.4.3"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pdm-2.4.1-py3-none-any.whl", hash = "sha256:b4176e113223fef133a7091232902db3fdc504291082c2ff7fcf382eb71edd8a"},
-    {file = "pdm-2.4.1.tar.gz", hash = "sha256:557fccbd895be49ece4bde0a15b22f8c1a57240d5a2397fa1398696586f3bc13"},
+    {file = "pdm-2.4.3-py3-none-any.whl", hash = "sha256:bc98f30d89ff6833807d657ad4eead3b5350754847c37f039f92e26bcec3dafe"},
+    {file = "pdm-2.4.3.tar.gz", hash = "sha256:1a9f23bb6e975f4036f8b5feedbf4eb84049c78a94c11dad354abe0a18f9eaae"},
 ]
 
 [package.dependencies]
