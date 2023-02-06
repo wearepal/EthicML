@@ -43,8 +43,8 @@ def _maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
         x2_name = "tsne2"
     else:
         amalgamated = data.data
-        x1_name = f"{columns[0]}"  # type: ignore[str-bytes-safe]
-        x2_name = f"{columns[1]}"  # type: ignore[str-bytes-safe]
+        x1_name = f"{columns[0]}"
+        x2_name = f"{columns[1]}"
     return amalgamated, x1_name, x2_name
 
 
@@ -219,10 +219,10 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     plot.legend(
         [quadrant1, quadrant2, quadrant3, quadrant4],
         [
-            f"y={y_0_label}, s={s_0_label}",  # type: ignore[str-bytes-safe]
-            f"y={y_0_label}, s={s_1_label}",  # type: ignore[str-bytes-safe]
-            f"y={y_1_label}, s={s_0_label}",  # type: ignore[str-bytes-safe]
-            f"y={y_1_label}, s={s_1_label}",  # type: ignore[str-bytes-safe]
+            f"y={y_0_label}, s={s_0_label}",
+            f"y={y_0_label}, s={s_1_label}",
+            f"y={y_1_label}, s={s_0_label}",
+            f"y={y_1_label}, s={s_1_label}",
         ],
     )
 
