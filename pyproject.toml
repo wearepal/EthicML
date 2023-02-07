@@ -57,7 +57,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.241"
+ruff = "0.0.243"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -204,7 +204,7 @@ select = [
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort
-    # "N", # pep8-naming
+    "N", # pep8-naming
     "PD", # pandas-vet
     "PLC", # pylint convention
     "PLE", # pylint error
@@ -224,6 +224,7 @@ ignore = [
     "D107", # __init__
     "D208", # over indentation
     "D401", # imperative mood
+    "N812", # case of import alias
     "PD002", # no inplace
     "PD015", # no pd.merge
     "PD901", # forbidding "df" as a variable name
@@ -261,5 +262,6 @@ mypy-init-return = true
 ignore-names = ["C"]
 
 [tool.ruff.pylint]
-max-args = 10
-max-statements = 60
+max-args = 10  # default: 5
+max-statements = 60  # default: 50
+max-branches = 13  # default: 12

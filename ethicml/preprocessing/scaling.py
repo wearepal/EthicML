@@ -19,19 +19,19 @@ Self = TypeVar("Self", bound="ScalerType")
 class ScalerType(Protocol):
     """Protocol describing a scaler class."""
 
-    def fit(self: Self, X: pd.DataFrame) -> Self:
+    def fit(self: Self, X: pd.DataFrame) -> Self:  # noqa: N803
         """Fit parameters of the transformation to the given data."""
         ...
 
-    def fit_transform(self, X: pd.DataFrame) -> npt.NDArray:
+    def fit_transform(self, X: pd.DataFrame) -> npt.NDArray:  # noqa: N803
         """Fit parameters of the transformation to the given data and then transform."""
         ...
 
-    def inverse_transform(self, X: pd.DataFrame) -> npt.NDArray:
+    def inverse_transform(self, X: pd.DataFrame) -> npt.NDArray:  # noqa: N803
         """Invert the transformation."""
         ...
 
-    def transform(self, X: pd.DataFrame) -> npt.NDArray:
+    def transform(self, X: pd.DataFrame) -> npt.NDArray:  # noqa: N803
         """Transform the given data."""
         ...
 
