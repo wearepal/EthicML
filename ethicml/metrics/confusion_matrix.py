@@ -10,7 +10,7 @@ from sklearn.metrics import confusion_matrix as conf_mtx
 from ethicml.metrics.metric import MetricStaticName
 from ethicml.utility.data_structures import EvalTuple, Prediction
 
-__all__ = ["CfmMetric", "LabelOutOfBounds"]
+__all__ = ["CfmMetric", "LabelOutOfBoundsError"]
 
 
 @dataclass
@@ -39,7 +39,7 @@ class CfmMetric(MetricStaticName, ABC):
         conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction.hard, labels=_labels)
 
         if self.pos_class not in _labels:
-            raise LabelOutOfBounds("Positive class specified must exist in the test set")
+            raise LabelOutOfBoundsError("Positive class specified must exist in the test set")
 
         tp_idx: np.int64 = (_labels == self.pos_class).nonzero()[0].item()
         tp_idx = int(tp_idx)
@@ -51,5 +51,5 @@ class CfmMetric(MetricStaticName, ABC):
         return true_neg, false_pos, false_neg, true_pos
 
 
-class LabelOutOfBounds(Exception):
+class LabelOutOfBoundsError(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""

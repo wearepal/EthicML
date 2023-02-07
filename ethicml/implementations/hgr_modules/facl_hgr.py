@@ -45,7 +45,7 @@ def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1
     h2d = _joint_2(x, y, density, damping=damping)
     marginal_x = h2d.sum(dim=1).unsqueeze(1)
     marginal_y = h2d.sum(dim=0).unsqueeze(0)
-    Q = h2d / (torch.sqrt(marginal_x) * torch.sqrt(marginal_y))
+    Q = h2d / (torch.sqrt(marginal_x) * torch.sqrt(marginal_y))  # noqa: N806
     return torch.svd(Q)[1][1]
 
 
@@ -65,7 +65,7 @@ def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float =
     h2d = _joint_2(x, y, density, damping=damping)
     marginal_x = h2d.sum(dim=1).unsqueeze(1)
     marginal_y = h2d.sum(dim=0).unsqueeze(0)
-    Q = h2d / (torch.sqrt(marginal_x) * torch.sqrt(marginal_y))
+    Q = h2d / (torch.sqrt(marginal_x) * torch.sqrt(marginal_y))  # noqa: N806
     return (Q**2).sum(dim=[0, 1]) - 1.0
 
 
@@ -112,7 +112,7 @@ def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kd
     h3d = _joint_3(x, y, z, density, damping=damping)
     marginal_xz = h3d.sum(dim=1).unsqueeze(1)
     marginal_yz = h3d.sum(dim=0).unsqueeze(0)
-    Q = h3d / (torch.sqrt(marginal_xz) * torch.sqrt(marginal_yz))
+    Q = h3d / (torch.sqrt(marginal_xz) * torch.sqrt(marginal_yz))  # noqa: N806
     return np.array([torch.svd(Q[:, :, i])[1][1] for i in range(Q.shape[2])])
 
 
@@ -136,5 +136,5 @@ def chi_2_cond(
     h3d = _joint_3(x, y, z, density, damping=damping)
     marginal_xz = h3d.sum(dim=1).unsqueeze(1)
     marginal_yz = h3d.sum(dim=0).unsqueeze(0)
-    Q = h3d / (torch.sqrt(marginal_xz) * torch.sqrt(marginal_yz))
+    Q = h3d / (torch.sqrt(marginal_xz) * torch.sqrt(marginal_yz))  # noqa: N806
     return (Q**2).sum(dim=[0, 1]) - 1.0

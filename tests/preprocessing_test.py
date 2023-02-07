@@ -67,10 +67,10 @@ def test_prop_train_test_split():
     assert train.x.shape[0] == train.s.shape[0]
     assert train.s.shape[0] == train.y.shape[0]
 
-    NUM_SAMPLES = len(data)
-    len_default = math.floor((NUM_SAMPLES / 100) * 80)
+    num_samples = len(data)
+    len_default = math.floor((num_samples / 100) * 80)
     assert train.s.shape[0] == len_default
-    assert test.s.shape[0] == NUM_SAMPLES - len_default
+    assert test.s.shape[0] == num_samples - len_default
 
     # assert that the proportion of s=0 to s=1 has remained the same (and also test for y=0/y=1)
     assert np.count_nonzero(train.s.to_numpy() == 0) == round(
@@ -80,10 +80,10 @@ def test_prop_train_test_split():
         0.8 * np.count_nonzero(data.y.to_numpy() == 0)
     )
 
-    len_0_9 = math.floor((NUM_SAMPLES / 100) * 90)
+    len_0_9 = math.floor((num_samples / 100) * 90)
     train, test, _ = ProportionalSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
-    assert test.s.shape[0] == NUM_SAMPLES - len_0_9
+    assert test.s.shape[0] == num_samples - len_0_9
     assert np.count_nonzero(train.s.to_numpy() == 0) == approx(
         round(0.9 * np.count_nonzero(data.s.to_numpy() == 0)), abs=1
     )
@@ -91,10 +91,10 @@ def test_prop_train_test_split():
         round(0.9 * np.count_nonzero(data.y.to_numpy() == 0)), abs=1
     )
 
-    len_0_7 = math.floor((NUM_SAMPLES / 100) * 70)
+    len_0_7 = math.floor((num_samples / 100) * 70)
     train, test, _ = ProportionalSplit(train_percentage=0.7)(data, split_id=0)
     assert train.s.shape[0] == len_0_7
-    assert test.s.shape[0] == NUM_SAMPLES - len_0_7
+    assert test.s.shape[0] == num_samples - len_0_7
     assert np.count_nonzero(train.s.to_numpy() == 0) == approx(
         round(0.7 * np.count_nonzero(data.s.to_numpy() == 0)), abs=1
     )
@@ -102,26 +102,26 @@ def test_prop_train_test_split():
         round(0.7 * np.count_nonzero(data.y.to_numpy() == 0)), abs=1
     )
 
-    len_0_5 = math.floor((NUM_SAMPLES / 100) * 50)
+    len_0_5 = math.floor((num_samples / 100) * 50)
     train, test, _ = ProportionalSplit(train_percentage=0.5)(data, split_id=0)
     assert train.s.shape[0] == len_0_5
-    assert test.s.shape[0] == NUM_SAMPLES - len_0_5
+    assert test.s.shape[0] == num_samples - len_0_5
 
-    len_0_3 = math.floor((NUM_SAMPLES / 100) * 30)
+    len_0_3 = math.floor((num_samples / 100) * 30)
     train, test, _ = ProportionalSplit(train_percentage=0.3)(data, split_id=0)
     assert train.s.shape[0] == len_0_3
-    assert test.s.shape[0] == NUM_SAMPLES - len_0_3
+    assert test.s.shape[0] == num_samples - len_0_3
 
-    len_0_1 = math.floor((NUM_SAMPLES / 100) * 10)
+    len_0_1 = math.floor((num_samples / 100) * 10)
     train, test, _ = ProportionalSplit(train_percentage=0.1)(data, split_id=0)
     assert train.s.shape[0] == len_0_1
-    assert test.s.shape[0] == NUM_SAMPLES - len_0_1
+    assert test.s.shape[0] == num_samples - len_0_1
 
-    len_0_0 = math.floor((NUM_SAMPLES / 100) * 0)
+    len_0_0 = math.floor((num_samples / 100) * 0)
     train, test, _ = ProportionalSplit(train_percentage=0.0)(data, split_id=0)
     assert train.s.shape[0] == len_0_0
     assert train.name == "Toy - Train"
-    assert test.s.shape[0] == NUM_SAMPLES - len_0_0
+    assert test.s.shape[0] == num_samples - len_0_0
     assert test.name == "Toy - Test"
 
 

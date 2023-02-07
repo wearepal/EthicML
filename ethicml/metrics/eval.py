@@ -2,7 +2,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Sequence
 
-from ethicml.metrics.per_sensitive_attribute import MetricNotApplicable, PerSens, metric_per_sens
+from ethicml.metrics.per_sensitive_attribute import (
+    MetricNotApplicableError,
+    PerSens,
+    metric_per_sens,
+)
 from ethicml.utility.data_structures import EvalTuple, Prediction
 
 if TYPE_CHECKING:  # the following imports are only needed for type checking
@@ -60,7 +64,7 @@ def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
     """Check if the given metrics allow application per sensitive attribute."""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
-            raise MetricNotApplicable(
+            raise MetricNotApplicableError(
                 f"Metric {metric.name} is not applicable per sensitive "
                 "attribute, apply to whole dataset instead"
             )

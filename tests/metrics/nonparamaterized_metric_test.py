@@ -18,8 +18,8 @@ from ethicml.metrics import (
     Accuracy,
     BCR,
     CV,
-    LabelOutOfBounds,
-    MetricNotApplicable,
+    LabelOutOfBoundsError,
+    MetricNotApplicableError,
     NMI,
     NPV,
     PerSens,
@@ -103,7 +103,7 @@ def test_use_appropriate_metric(toy_train_val: TrainValPair):
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
-    with pytest.raises(MetricNotApplicable):
+    with pytest.raises(MetricNotApplicableError):
         metric_per_sens(predictions, test, CV())
 
 
@@ -252,7 +252,7 @@ def test_nb_tpr():
     tpr_score = TPR(pos_class=4).score(predictions, test)
     assert tpr_score == 0.0
 
-    with pytest.raises(LabelOutOfBounds):
+    with pytest.raises(LabelOutOfBoundsError):
         _ = TPR(pos_class=5).score(predictions, test)
 
     accs = metric_per_sens(predictions, test, TPR())
@@ -277,7 +277,7 @@ def test_nb_tpr():
     tpr_score = TPR(pos_class=4).score(predictions, test)
     assert tpr_score == 0.0
 
-    with pytest.raises(LabelOutOfBounds):
+    with pytest.raises(LabelOutOfBoundsError):
         _ = TPR(pos_class=5).score(predictions, test)
 
     tprs = metric_per_sens(predictions, test, TPR())
@@ -305,7 +305,7 @@ def test_nb_tnr():
     tnr_score = TNR(pos_class=4).score(predictions, test)
     assert tnr_score == 1.0
 
-    with pytest.raises(LabelOutOfBounds):
+    with pytest.raises(LabelOutOfBoundsError):
         _ = TNR(pos_class=5).score(predictions, test)
 
     accs = metric_per_sens(predictions, test, TNR())
@@ -330,7 +330,7 @@ def test_nb_tnr():
     tnr_score = TNR(pos_class=4).score(predictions, test)
     assert tnr_score == approx(0.88, abs=0.01)
 
-    with pytest.raises(LabelOutOfBounds):
+    with pytest.raises(LabelOutOfBoundsError):
         _ = TNR(pos_class=5).score(predictions, test)
 
     tnrs = metric_per_sens(predictions, test, TNR())

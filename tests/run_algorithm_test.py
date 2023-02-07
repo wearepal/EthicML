@@ -213,7 +213,7 @@ def test_run_alg_suite_wrong_metrics():
     inprocess_models: List[models.InAlgorithm] = [models.SVM(kernel=KernelType.linear), models.LR()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR(), metrics.CV()]
-    with pytest.raises(metrics.MetricNotApplicable):
+    with pytest.raises(metrics.MetricNotApplicableError):
         evaluate_models(
             datasets=datasets,
             preprocess_models=preprocess_models,
