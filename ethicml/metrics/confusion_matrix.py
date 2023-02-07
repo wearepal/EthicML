@@ -30,7 +30,7 @@ class CfmMetric(MetricStaticName, ABC):
         :param prediction: The predictions.
         :param actual: The actual labels.
         :returns: The 4 entries of the confusion matrix as a 4-tuple.
-        :raises LabelOutOfBounds: If the class labels are not as expected.
+        :raises LabelOutOfBoundsError: If the class labels are not as expected.
         """
         actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)
         _labels: np.ndarray = np.unique(actual_y) if self.labels is None else np.array(self.labels)
