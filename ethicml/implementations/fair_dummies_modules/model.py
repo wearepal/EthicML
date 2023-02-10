@@ -1,7 +1,8 @@
 """FairDummies Models."""
 from __future__ import annotations
 import random
-from typing import Callable, TypeVar
+from typing import Callable
+from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
@@ -416,9 +417,6 @@ def seed_worker(worker_id: int) -> None:  # noqa: ARG001
     random.seed(worker_seed)
 
 
-Self = TypeVar("Self", bound="EquiClassLearner")
-
-
 class EquiClassLearner:
     """Classification model."""
 
@@ -482,7 +480,7 @@ class EquiClassLearner:
 
         self.scaler = StandardScaler()
 
-    def fit(self: Self, train: DataTuple, seed: int) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
         p_success, dummy = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())

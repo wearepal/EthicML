@@ -4,8 +4,7 @@ Original implementation is modified to handle regression and multi-class
 classification problems
 """
 from __future__ import annotations
-from typing import TypeVar
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -188,9 +187,6 @@ def pretrain_regressor(
     return clf
 
 
-SelfC = TypeVar("SelfC", bound="AdvDebiasingClassLearner")
-
-
 class AdvDebiasingClassLearner:
     """Adversarial Debiasing classifier."""
 
@@ -236,7 +232,7 @@ class AdvDebiasingClassLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self: SelfC, train: DataTuple, seed: int) -> SelfC:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
@@ -281,9 +277,6 @@ class AdvDebiasingClassLearner:
         yhat = yhat.detach().numpy()
 
         return yhat
-
-
-SelfR = TypeVar("SelfR", bound="AdvDebiasingRegLearner")
 
 
 class AdvDebiasingRegLearner:
@@ -331,7 +324,7 @@ class AdvDebiasingRegLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self: SelfR, train: DataTuple, seed: int) -> SelfR:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
 

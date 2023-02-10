@@ -1,5 +1,6 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 from __future__ import annotations
+from typing import NamedTuple
 
 import torch
 from torch import Tensor
@@ -27,6 +28,13 @@ def kullback_leibler(
     )
 
 
+class _SupervisedParams(NamedTuple):
+    z2_mu: Tensor
+    z2_logvar: Tensor
+    z1_dec_mu: Tensor
+    z1_dec_logvar: Tensor
+
+
 def loss_function(
     flags: VfaeArgs,
     z1_triplet: LvInfo,
@@ -38,11 +46,15 @@ def loss_function(
 ) -> tuple[Tensor, Tensor, Tensor, Tensor]:
     """Loss function for VFAE, with prediction loss, reconstruction loss, KL Divergence and MMD."""
     z1, z1_mu, z1_logvar = z1_triplet
+    supparams: _SupervisedParams | None = None
     if flags["supervised"]:
         assert z2_triplet is not None
         assert z1_d_triplet is not None
         _, z2_mu, z2_logvar = z2_triplet
         _, z1_dec_mu, z1_dec_logvar = z1_d_triplet
+        supparams = _SupervisedParams(
+            z2_mu=z2_mu, z2_logvar=z2_logvar, z1_dec_mu=z1_dec_mu, z1_dec_logvar=z1_dec_logvar
+        )
     x, s, y = data_triplet
     s = s.view(-1, 1)
     y = y.view(-1, 1)
@@ -71,9 +83,9 @@ def loss_function(
 
     mmd_loss = quadratic_time_mmd(z1_s0, z1_s1, 2.5)
 
-    if flags["supervised"]:
-        first_kl = kullback_leibler(z2_mu, z2_logvar)
-        second_kl = kullback_leibler(z1_dec_mu, z1_dec_logvar, z1_mu, z1_logvar)
+    if supparams is not None:
+        first_kl = kullback_leibler(supparams.z2_mu, supparams.z2_logvar)
+        second_kl = kullback_leibler(supparams.z1_dec_mu, supparams.z1_dec_logvar, z1_mu, z1_logvar)
         kl_div = first_kl + second_kl
         assert y_pred is not None
         prediction_loss = F.binary_cross_entropy(y_pred, y, reduction="sum")

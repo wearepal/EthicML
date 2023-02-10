@@ -1,6 +1,7 @@
 """Scale a dataset."""
 from __future__ import annotations
-from typing import TYPE_CHECKING, Protocol, TypeVar
+from typing import TYPE_CHECKING, Protocol
+from typing_extensions import Self
 
 import pandas as pd
 
@@ -13,13 +14,10 @@ if TYPE_CHECKING:
 __all__ = ["ScalerType", "scale_continuous"]
 
 
-Self = TypeVar("Self", bound="ScalerType")
-
-
 class ScalerType(Protocol):
     """Protocol describing a scaler class."""
 
-    def fit(self: Self, X: pd.DataFrame) -> Self:  # noqa: N803
+    def fit(self, X: pd.DataFrame) -> Self:  # noqa: N803
         """Fit parameters of the transformation to the given data."""
         ...
 
