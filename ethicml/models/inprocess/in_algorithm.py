@@ -2,18 +2,13 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import asdict
-from typing import ClassVar, TypeVar, final
+from typing import ClassVar, final
+from typing_extensions import Self
 
 from ethicml.models.algorithm_base import Algorithm
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
-__all__ = [
-    "InAlgorithm",
-    "InAlgorithmDC",
-    "InAlgorithmNoParams",
-]
-
-_I = TypeVar("_I", bound="InAlgorithm")
+__all__ = ["InAlgorithm", "InAlgorithmDC", "InAlgorithmNoParams"]
 
 
 class InAlgorithm(Algorithm, ABC):
@@ -22,7 +17,7 @@ class InAlgorithm(Algorithm, ABC):
     is_fairness_algo: ClassVar[bool] = True  # should be overwritten by subclasses
 
     @abstractmethod
-    def fit(self: _I, train: DataTuple, seed: int = 888) -> _I:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         """Fit Algorithm on the given data.
 
         :param train: Data tuple of the training data.

@@ -1,7 +1,7 @@
 """Abstract Base Class of all post-processing algorithms in the framework."""
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import TypeVar
+from typing_extensions import Self
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -9,14 +9,12 @@ from ..algorithm_base import Algorithm
 
 __all__ = ["PostAlgorithm"]
 
-_PA = TypeVar("_PA", bound="PostAlgorithm")
-
 
 class PostAlgorithm(Algorithm, ABC):
     """Abstract Base Class for all algorithms that do post-processing."""
 
     @abstractmethod
-    def fit(self: _PA, train_predictions: Prediction, train: DataTuple) -> _PA:
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> Self:
         """Run Algorithm on the given data.
 
         :param train_predictions: Predictions on a training set.

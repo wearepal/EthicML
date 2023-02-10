@@ -21,7 +21,7 @@ from typing import (
     Union,
     final,
 )
-from typing_extensions import TypeAlias
+from typing_extensions import Self, TypeAlias
 
 import numpy as np
 from numpy import typing as npt
@@ -66,9 +66,6 @@ class PandasIndex(Enum):
     MODEL = "model"
 
 
-_S = TypeVar("_S", bound="SubsetMixin")
-
-
 class SubsetMixin(ABC):
     """Mixin that provides methods for getting subsets."""
 
@@ -77,7 +74,7 @@ class SubsetMixin(ABC):
     s_column: str
 
     @abstractmethod
-    def replace_data(self: _S, data: pd.DataFrame, name: str | None = None) -> _S:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> Self:
         """Make a copy of the container but change the underlying data."""
 
     @property
@@ -87,7 +84,7 @@ class SubsetMixin(ABC):
         return self.data[self.s_column]
 
     @final
-    def get_n_samples(self: _S, num: int = 500) -> _S:
+    def get_n_samples(self, num: int = 500) -> Self:
         """Get the first elements of the dataset.
 
         :param num: How many samples to take for subset. (Default: 500)
@@ -96,7 +93,7 @@ class SubsetMixin(ABC):
         return self.replace_data(data=self.data.iloc[:num])
 
     @final
-    def get_s_subset(self: _S, s: int) -> _S:
+    def get_s_subset(self, s: int) -> Self:
         """Return a subset of the DataTuple where S=s."""
         return self.replace_data(data=self.data.loc[self.s == s])
 

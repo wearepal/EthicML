@@ -2,6 +2,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TypeVar
+from typing_extensions import Self
 
 from ethicml.models.algorithm_base import Algorithm
 from ethicml.utility import DataTuple, SubgroupTuple
@@ -9,14 +10,13 @@ from ethicml.utility import DataTuple, SubgroupTuple
 __all__ = ["PreAlgorithm"]
 
 T = TypeVar("T", DataTuple, SubgroupTuple)
-_PA = TypeVar("_PA", bound="PreAlgorithm")
 
 
 class PreAlgorithm(Algorithm, ABC):
     """Abstract Base Class for all algorithms that do pre-processing."""
 
     @abstractmethod
-    def fit(self: _PA, train: DataTuple, seed: int = 888) -> tuple[_PA, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Self, DataTuple]:
         """Fit transformer on the given data.
 
         :param train: Data tuple of the training data.

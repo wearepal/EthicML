@@ -6,8 +6,8 @@ from functools import cached_property
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory, gettempdir
-from typing import Any, Literal, Mapping, TypedDict, TypeVar, Union, final
-from typing_extensions import TypeAlias
+from typing import Any, Literal, Mapping, TypedDict, Union, final
+from typing_extensions import Self, TypeAlias
 import uuid
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
@@ -49,9 +49,6 @@ class InAlgoPredArgs(TypedDict):
 InAlgoArgs: TypeAlias = Union[InAlgoFitArgs, InAlgoPredArgs, InAlgoRunArgs]
 
 
-_IS = TypeVar("_IS", bound="InAlgorithmSubprocess")
-
-
 @dataclass
 class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
     """In-Algorithm that uses a subprocess to run.
@@ -68,7 +65,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         return self.dir.resolve(strict=True) / f"model_{name}_{uuid.uuid4()}.joblib"
 
     @final
-    def fit(self: _IS, train: DataTuple, seed: int = 888) -> _IS:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         """Fit Algorithm in a subprocess on the given data.
 
         :param train: Data tuple of the training data.
