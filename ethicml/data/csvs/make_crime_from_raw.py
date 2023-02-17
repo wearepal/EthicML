@@ -160,7 +160,7 @@ def run_generate_crime() -> None:
     data.columns = pd.Index(columns)
 
     for col in data.columns:
-        if data[col].dtype == np.object:  # type: ignore[attr-defined]
+        if data[col].dtype == object:  # type: ignore[attr-defined]
             data[col] = data[col].str.strip()
 
     # Drop NaNs
