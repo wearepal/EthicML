@@ -19,6 +19,7 @@ on:
     - LICENSE
     - make_release.sh
     - CITATION.cff
+  merge_group:
 
 
 jobs:
