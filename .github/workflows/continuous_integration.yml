@@ -40,10 +40,10 @@ jobs:
         pip install ruff
     - name: Lint with ruff
       run: |
-        ruff ethicml
+        ruff check --format=github ethicml
     - name: Lint with ruff
       run: |
-        ruff tests
+        ruff check --format=github tests
 
   format_with_black:
 

@@ -57,7 +57,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.243"
+ruff = "0.0.247"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -206,6 +206,7 @@ select = [
     "F", # pyflakes
     "I", # isort
     "N", # pep8-naming
+    "NPY", # numpy
     "PD", # pandas-vet
     "PLC", # pylint convention
     "PLE", # pylint error
