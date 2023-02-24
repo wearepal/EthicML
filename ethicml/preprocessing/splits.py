@@ -76,6 +76,8 @@ def train_test_split(
     :param num_test_samples: Number of samples to make the test set. Must be ``None`` if
         ``train_percentage`` given. (Default: None)
     :returns: train split and test split
+    :raises ValueError: If either none or both of ``num_test_samples`` and ``train_percentage`` are
+        passed in as arguments.
     """
     # save the column names for later
     x_columns: pd.Index = data.x.columns
