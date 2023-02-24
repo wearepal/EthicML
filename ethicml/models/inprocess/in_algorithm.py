@@ -2,11 +2,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import asdict
-from typing import ClassVar, final
+from typing import TYPE_CHECKING, ClassVar, final
 from typing_extensions import Self
 
 from ethicml.models.algorithm_base import Algorithm
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
+
+if TYPE_CHECKING:
+    from _typeshed import DataclassInstance
 
 __all__ = ["InAlgorithm", "InAlgorithmDC", "InAlgorithmNoParams"]
 
@@ -77,6 +80,6 @@ class InAlgorithmDC(InAlgorithm, ABC):
 
     @property
     @final
-    def hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self: DataclassInstance) -> HyperParamType:
         """Return list of hyperparameters."""
         return asdict(self)
