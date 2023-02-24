@@ -57,7 +57,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.247"
+ruff = "0.0.252"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -227,6 +227,7 @@ ignore = [
     "D208", # over indentation
     "D401", # imperative mood
     "N812", # case of import alias
+    "NPY002", # no global random state
     "PD002", # no inplace
     "PD015", # no pd.merge
     "PD901", # forbidding "df" as a variable name
@@ -234,6 +235,7 @@ ignore = [
     "PLR2004", # magic number comparison
     "PT004", # fixture naming
     "PT013", # don't allow `from pytest import ...`
+    "PLW2901", # overwriting loop variables
     "TID252", # relative imports
 ]
 target-version = "py38"
