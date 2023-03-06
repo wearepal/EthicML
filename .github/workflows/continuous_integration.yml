@@ -160,6 +160,7 @@ jobs:
       #  ---------  install dependencies  --------
       #----------------------------------------------
       - name: Install dependencies
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           # keep the following in sync with `test_full_dependencies`!
           poetry env use 3.8
@@ -169,6 +170,7 @@ jobs:
       #  -----           Run MyPy             -----
       #----------------------------------------------
       - name: Type check with mypy
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           poetry run python run_mypy.py
           poetry run python run_mypy_tests.py
@@ -177,5 +179,6 @@ jobs:
       #  -----           Run Tests            -----
       #----------------------------------------------
       - name: Test with pytest
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           poetry run python -m pytest -vv -n 2 --dist loadgroup --cov=ethicml --cov-fail-under=80  tests/
