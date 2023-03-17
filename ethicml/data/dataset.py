@@ -9,7 +9,7 @@ from typing import ClassVar, Sequence, TypedDict, final
 from typing_extensions import override
 
 import pandas as pd
-from ranzen import StrEnum
+from ranzen.misc import StrEnum
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot

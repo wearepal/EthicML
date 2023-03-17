@@ -26,7 +26,7 @@ from typing_extensions import Self, TypeAlias
 import numpy as np
 from numpy import typing as npt
 import pandas as pd
-from ranzen import StrEnum
+from ranzen.misc import StrEnum
 
 __all__ = [
     "ClassifierType",

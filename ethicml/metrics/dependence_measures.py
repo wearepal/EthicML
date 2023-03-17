@@ -7,7 +7,7 @@ from typing import ClassVar
 from typing_extensions import override
 
 import numpy as np
-from ranzen import StrEnum
+from ranzen.misc import StrEnum
 from sklearn.metrics import normalized_mutual_info_score
 
 from ethicml.utility import EvalTuple, Prediction
