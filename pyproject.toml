@@ -13,6 +13,7 @@ classifiers=[
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
     "Typing :: Typed",
@@ -21,7 +22,7 @@ keywords=["ml", "fairness"]
 repository="https://github.com/wearepal/EthicML"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.8,<3.12"
 cloudpickle = { version = "^2.0.0", optional= true }
 fairlearn = { version = "0.7.0", optional = true }
 folktables = { version = "^0.0.11", optional = true }
@@ -29,8 +30,8 @@ gitdb2 = { version = "4.0.2", optional = true }
 GitPython = { version = "^3.1.20", optional = true }
 joblib = "^1.1.0"
 matplotlib = { version = ">=3.0.2", optional = true }
-numpy = ">=1.20.1"
-pandas = "^1.0"
+numpy = ">=1.23.2"
+pandas = "^1.5.0"
 pdm = { version = "^2.4.0", optional = true }
 ranzen = ">=2.0.1,<3.0.0"
 scikit-learn = { version = ">=0.20.1", optional = true }
@@ -38,7 +39,7 @@ scipy = { version = "^1.7.2", optional = true }
 seaborn = { version = ">=0.9.0", optional = true }
 smmap2 = { version = "3.0.1", optional = true }
 teext = "^0.1.3"
-typing-extensions = ">=4.4"
+typing-extensions = ">=4.5"
 
 [tool.poetry.extras]
 metrics = ["scikit-learn"]
@@ -57,7 +58,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.252"
+ruff = "0.0.256"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -215,6 +216,7 @@ select = [
     "PT", # pytest-style
     "PTH", # flake8-use-pathlib
     "SIM", # flake8-simplify
+    # "TCH", # flake8-type-checking
     # "UP", # pyupgrade
     "W",
 ]
@@ -261,6 +263,9 @@ classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "TPR", "TNR", "CV", "NMI",
 
 [tool.ruff.flake8-annotations]
 mypy-init-return = true
+
+[tool.ruff.flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions"]
 
 [tool.ruff.pep8-naming]
 ignore-names = ["C"]
