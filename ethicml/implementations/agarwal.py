@@ -51,7 +51,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     fairness_class: UtilityParity
     fairness_type = FairnessType(args["fairness"])
     classifier_type = ClassifierType(args["classifier"])
-    kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
+    kernel_type = None if not args["kernel"] else KernelType[args["kernel"]]
 
     if fairness_type is FairnessType.dp:
         fairness_class = DemographicParity(difference_bound=args["eps"])

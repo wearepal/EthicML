@@ -7,7 +7,7 @@ from typing import Optional
 from typing_extensions import override
 
 import pandas as pd
-from ranzen import StrEnum
+from ranzen.misc import StrEnum
 
 from ethicml.models.inprocess.logistic_regression import LR
 from ethicml.utility import DataTuple, SoftPrediction
