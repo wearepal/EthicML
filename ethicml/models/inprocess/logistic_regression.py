@@ -55,7 +55,7 @@ class LR(InAlgorithmDC):
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
         return SoftPrediction(
-            soft=clf.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            soft=clf.predict_proba(test.x.to_numpy()),
             info=self.hyperparameters,
         )
 
@@ -88,9 +88,9 @@ class LRCV(InAlgorithmDC):
     @override
     def predict(self, test: TestTuple) -> Prediction:
         params = self.hyperparameters
-        params["C"] = self.clf.C_[0]  # type: ignore[attr-defined]
+        params["C"] = self.clf.C_[0]
         return SoftPrediction(
-            soft=self.clf.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            soft=self.clf.predict_proba(test.x.to_numpy()),
             info=params,
         )
 
@@ -103,8 +103,8 @@ class LRCV(InAlgorithmDC):
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
         params = self.hyperparameters
-        params["C"] = clf.C_[0]  # type: ignore[attr-defined]
+        params["C"] = clf.C_[0]
         return SoftPrediction(
-            soft=clf.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            soft=clf.predict_proba(test.x.to_numpy()),
             info=params,
         )

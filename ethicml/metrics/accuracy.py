@@ -30,7 +30,7 @@ class SklearnMetric(MetricStaticName, ABC):
 class Accuracy(SklearnMetric):
     """Classification accuracy."""
 
-    sklearn_metric = (accuracy_score,)
+    sklearn_metric = (accuracy_score,)  # type: ignore[assignment]
     _name: ClassVar[str] = "Accuracy"
 
 
@@ -38,7 +38,7 @@ class Accuracy(SklearnMetric):
 class F1(SklearnMetric):
     """F1 score: harmonic mean of precision and recall."""
 
-    sklearn_metric = (f1_score,)
+    sklearn_metric = (f1_score,)  # type: ignore[assignment]
     _name: ClassVar[str] = "F1"
 
 
@@ -46,7 +46,7 @@ class F1(SklearnMetric):
 class RobustAccuracy(SklearnMetric):
     """Minimum Classification accuracy across S-groups."""
 
-    sklearn_metric = (accuracy_score,)
+    sklearn_metric = (accuracy_score,)  # type: ignore[assignment]
     apply_per_sensitive: ClassVar[bool] = False
     _name: ClassVar[str] = "Robust Accuracy"
 
