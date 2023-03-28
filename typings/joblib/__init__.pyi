@@ -13,7 +13,7 @@ from typing import (
     Union,
     overload,
 )
-from typing_extensions import ParamSpec, TypeAlias
+from typing_extensions import ParamSpec, Self, TypeAlias
 
 _CompressLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -28,8 +28,6 @@ def load(filename: Path) -> Any: ...
 
 _T = TypeVar("_T")
 
-_TP = TypeVar("_TP", bound=Parallel)
-
 class Parallel:
     def __init__(
         self,
@@ -43,7 +41,7 @@ class Parallel:
     ): ...
     def __call__(self, iterable: Iterable[_DelayedResult[_T]]) -> List[_T]: ...
     def print_progress(self) -> None: ...
-    def __enter__(self: _TP) -> _TP: ...
+    def __enter__(self) -> Self: ...
     @overload
     def __exit__(self, exc_type: None, exc_val: None, exc_tb: None) -> None: ...
     @overload

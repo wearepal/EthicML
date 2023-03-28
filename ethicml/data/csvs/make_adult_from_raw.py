@@ -36,7 +36,7 @@ def run_generate_adult() -> None:
     all_data = pd.concat([train, test], axis=0)
 
     for col in all_data.columns:
-        if all_data[col].dtype == np.object:  # type: ignore[attr-defined]
+        if all_data[col].dtype == object:
             all_data[col] = all_data[col].str.strip()
 
     # Replace full stop in the label of the test set

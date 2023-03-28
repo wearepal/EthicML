@@ -76,29 +76,28 @@ def train_test_split(
     :param num_test_samples: Number of samples to make the test set. Must be ``None`` if
         ``train_percentage`` given. (Default: None)
     :returns: train split and test split
+    :raises ValueError: If either none or both of ``num_test_samples`` and ``train_percentage`` are
+        passed in as arguments.
     """
-    if train_percentage is None:
-        assert num_test_samples is not None
-    if num_test_samples is None:
-        assert train_percentage is not None
-
-    # ======================== concatenate the datatuple to one dataframe =========================
     # save the column names for later
     x_columns: pd.Index = data.x.columns
 
-    all_data: pd.DataFrame = data.data
+    # the following line is obviously superfluous, but if we remove it, the tests will fail...
+    all_data = shuffle_df(data.data, random_state=1)
 
-    all_data = shuffle_df(all_data, random_state=1)
-
-    # ============================== split the concatenated dataframe =============================
+    # ============================= split the dataframe with all data =============================
     # permute
     all_data = shuffle_df(all_data, random_state=random_seed)
 
     # split
     if train_percentage is not None:
         train_len = int(train_percentage * len(all_data))
-    else:
+        if num_test_samples is not None:
+            raise ValueError("can't supply both `train_percentage` and `num_test_samples`")
+    elif num_test_samples is not None:
         train_len = len(all_data) - num_test_samples
+    else:
+        raise ValueError("must supply one of `train_percentage` or `num_test_samples`")
     all_data_train = all_data.iloc[:train_len]
     all_data_test = all_data.iloc[train_len:]
 
@@ -117,8 +116,8 @@ def train_test_split(
     pd.testing.assert_index_equal(train.x.columns, x_columns)
     pd.testing.assert_index_equal(test.x.columns, x_columns)
 
-    assert isinstance(train.s, pd.Series)
-    assert isinstance(test.s, pd.Series)
+    assert isinstance(train.s, pd.Series)  # type: ignore[unreachable]
+    assert isinstance(test.s, pd.Series)  # type: ignore[unreachable]
     assert train.s.name == data.s_column
     assert test.s.name == data.s_column
 

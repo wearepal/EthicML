@@ -12,10 +12,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from ethicml.utility.data_structures import ModelType
+from ethicml.implementations.pytorch_common import (
+    DeepModel,
+    DeepRegModel,
+    LinearModel,
+    PandasDataSet,
+)
+from ethicml.utility.data_structures import DataTuple, ModelType
 
-from ... import DataTuple
-from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, PandasDataSet
 from .utility_functions import density_estimation
 
 
@@ -102,7 +106,7 @@ def pretrain_adversary(
     dis: nn.Module,
     *,
     model: nn.Module,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     criterion: Callable[[torch.Tensor, torch.Tensor], torch.Tensor],
     lambdas: torch.Tensor,
@@ -126,7 +130,7 @@ def pretrain_adversary(
 def pretrain_classifier(
     model: nn.Module,
     *,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     criterion: nn.Module,
 ) -> nn.Module:
@@ -143,7 +147,7 @@ def pretrain_classifier(
 def pretrain_regressor(
     model: nn.Module,
     *,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     criterion: nn.Module,
 ) -> nn.Module:
@@ -178,7 +182,7 @@ def train_classifier(
     model: nn.Module,
     *,
     dis: nn.Module,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     pred_loss: nn.Module,
     dis_loss: nn.Module,
     clf_optimizer: torch.optim.Optimizer,
@@ -247,14 +251,9 @@ def inner_train_adversary_regression(
     y: torch.Tensor,
     a: torch.Tensor,
     at: torch.Tensor,
-    pred_loss: nn.Module,
     dis_loss: nn.Module,
-    clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-    second_moment_scaling: torch.Tensor,
-    dis_steps: int,
-    loss_steps: int,
 ) -> nn.Module:
     """Inner train."""
     yhat = model(x)
@@ -283,11 +282,8 @@ def inner_train_model_regression(
     pred_loss: nn.Module,
     dis_loss: nn.Module,
     clf_optimizer: torch.optim.Optimizer,
-    adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
     second_moment_scaling: torch.Tensor,
-    dis_steps: int,
-    loss_steps: int,
 ) -> nn.Module:
     """Inner train."""
     yhat = model(x)
@@ -340,14 +336,9 @@ def train_regressor_fast_loader(
             y=y,
             a=a,
             at=at,
-            pred_loss=pred_loss,
             dis_loss=dis_loss,
-            clf_optimizer=clf_optimizer,
             adv_optimizer=adv_optimizer,
             lambdas=lambdas,
-            second_moment_scaling=second_moment_scaling,
-            dis_steps=dis_steps,
-            loss_steps=loss_steps,
         )
 
     # Train predictor
@@ -362,11 +353,8 @@ def train_regressor_fast_loader(
             pred_loss=pred_loss,
             dis_loss=dis_loss,
             clf_optimizer=clf_optimizer,
-            adv_optimizer=adv_optimizer,
             lambdas=lambdas,
             second_moment_scaling=second_moment_scaling,
-            dis_steps=dis_steps,
-            loss_steps=loss_steps,
         )
 
     return model, dis
@@ -376,7 +364,7 @@ def train_regressor(
     model: nn.Module,
     *,
     dis: nn.Module,
-    data_loader: torch.utils.data.DataLoader,
+    data_loader: DataLoader,
     pred_loss: nn.Module,
     dis_loss: nn.Module,
     clf_optimizer: torch.optim.Optimizer,
@@ -397,14 +385,9 @@ def train_regressor(
                 y=y,
                 a=a,
                 at=at,
-                pred_loss=pred_loss,
                 dis_loss=dis_loss,
-                clf_optimizer=clf_optimizer,
                 adv_optimizer=adv_optimizer,
                 lambdas=lambdas,
-                second_moment_scaling=second_moment_scaling,
-                dis_steps=dis_steps,
-                loss_steps=loss_steps,
             )
 
     # Train predictor
@@ -420,17 +403,14 @@ def train_regressor(
                 pred_loss=pred_loss,
                 dis_loss=dis_loss,
                 clf_optimizer=clf_optimizer,
-                adv_optimizer=adv_optimizer,
                 lambdas=lambdas,
                 second_moment_scaling=second_moment_scaling,
-                dis_steps=dis_steps,
-                loss_steps=loss_steps,
             )
 
     return model, dis
 
 
-def seed_worker(worker_id):
+def seed_worker(worker_id: int) -> None:  # noqa: ARG001
     """Seed the Dataloader worker."""
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
@@ -442,6 +422,7 @@ class EquiClassLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         pretrain_pred_epochs: int,
         pretrain_dis_epochs: int,
@@ -499,7 +480,7 @@ class EquiClassLearner:
 
         self.scaler = StandardScaler()
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
         p_success, dummy = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())
@@ -603,6 +584,7 @@ class EquiRegLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         pretrain_pred_epochs: int,
         pretrain_dis_epochs: int,

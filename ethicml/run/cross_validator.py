@@ -149,7 +149,7 @@ class CVResults:
 
 class _ResultsAccumulator:
     def __init__(self, measures: list[Metric] | None = None):
-        self._measures = [Accuracy(), AbsCV()] if measures is None else measures
+        self._measures: list[Metric] = [Accuracy(), AbsCV()] if measures is None else measures
         self.results: list[ResultTuple] = []
 
     def __call__(

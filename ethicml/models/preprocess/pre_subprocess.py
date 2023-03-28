@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Literal, Mapping, TypedDict, TypeVar, Union, final
-from typing_extensions import TypeAlias
+from typing_extensions import Self, TypeAlias
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
@@ -49,7 +49,6 @@ class PreAlgoTformArgs(TypedDict):
 
 
 PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
-_P = TypeVar("_P", bound="PreAlgorithmSubprocess")
 
 
 @dataclass
@@ -69,7 +68,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         return self.dir.resolve(strict=True) / f"model_{self.name}.joblib"
 
     @final
-    def fit(self: _P, train: DataTuple, seed: int = 888) -> tuple[_P, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Self, DataTuple]:
         """Fit transformer in a subprocess on the given data.
 
         :param train: Data tuple of the training data.

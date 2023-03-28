@@ -83,7 +83,7 @@ def make_dataset_and_loader(
 ) -> tuple[CustomDataset, torch.utils.data.DataLoader]:
     """Given a datatuple, create a dataset and a corresponding dataloader."""
 
-    def seed_worker(worker_id):
+    def seed_worker(worker_id):  # noqa: ARG001
         worker_seed = torch.initial_seed() % 2**32
         np.random.seed(worker_seed)
         random.seed(worker_seed)

@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import random
 import sys
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Generator, Union
 
 from joblib import dump, load
 import numpy as np
@@ -26,16 +26,17 @@ from ethicml.utility import (
 )
 
 if TYPE_CHECKING:
-    from fairlearn.reductions import ExponentiatedGradient
+    from fairlearn.reductions import ExponentiatedGradient  # pyright: ignore
 
     from ethicml.models.inprocess.agarwal_reductions import AgarwalArgs
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.shared import LinearModel
 
 
 def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
     """Fit a model."""
     try:
-        from fairlearn.reductions import (
+        from fairlearn.reductions import (  # pyright: ignore
             DemographicParity,
             EqualizedOdds,
             ExponentiatedGradient,
@@ -50,13 +51,14 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     fairness_class: UtilityParity
     fairness_type = FairnessType(args["fairness"])
     classifier_type = ClassifierType(args["classifier"])
-    kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
+    kernel_type = None if not args["kernel"] else KernelType[args["kernel"]]
 
     if fairness_type is FairnessType.dp:
         fairness_class = DemographicParity(difference_bound=args["eps"])
     else:
         fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
+    model: Union[LinearModel, GradientBoostingClassifier]
     if classifier_type is ClassifierType.svm:
         assert kernel_type is not None
         model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
@@ -79,7 +81,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
     min_class_label = train.y.min()
-    exponentiated_gradient.min_class_label = min_class_label
+    exponentiated_gradient.min_class_label = min_class_label  # pyright: ignore
 
     return exponentiated_gradient
 
@@ -90,7 +92,7 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
     if (min_val := preds["preds"].min()) != preds["preds"].max():
-        preds = preds.replace(min_val, exponentiated_gradient.min_class_label)
+        preds = preds.replace(min_val, exponentiated_gradient.min_class_label)  # pyright: ignore
     return preds
 
 
@@ -105,7 +107,7 @@ def train_and_predict(
 @contextlib.contextmanager
 def working_dir(root: Path) -> Generator[None, None, None]:
     """Change the working directory to the given path."""
-    curdir = os.getcwd()
+    curdir = Path.cwd()
     os.chdir(root.expanduser().resolve().parent)
     try:
         yield
@@ -118,7 +120,7 @@ def main() -> None:
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: AgarwalArgs = json.loads(sys.argv[2])
     try:
-        import cloudpickle
+        import cloudpickle  # pyright: ignore
 
         # Need to install cloudpickle for now. See https://github.com/fairlearn/fairlearn/issues/569
     except ImportError as e:

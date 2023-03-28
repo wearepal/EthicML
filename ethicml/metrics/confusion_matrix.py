@@ -10,7 +10,7 @@ from sklearn.metrics import confusion_matrix as conf_mtx
 from ethicml.metrics.metric import MetricStaticName
 from ethicml.utility.data_structures import EvalTuple, Prediction
 
-__all__ = ["CfmMetric", "LabelOutOfBounds"]
+__all__ = ["CfmMetric", "LabelOutOfBoundsError"]
 
 
 @dataclass
@@ -30,7 +30,7 @@ class CfmMetric(MetricStaticName, ABC):
         :param prediction: The predictions.
         :param actual: The actual labels.
         :returns: The 4 entries of the confusion matrix as a 4-tuple.
-        :raises LabelOutOfBounds: If the class labels are not as expected.
+        :raises LabelOutOfBoundsError: If the class labels are not as expected.
         """
         actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)
         _labels: np.ndarray = np.unique(actual_y) if self.labels is None else np.array(self.labels)
@@ -39,7 +39,7 @@ class CfmMetric(MetricStaticName, ABC):
         conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction.hard, labels=_labels)
 
         if self.pos_class not in _labels:
-            raise LabelOutOfBounds("Positive class specified must exist in the test set")
+            raise LabelOutOfBoundsError("Positive class specified must exist in the test set")
 
         tp_idx: np.int64 = (_labels == self.pos_class).nonzero()[0].item()
         tp_idx = int(tp_idx)
@@ -51,5 +51,5 @@ class CfmMetric(MetricStaticName, ABC):
         return true_neg, false_pos, false_neg, true_pos
 
 
-class LabelOutOfBounds(Exception):
+class LabelOutOfBoundsError(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""

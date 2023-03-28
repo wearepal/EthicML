@@ -48,7 +48,7 @@ def plot_cleanup():
         shutil.rmtree(res_dir)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def results_cleanup():
     """Clean up after the tests by removing the `results` directory."""
     yield None
@@ -78,7 +78,7 @@ def data_root() -> Path:
     return em.ROOT_PATH / "data" / "csvs"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def temp_dir() -> Generator[Path, None, None]:
     """Clean up after the tests by removing the `results` directory."""
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -90,7 +90,7 @@ def get_id(value):
     return getattr(value, "name", value)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def simulate_no_torch() -> Generator[None, None, None]:
     """Make it appear that Torch is not avaiable."""
     # ======= set up ========

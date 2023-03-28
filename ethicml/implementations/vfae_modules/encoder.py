@@ -9,7 +9,7 @@ class Encoder(nn.Module):
     """Encoder for VFAE."""
 
     def __init__(
-        self, enc_size: list[int], init_size: int, ld: int, activation: nn.Module = nn.ReLU()
+        self, enc_size: list[int], init_size: int, ld: int, activation: nn.Module | None = nn.ReLU()
     ) -> None:
         super().__init__()
         self.encoder = nn.Sequential()
@@ -18,14 +18,14 @@ class Encoder(nn.Module):
             self.z1_enc_logvar = nn.Linear(init_size, ld)
         else:
             self.encoder.add_module("encoder layer 0", nn.Linear(init_size, enc_size[0]))
-            if activation:
+            if activation is not None:
                 self.encoder.add_module("encoder activation 0", activation)
             self.encoder.add_module("batch norm 0", nn.BatchNorm1d(enc_size[0]))
             for k in range(len(enc_size) - 1):
                 self.encoder.add_module(
                     f"encoder layer {k+1}", nn.Linear(enc_size[k], enc_size[k + 1])
                 )
-                if activation:
+                if activation is not None:
                     self.encoder.add_module(f"encoder activation {k+1}", activation)
                 self.encoder.add_module(
                     f"encoder batch norm {k+1}", nn.BatchNorm1d(enc_size[k + 1])

@@ -1,10 +1,13 @@
 """Scale a dataset."""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
+from typing_extensions import Self
 
 import pandas as pd
 
 if TYPE_CHECKING:
+    import numpy.typing as npt
+
     from ethicml.data import Dataset
     from ethicml.utility.data_structures import DataTuple
 
@@ -14,18 +17,19 @@ __all__ = ["ScalerType", "scale_continuous"]
 class ScalerType(Protocol):
     """Protocol describing a scaler class."""
 
-    def fit(self, df: pd.DataFrame) -> None:
+    def fit(self, X: pd.DataFrame) -> Self:  # noqa: N803
         """Fit parameters of the transformation to the given data."""
+        ...
 
-    def fit_transform(self, df: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame) -> npt.NDArray:  # noqa: N803
         """Fit parameters of the transformation to the given data and then transform."""
         ...
 
-    def inverse_transform(self, df: pd.DataFrame) -> pd.DataFrame:
+    def inverse_transform(self, X: pd.DataFrame) -> npt.NDArray:  # noqa: N803
         """Invert the transformation."""
         ...
 
-    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
+    def transform(self, X: pd.DataFrame) -> npt.NDArray:  # noqa: N803
         """Transform the given data."""
         ...
 

@@ -59,7 +59,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
     if isinstance(dataset, DataTuple):
         data = CustomDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
-    elif isinstance(dataset, SubgroupTuple):
+    else:
         data = TestDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
 
@@ -69,9 +69,9 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
         for sample in loader:
             if isinstance(dataset, DataTuple):
                 _x, _s, _ = sample
-            elif isinstance(dataset, SubgroupTuple):
+            else:
                 _x, _s = sample
-            z1_mu, z1_logvar = model.encode_z1(_x, _s)
+            z1_mu, _ = model.encode_z1(_x, _s)
             # z1 = model.reparameterize(z1_mu, z1_logvar)
             post_train += z1_mu.data.tolist()
 

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import os
 from pathlib import Path
 from typing import List, Literal
+from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
@@ -12,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 import ethicml as em
 from ethicml import ClassifierType, DataTuple, KernelType, Prediction, TestTuple, metrics, models
 import ethicml.data as emda
-from ethicml.models.inprocess.in_algorithm import _I, InAlgorithmDC
+from ethicml.models.inprocess.in_algorithm import InAlgorithmDC
 from ethicml.run import evaluate_models, load_results, run_in_parallel
 
 
@@ -213,7 +214,7 @@ def test_run_alg_suite_wrong_metrics():
     inprocess_models: List[models.InAlgorithm] = [models.SVM(kernel=KernelType.linear), models.LR()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR(), metrics.CV()]
-    with pytest.raises(metrics.MetricNotApplicable):
+    with pytest.raises(metrics.MetricNotApplicableError):
         evaluate_models(
             datasets=datasets,
             preprocess_models=preprocess_models,
@@ -235,7 +236,7 @@ def test_run_alg_suite_err_handling():
     class ThrowErr(InAlgorithmDC):
         C: int = 4
 
-        def fit(self: _I, train: DataTuple, seed: int = 888) -> _I:
+        def fit(self, train: DataTuple, seed: int = 888) -> Self:
             raise NotImplementedError("This won't run.")
 
         def predict(self, test: TestTuple) -> Prediction:

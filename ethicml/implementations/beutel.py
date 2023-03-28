@@ -80,14 +80,13 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple
     set_seed(seed)
     fairness = FairnessType[flags["fairness"]]
 
-    post_process = False
+    processor: LabelBinarizer | None = None
     if flags["y_loss"] == "BCELoss()":
         try:
             assert_binary_labels(train)
         except AssertionError:
             processor = LabelBinarizer()
             train = processor.adjust(train)
-            post_process = True
 
     # By default we use 10% of the training data for validation
     train_, validation = train_test_split(train, train_percentage=1 - flags["validation_pcnt"])
@@ -136,6 +135,8 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple
                 raise NotImplementedError("Not implemented Eq. Odds yet")
             elif fairness is FairnessType.dp:
                 mask = torch.ones(s_pred.shape, dtype=torch.uint8)
+            else:
+                raise NotImplementedError(f"Unknown value: {fairness}")
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
@@ -169,8 +170,8 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple
     enc.load_state_dict(best_enc)
 
     transformed_train = encode_dataset(enc, all_train_data_loader, train)
-    if post_process:
-        transformed_train = processor.post(encode_dataset(enc, all_train_data_loader, train))
+    if processor is not None:
+        transformed_train = processor.post(transformed_train)
     return transformed_train, enc
 
 
@@ -207,6 +208,8 @@ def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
         raise NotImplementedError("Not implemented Eq. Odds yet")
     elif fairness is FairnessType.dp:
         mask = torch.ones(s_pred.shape, dtype=torch.uint8)
+    else:
+        raise NotImplementedError("Shouldn't be hit.")
     return mask
 
 

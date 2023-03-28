@@ -27,16 +27,16 @@ class Model(NamedTuple):
     w: np.ndarray
 
 
-def LFR_optim_objective(
+def LFR_optim_objective(  # noqa: N802, PLR0913
     parameters: np.ndarray,
     x_unprivileged: np.ndarray,
     x_privileged: np.ndarray,
     y_unprivileged: np.ndarray,
     y_privileged: np.ndarray,
     clusters: int,
-    A_x: float,
-    A_y: float,
-    A_z: float,
+    A_x: float,  # noqa: N803
+    A_y: float,  # noqa: N803
+    A_z: float,  # noqa: N803
     print_interval: int,
     verbose: bool,
 ) -> np.number:
@@ -80,7 +80,7 @@ def get_xhat_y_hat(
     prototypes: np.ndarray, w: np.ndarray, x: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Get xhat y hat."""
-    M = softmax(-cdist(x, prototypes), axis=1)
+    M = softmax(-cdist(x, prototypes), axis=1)  # noqa: N806
     x_hat = np.matmul(M, prototypes)
     y_hat = np.clip(
         np.matmul(M, w.reshape((-1, 1))), np.finfo(float).eps, 1.0 - np.finfo(float).eps

@@ -89,7 +89,7 @@ StateList: TypeAlias = Literal[
 
 @contextlib.contextmanager
 def _download_dir(root: Path) -> Generator[None, None, None]:
-    curdir = os.getcwd()
+    curdir = Path.cwd()
     os.chdir(root.expanduser().resolve())
     try:
         yield

@@ -7,7 +7,7 @@ from typing import ClassVar
 from typing_extensions import override
 
 import numpy as np
-from ranzen import StrEnum
+from ranzen.misc import StrEnum
 from sklearn.metrics import normalized_mutual_info_score
 
 from ethicml.utility import EvalTuple, Prediction
@@ -49,7 +49,7 @@ class NMI(_DependenceMeasure):
     @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
-        return normalized_mutual_info_score(
+        return normalized_mutual_info_score(  # type: ignore[return-value]
             base_values.to_numpy().ravel(),
             prediction.hard.to_numpy().ravel(),
             average_method="arithmetic",

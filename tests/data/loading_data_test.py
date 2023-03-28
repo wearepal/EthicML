@@ -708,9 +708,9 @@ def test_joining_2_load_functions(data_root: Path):
     data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     data: DataTuple = data_obj.load()
-    assert (400, 10) == data.x.shape
-    assert (400,) == data.s.shape
-    assert (400,) == data.y.shape
+    assert data.x.shape == (400, 10)
+    assert data.s.shape == (400,)
+    assert data.y.shape == (400,)
 
 
 def test_load_compas_feature_length():
@@ -730,9 +730,9 @@ def test_load_adult_explicitly_sex():
     """Test load adult explicitly sex."""
     adult_sex = Adult(split=Adult.Splits.SEX)
     data: DataTuple = adult_sex.load()
-    assert (45222, 101) == data.x.shape
-    assert (45222,) == data.s.shape
-    assert (45222,) == data.y.shape
+    assert data.x.shape == (45222, 101)
+    assert data.s.shape == (45222,)
+    assert data.y.shape == (45222,)
     assert adult_sex.disc_feature_groups is not None
     assert "sex" not in adult_sex.disc_feature_groups
     assert "salary" not in adult_sex.disc_feature_groups
@@ -742,10 +742,10 @@ def test_load_adult_race():
     """Test load adult race."""
     adult_race = Adult(split=Adult.Splits.RACE)
     data: DataTuple = adult_race.load()
-    assert (45222, 98) == data.x.shape
-    assert (45222,) == data.s.shape
+    assert data.x.shape == (45222, 98)
+    assert data.s.shape == (45222,)
     assert data.s.nunique() == 5
-    assert (45222,) == data.y.shape
+    assert data.y.shape == (45222,)
     assert adult_race.disc_feature_groups is not None
     assert "race" not in adult_race.disc_feature_groups
     assert "salary" not in adult_race.disc_feature_groups
@@ -755,10 +755,10 @@ def test_load_adult_race_sex():
     """Test load adult race sex."""
     adult_race_sex = Adult(split=Adult.Splits.RACE_SEX)
     data: DataTuple = adult_race_sex.load()
-    assert (45222, 96) == data.x.shape
-    assert (45222,) == data.s.shape
+    assert data.x.shape == (45222, 96)
+    assert data.s.shape == (45222,)
     assert data.s.nunique() == 2 * 5
-    assert (45222,) == data.y.shape
+    assert data.y.shape == (45222,)
     assert adult_race_sex.disc_feature_groups is not None
     assert "race" not in adult_race_sex.disc_feature_groups
     assert "sex" not in adult_race_sex.disc_feature_groups
@@ -774,9 +774,9 @@ def test_load_adult_drop_native():
 
     # with dummies
     data = adult_data.load()
-    assert (45222, 62) == data.x.shape
-    assert (45222,) == data.s.shape
-    assert (45222,) == data.y.shape
+    assert data.x.shape == (45222, 62)
+    assert data.s.shape == (45222,)
+    assert data.y.shape == (45222,)
     assert "native-country_United-States" in data.x.columns
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
@@ -786,9 +786,9 @@ def test_load_adult_drop_native():
 
     # with dummies, not ordered
     data = adult_data.load()
-    assert (45222, 62) == data.x.shape
-    assert (45222,) == data.s.shape
-    assert (45222,) == data.y.shape
+    assert data.x.shape == (45222, 62)
+    assert data.s.shape == (45222,)
+    assert data.y.shape == (45222,)
     assert "native-country_United-States" in data.x.columns
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
@@ -807,18 +807,18 @@ def test_load_adult_education():
 
     # ordered
     data = adult_data.load()
-    assert (45222, 86) == data.x.shape
-    assert (45222,) == data.s.shape
+    assert data.x.shape == (45222, 86)
+    assert data.s.shape == (45222,)
     assert data.s.nunique() == 3
-    assert (45222,) == data.y.shape
+    assert data.y.shape == (45222,)
     assert data.s.name == "education"
 
     # not ordered
     data = adult_data.load()
-    assert (45222, 86) == data.x.shape
-    assert (45222,) == data.s.shape
+    assert data.x.shape == (45222, 86)
+    assert data.s.shape == (45222,)
     assert data.s.nunique() == 3
-    assert (45222,) == data.y.shape
+    assert data.y.shape == (45222,)
     assert data.s.name == "education"
 
 
@@ -832,18 +832,18 @@ def test_load_adult_education_drop():
 
     # ordered
     data = adult_data.load()
-    assert (45222, 47) == data.x.shape
-    assert (45222,) == data.s.shape
+    assert data.x.shape == (45222, 47)
+    assert data.s.shape == (45222,)
     assert data.s.nunique() == 3
-    assert (45222,) == data.y.shape
+    assert data.y.shape == (45222,)
     assert data.s.name == "education"
 
     # not ordered
     data = adult_data.load()
-    assert (45222, 47) == data.x.shape
-    assert (45222,) == data.s.shape
+    assert data.x.shape == (45222, 47)
+    assert data.s.shape == (45222,)
     assert data.s.nunique() == 3
-    assert (45222,) == data.y.shape
+    assert data.y.shape == (45222,)
     assert data.s.name == "education"
 
 
@@ -858,9 +858,9 @@ def test_additional_columns_load(data_root: Path):
     )
     data: DataTuple = data_obj.load()
 
-    assert (45222, 102) == data.x.shape
-    assert (45222,) == data.s.shape
-    assert (45222,) == data.y.shape
+    assert data.x.shape == (45222, 102)
+    assert data.s.shape == (45222,)
+    assert data.y.shape == (45222,)
 
 
 def test_domain_adapt_adult():
@@ -871,25 +871,25 @@ def test_domain_adapt_adult():
         tr_cond="education_Masters == 0. & education_Doctorate == 0.",
         te_cond="education_Masters == 1. | education_Doctorate == 1.",
     )
-    assert (39106, 101) == train.x.shape
-    assert (39106,) == train.s.shape
-    assert (39106,) == train.y.shape
+    assert train.x.shape == (39106, 101)
+    assert train.s.shape == (39106,)
+    assert train.y.shape == (39106,)
 
-    assert (6116, 101) == test.x.shape
-    assert (6116,) == test.s.shape
-    assert (6116,) == test.y.shape
+    assert test.x.shape == (6116, 101)
+    assert test.s.shape == (6116,)
+    assert test.y.shape == (6116,)
 
     data = Adult().load()
     train, test = em.domain_split(
         datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
-    assert (40194, 101) == train.x.shape
-    assert (40194,) == train.s.shape
-    assert (40194,) == train.y.shape
+    assert train.x.shape == (40194, 101)
+    assert train.s.shape == (40194,)
+    assert train.y.shape == (40194,)
 
-    assert (5028, 101) == test.x.shape
-    assert (5028,) == test.s.shape
-    assert (5028,) == test.y.shape
+    assert test.x.shape == (5028, 101)
+    assert test.s.shape == (5028,)
+    assert test.y.shape == (5028,)
 
     data = Adult().load()
     train, test = em.domain_split(
@@ -897,13 +897,13 @@ def test_domain_adapt_adult():
         tr_cond="education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.",
         te_cond="education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.",
     )
-    assert (23966, 101) == train.x.shape
-    assert (23966,) == train.s.shape
-    assert (23966,) == train.y.shape
+    assert train.x.shape == (23966, 101)
+    assert train.s.shape == (23966,)
+    assert train.y.shape == (23966,)
 
-    assert (21256, 101) == test.x.shape
-    assert (21256,) == test.s.shape
-    assert (21256,) == test.y.shape
+    assert test.x.shape == (21256, 101)
+    assert test.s.shape == (21256,)
+    assert test.y.shape == (21256,)
 
 
 def test_query():

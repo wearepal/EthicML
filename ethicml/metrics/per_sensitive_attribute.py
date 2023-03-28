@@ -10,7 +10,7 @@ from ethicml.utility.data_structures import EvalTuple, Prediction, SoftPredictio
 from .metric import Metric
 
 __all__ = [
-    "MetricNotApplicable",
+    "MetricNotApplicableError",
     "PerSens",
     "aggregate_over_sens",
     "diff_per_sens",
@@ -21,7 +21,7 @@ __all__ = [
 ]
 
 
-class MetricNotApplicable(Exception):
+class MetricNotApplicableError(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
 
 
@@ -30,7 +30,7 @@ def metric_per_sens(
 ) -> dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:
-        raise MetricNotApplicable(
+        raise MetricNotApplicableError(
             f"Metric {metric.name} is not applicable per sensitive "
             "attribute, apply to whole dataset instead"
         )

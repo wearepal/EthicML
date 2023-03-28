@@ -192,6 +192,7 @@ class AdvDebiasingClassLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         n_clf_epochs: int,
         n_adv_epochs: int,
@@ -231,9 +232,9 @@ class AdvDebiasingClassLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
-        train_data, train_loader = make_dataset_and_loader(
+        _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
 
@@ -268,9 +269,9 @@ class AdvDebiasingClassLearner:
     @torch.no_grad()
     def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
-        x = torch.from_numpy(x.to_numpy()).float()
+        x_ = torch.from_numpy(x.to_numpy()).float()
         self.clf.eval()
-        yhat = self.clf(x)
+        yhat = self.clf(x_)
         sm = nn.Softmax(dim=1)
         yhat = sm(yhat)
         yhat = yhat.detach().numpy()
@@ -283,6 +284,7 @@ class AdvDebiasingRegLearner:
 
     def __init__(
         self,
+        *,
         lr: float,
         n_clf_epochs: int,
         n_adv_epochs: int,
@@ -322,7 +324,7 @@ class AdvDebiasingRegLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
 
@@ -361,9 +363,9 @@ class AdvDebiasingRegLearner:
     @torch.no_grad()
     def predict(self, x: pd.DataFrame) -> torch.Tensor:
         """Predict."""
-        x = torch.from_numpy(x.to_numpy()).float()
+        x_ = torch.from_numpy(x.to_numpy()).float()
         self.clf.eval()
-        yhat = self.clf(x).squeeze().detach().numpy()
+        yhat = self.clf(x_).squeeze().detach().numpy()
         if self.out_shape == 1:
             out = yhat
         else:
