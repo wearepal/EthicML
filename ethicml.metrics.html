@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.run" href="ethicml.run.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>ethicml.metrics - EthicML 1.1.0 documentation</title>
+    <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.27 -->
+        <title>ethicml.metrics - EthicML 1.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.1.0 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.1.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -318,10 +318,10 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds" title="ethicml.metrics.LabelOutOfBounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelOutOfBounds</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.LabelOutOfBoundsError" title="ethicml.metrics.LabelOutOfBoundsError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelOutOfBoundsError</span></code></a></p></td>
 <td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.MetricNotApplicable" title="ethicml.metrics.MetricNotApplicable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.MetricNotApplicableError" title="ethicml.metrics.MetricNotApplicableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricNotApplicableError</span></code></a></p></td>
 <td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p></td>
 </tr>
 </tbody>
@@ -1153,13 +1153,13 @@
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="ethicml.metrics.LabelOutOfBounds">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelOutOfBounds</span></span><a class="headerlink" href="#ethicml.metrics.LabelOutOfBounds" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.LabelOutOfBoundsError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelOutOfBoundsError</span></span><a class="headerlink" href="#ethicml.metrics.LabelOutOfBoundsError" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.metrics.LabelOutOfBounds.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.LabelOutOfBounds.with_traceback" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.LabelOutOfBoundsError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.LabelOutOfBoundsError.with_traceback" title="Permalink to this definition">#</a></dt>
 <dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
@@ -1217,13 +1217,13 @@ set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="ethicml.metrics.MetricNotApplicable">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricNotApplicable</span></span><a class="headerlink" href="#ethicml.metrics.MetricNotApplicable" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.MetricNotApplicableError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricNotApplicableError</span></span><a class="headerlink" href="#ethicml.metrics.MetricNotApplicableError" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.metrics.MetricNotApplicable.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.MetricNotApplicable.with_traceback" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.MetricNotApplicableError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.MetricNotApplicableError.with_traceback" title="Permalink to this definition">#</a></dt>
 <dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
@@ -1483,7 +1483,7 @@ set self.__traceback__ to tb and return self.</p>
 <p>Aggregation methods for metrics that are computed per sensitive attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.ALL">
-<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
 <dd><p>All aggregations.</p>
 </dd></dl>
 
@@ -1513,7 +1513,7 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.MIN_MAX">
-<span class="sig-name descname"><span class="pre">MIN_MAX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MIN_MAX" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">MIN_MAX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MIN_MAX" title="Permalink to this definition">#</a></dt>
 <dd><p>Equivalent to <code class="docutils literal notranslate"><span class="pre">{MIN,</span> <span class="pre">MAX}</span></code>.</p>
 </dd></dl>
 
@@ -2437,8 +2437,8 @@ If False, refer to the sensitive variable as “S”. (Default: <code class="doc
 <li><a class="reference internal" href="#ethicml.metrics.Hsic.score"><code class="docutils literal notranslate"><span class="pre">Hsic.score()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds"><code class="docutils literal notranslate"><span class="pre">LabelOutOfBounds</span></code></a><ul>
-<li><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds.with_traceback"><code class="docutils literal notranslate"><span class="pre">LabelOutOfBounds.with_traceback()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.LabelOutOfBoundsError"><code class="docutils literal notranslate"><span class="pre">LabelOutOfBoundsError</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.LabelOutOfBoundsError.with_traceback"><code class="docutils literal notranslate"><span class="pre">LabelOutOfBoundsError.with_traceback()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#ethicml.metrics.Metric"><code class="docutils literal notranslate"><span class="pre">Metric</span></code></a><ul>
@@ -2448,8 +2448,8 @@ If False, refer to the sensitive variable as “S”. (Default: <code class="doc
 <li><a class="reference internal" href="#ethicml.metrics.Metric.score"><code class="docutils literal notranslate"><span class="pre">Metric.score()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.metrics.MetricNotApplicable"><code class="docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a><ul>
-<li><a class="reference internal" href="#ethicml.metrics.MetricNotApplicable.with_traceback"><code class="docutils literal notranslate"><span class="pre">MetricNotApplicable.with_traceback()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.MetricNotApplicableError"><code class="docutils literal notranslate"><span class="pre">MetricNotApplicableError</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.MetricNotApplicableError.with_traceback"><code class="docutils literal notranslate"><span class="pre">MetricNotApplicableError.with_traceback()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#ethicml.metrics.MetricStaticName"><code class="docutils literal notranslate"><span class="pre">MetricStaticName</span></code></a><ul>
