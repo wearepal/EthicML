@@ -1528,8 +1528,8 @@ develop = false
 [package.source]
 type = "git"
 url = "https://github.com/wearepal/python-type-stubs.git"
-reference = "417b03b"
-resolved_reference = "417b03b7bc87cb45e8c758ba0e2a28ee2c205e16"
+reference = "2ea8053"
+resolved_reference = "2ea805330c43c54bb10b2481a76b359967513ef8"
 
 [[package]]
 name = "pytz"
@@ -2126,4 +2126,4 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "fce3fc0e8961b273b60e371d81238a91e45cb5bc28eee083e5fccd1b36c6d9ce"
+content-hash = "59fe9b5e38216490b39cb61f778a39337bb96c6101e4bd15728f8efbd21720aa"

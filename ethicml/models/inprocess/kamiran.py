@@ -130,7 +130,7 @@ class Reweighting(InAlgorithm):
                 hard=pd.Series(model.predict(test.x.to_numpy())), info=self.hyperparameters
             )
         return SoftPrediction(
-            soft=model.predict_proba(test.x.to_numpy()),  # type: ignore[arg-type]
+            soft=model.predict_proba(test.x.to_numpy()),
             info=self.hyperparameters,
         )
 

@@ -26,7 +26,7 @@ from ethicml.utility import (
 )
 
 if TYPE_CHECKING:
-    from fairlearn.reductions import ExponentiatedGradient
+    from fairlearn.reductions import ExponentiatedGradient  # pyright: ignore
 
     from ethicml.models.inprocess.agarwal_reductions import AgarwalArgs
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
     """Fit a model."""
     try:
-        from fairlearn.reductions import (
+        from fairlearn.reductions import (  # pyright: ignore
             DemographicParity,
             EqualizedOdds,
             ExponentiatedGradient,
@@ -81,7 +81,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
     min_class_label = train.y.min()
-    exponentiated_gradient.min_class_label = min_class_label
+    exponentiated_gradient.min_class_label = min_class_label  # pyright: ignore
 
     return exponentiated_gradient
 
@@ -92,7 +92,7 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
     if (min_val := preds["preds"].min()) != preds["preds"].max():
-        preds = preds.replace(min_val, exponentiated_gradient.min_class_label)
+        preds = preds.replace(min_val, exponentiated_gradient.min_class_label)  # pyright: ignore
     return preds
 
 
@@ -120,7 +120,7 @@ def main() -> None:
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: AgarwalArgs = json.loads(sys.argv[2])
     try:
-        import cloudpickle
+        import cloudpickle  # pyright: ignore
 
         # Need to install cloudpickle for now. See https://github.com/fairlearn/fairlearn/issues/569
     except ImportError as e:

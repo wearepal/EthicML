@@ -32,9 +32,7 @@ def _maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
     if len(columns) > 2:
         from sklearn.manifold import TSNE
 
-        tsne_embeddings = TSNE(n_components=2, random_state=0).fit_transform(
-            data.x,  # type: ignore[arg-type]
-        )
+        tsne_embeddings = TSNE(n_components=2, random_state=0).fit_transform(data.x)
         amalgamated = pd.concat(
             [pd.DataFrame(tsne_embeddings, columns=["tsne1", "tsne2"]), data.s, data.y],
             axis="columns",

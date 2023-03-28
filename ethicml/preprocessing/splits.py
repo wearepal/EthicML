@@ -116,8 +116,8 @@ def train_test_split(
     pd.testing.assert_index_equal(train.x.columns, x_columns)
     pd.testing.assert_index_equal(test.x.columns, x_columns)
 
-    assert isinstance(train.s, pd.Series)
-    assert isinstance(test.s, pd.Series)
+    assert isinstance(train.s, pd.Series)  # type: ignore[unreachable]
+    assert isinstance(test.s, pd.Series)  # type: ignore[unreachable]
     assert train.s.name == data.s_column
     assert test.s.name == data.s_column
 
