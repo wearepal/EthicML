@@ -58,7 +58,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.256"
+ruff = "0.0.260"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -255,7 +255,8 @@ convention = "pep257"
 
 [tool.ruff.isort]
 known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
-extra-standard-library = ["__future__", "typing_extensions"]
+extra-standard-library = ["typing_extensions"]
+no-lines-before = ["future", "standard-library"]
 force-sort-within-sections = true
 split-on-trailing-comma = false
 classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "TPR", "TNR", "CV", "NMI", "BCR", "PPV", "NPV", "AS", "F1", "HGR"]
