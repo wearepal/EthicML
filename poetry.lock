@@ -416,14 +416,14 @@ testing = ["pre-commit"]
 
 [[package]]
 name = "fairlearn"
-version = "0.7.0"
+version = "0.8.0"
 description = "Algorithms for mitigating unfairness in supervised machine learning"
 category = "main"
 optional = true
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "fairlearn-0.7.0-py3-none-any.whl", hash = "sha256:ac27e89952b5c5e3a3fdee05bfbadacfacc30fe00b917b057e2f605920ef5e44"},
-    {file = "fairlearn-0.7.0.tar.gz", hash = "sha256:a0d287d34275b7b2ae29d084754e3eca3a47289f774c77229921b10c7c52127e"},
+    {file = "fairlearn-0.8.0-py3-none-any.whl", hash = "sha256:f2dce40dd39b91252aacec229f0b71aa946344839604bfadc0a13fa4c9611111"},
+    {file = "fairlearn-0.8.0.tar.gz", hash = "sha256:d08ed8ef8a10193b5a91c868a63b92bcce42c2fd102b533809154768e81b922b"},
 ]
 
 [package.dependencies]
@@ -2157,4 +2157,4 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "d4914991e6fbd3421b2ecd6b31f0a50cbee36ddf34a3a8f4b322c371fd2f2fc6"
+content-hash = "0d02cd66f1aa62725fe8db9631b4559ed1aba7d653e05f8250fa12240bdbb379"
