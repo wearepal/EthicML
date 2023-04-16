@@ -58,7 +58,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.260"
+ruff = "0.0.261"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -205,6 +205,7 @@ select = [
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort
+    "INP", # implicit namespace package
     "N", # pep8-naming
     "NPY", # numpy
     "PD", # pandas-vet
