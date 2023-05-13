@@ -24,14 +24,14 @@ repository="https://github.com/wearepal/EthicML"
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
 cloudpickle = { version = "^2.0.0", optional= true }
-fairlearn = { version = "0.7.0", optional = true }
+fairlearn = { version = "0.8.0", optional = true }
 folktables = { version = "^0.0.11", optional = true }
 gitdb2 = { version = "4.0.2", optional = true }
 GitPython = { version = "^3.1.20", optional = true }
 joblib = "^1.1.0"
 matplotlib = { version = ">=3.0.2", optional = true }
 numpy = ">=1.23.2"
-pandas = "^1.5.0"
+pandas = ">=1.5.0"
 pdm = { version = "^2.4.0", optional = true }
 ranzen = ">=2.0.1,<3.0.0,!=2.1.0"
 scikit-learn = { version = ">=0.20.1", optional = true }
@@ -58,7 +58,7 @@ python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", 
 pandas-stubs = ">=1.4.2.220626"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
-ruff = "0.0.256"
+ruff = "0.0.261"
 pip = "^22.3.1"
 
 [tool.poetry.group.ci]
@@ -205,6 +205,7 @@ select = [
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort
+    "INP", # implicit namespace package
     "N", # pep8-naming
     "NPY", # numpy
     "PD", # pandas-vet
@@ -255,7 +256,8 @@ convention = "pep257"
 
 [tool.ruff.isort]
 known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
-extra-standard-library = ["__future__", "typing_extensions"]
+extra-standard-library = ["typing_extensions"]
+no-lines-before = ["future", "standard-library"]
 force-sort-within-sections = true
 split-on-trailing-comma = false
 classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "TPR", "TNR", "CV", "NMI", "BCR", "PPV", "NPV", "AS", "F1", "HGR"]
