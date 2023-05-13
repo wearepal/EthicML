@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "EthicML"
-version = "1.2.0"
+version = "1.2.1"
 description = "EthicML is a library for performing and assessing algorithmic fairness. Unlike other libraries, EthicML isn't an education tool, but rather a researcher's toolkit."
 readme="README.md"
 authors = ["PAL <info@wearepal.ai>"]
