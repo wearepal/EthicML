@@ -237,6 +237,7 @@ ignore = [
     "PLR2004", # magic number comparison
     "PT004", # fixture naming
     "PT013", # don't allow `from pytest import ...`
+    "PLR0913", # too many arguments
     "PLW2901", # overwriting loop variables
     "TID252", # relative imports
 ]
@@ -272,6 +273,5 @@ exempt-modules = ["typing", "typing_extensions"]
 ignore-names = ["C"]
 
 [tool.ruff.pylint]
-max-args = 10  # default: 5
 max-statements = 60  # default: 50
 max-branches = 13  # default: 12
