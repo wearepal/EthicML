@@ -1177,14 +1177,14 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.5.6"
+version = "2.6.1"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pdm-2.5.6-py3-none-any.whl", hash = "sha256:0008be259f54037a6038d5f4f8a4feeb9a9b1b4b54daca670c5de754cf27f1ee"},
-    {file = "pdm-2.5.6.tar.gz", hash = "sha256:441a75d7085945330adeb9361c3457b27417d07e120be4f21622f428d5bda340"},
+    {file = "pdm-2.6.1-py3-none-any.whl", hash = "sha256:9d1c92a0199536f1c971bced8d33f9188eeb70edff6469d00cdd812d4426498a"},
+    {file = "pdm-2.6.1.tar.gz", hash = "sha256:105958849a2f8d9aa9ef2183a2c50eae9eb4ac47fc81272cd504fdd9c90edea2"},
 ]
 
 [package.dependencies]
