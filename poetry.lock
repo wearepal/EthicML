@@ -1595,14 +1595,14 @@ files = [
 
 [[package]]
 name = "ranzen"
-version = "2.1.1"
+version = "2.1.2"
 description = "A toolkit facilitating machine-learning experimentation."
 category = "main"
 optional = false
 python-versions = ">=3.8.0,<3.12"
 files = [
-    {file = "ranzen-2.1.1-py3-none-any.whl", hash = "sha256:66319856e0695284bfe29530183646c9bf2cd04bf78cf28c91e1fa51621f1253"},
-    {file = "ranzen-2.1.1.tar.gz", hash = "sha256:da403bd226be5a0632372a6d57da4f2d2d54e3b59db53ea0005e799b292760e2"},
+    {file = "ranzen-2.1.2-py3-none-any.whl", hash = "sha256:514341856155e70f7ceb03e62716f16d4e6441379e7c21fd3ad968a4867480c6"},
+    {file = "ranzen-2.1.2.tar.gz", hash = "sha256:295b894aacb9c05cd6863d9f3dff5ea0e9addfc2cbf587ab4b06e922d2670fcc"},
 ]
 
 [package.dependencies]
