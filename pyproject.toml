@@ -77,8 +77,7 @@ torchvision = { version = "*", source = "torchcpu", markers = "sys_platform == '
 [[tool.poetry.source]]
 name = "torchcpu"
 url = "https://download.pytorch.org/whl/cpu"
-default = false
-secondary = true
+priority = "explicit"
 
 [tool.black]
 line-length = 100
