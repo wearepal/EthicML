@@ -39,7 +39,7 @@ def test_simple_saving() -> None:
         def hyperparameters(self) -> HyperParamType:
             return {}
 
-        def _script_command(self, in_algo_args: InAlgoArgs) -> list[str]:  # type: ignore[misc]
+        def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:  # type: ignore[misc]
             """Check if the dataframes loaded from the files are the same as the original ones."""
             assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
             loaded = DataTuple.from_file(Path(in_algo_args["train"]))
