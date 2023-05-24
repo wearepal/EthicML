@@ -37,7 +37,7 @@ from ethicml.metrics import (
 from ethicml.models import InAlgorithm, LR, LRCV, SVM
 
 
-def test_tpr_diff(toy_train_val: TrainValPair):
+def test_tpr_diff(toy_train_val: TrainValPair) -> None:
     """Test tpr diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
@@ -53,7 +53,7 @@ def test_tpr_diff(toy_train_val: TrainValPair):
     assert tpr_diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
 
 
-def test_ppv_diff(toy_train_val: TrainValPair):
+def test_ppv_diff(toy_train_val: TrainValPair) -> None:
     """Test ppv diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
@@ -68,7 +68,7 @@ def test_ppv_diff(toy_train_val: TrainValPair):
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.05, abs=0.1)
 
 
-def test_npv_diff(toy_train_val: TrainValPair):
+def test_npv_diff(toy_train_val: TrainValPair) -> None:
     """Test npv diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
@@ -83,7 +83,7 @@ def test_npv_diff(toy_train_val: TrainValPair):
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.042, abs=0.001)
 
 
-def test_bcr_diff(toy_train_val: TrainValPair):
+def test_bcr_diff(toy_train_val: TrainValPair) -> None:
     """Test bcr diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
@@ -98,7 +98,7 @@ def test_bcr_diff(toy_train_val: TrainValPair):
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.029, abs=0.001)
 
 
-def test_use_appropriate_metric(toy_train_val: TrainValPair):
+def test_use_appropriate_metric(toy_train_val: TrainValPair) -> None:
     """Test use appropriate metric."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
@@ -107,7 +107,7 @@ def test_use_appropriate_metric(toy_train_val: TrainValPair):
         metric_per_sens(predictions, test, CV())
 
 
-def test_run_metrics(toy_train_val: TrainValPair):
+def test_run_metrics(toy_train_val: TrainValPair) -> None:
     """Test run metrics."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
@@ -139,7 +139,7 @@ def test_run_metrics(toy_train_val: TrainValPair):
     assert results["TPR_S_1"] == approx(1.0, abs=0.001)
 
 
-def test_get_info(toy_train_val: TrainValPair):
+def test_get_info(toy_train_val: TrainValPair) -> None:
     """Test get info."""
     train, test = toy_train_val
     model: LRCV = LRCV()
@@ -147,7 +147,7 @@ def test_get_info(toy_train_val: TrainValPair):
     assert predictions.info["C"] == approx(166.810, abs=0.001)
 
 
-def test_tpr_diff_non_binary_race():
+def test_tpr_diff_non_binary_race() -> None:
     """Test tpr diff non binary race."""
     data: DataTuple = load_data(Adult(split=Adult.Splits.RACE))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
@@ -185,7 +185,7 @@ def test_tpr_diff_non_binary_race():
         assert val == test_dict[key]
 
 
-def test_tpr_ratio_non_binary_race():
+def test_tpr_ratio_non_binary_race() -> None:
     """Test tpr ratio non binary race."""
     data: DataTuple = load_data(Adult(split=Adult.Splits.RACE))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
@@ -223,7 +223,7 @@ def test_tpr_ratio_non_binary_race():
         assert val == test_dict[key]
 
 
-def test_nb_acc():
+def test_nb_acc() -> None:
     """Test nb acc."""
     data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
@@ -234,7 +234,7 @@ def test_nb_acc():
     assert acc_score == 0.2625
 
 
-def test_nb_tpr():
+def test_nb_tpr() -> None:
     """Test nb tpr."""
     data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
@@ -287,7 +287,7 @@ def test_nb_tpr():
     }
 
 
-def test_nb_tnr():
+def test_nb_tnr() -> None:
     """Test nb tnr."""
     data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)

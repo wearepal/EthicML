@@ -34,7 +34,7 @@ def test_cv(
     model: Type[InAlgorithm],
     hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
-):
+) -> None:
     """Test cv svm."""
     train, test = toy_train_test
     cross_validator = CrossValidator(model, hyperparams)

@@ -174,8 +174,15 @@ jobs:
       - name: Type check with mypy
         if: ${{ github.event_name == 'merge_group' }}
         run: |
-          poetry run python run_mypy.py
-          poetry run python run_mypy_tests.py
+          poetry run mypy ethicml
+
+      #----------------------------------------------
+      #  -----       Run MyPy on tests         -----
+      #----------------------------------------------
+      - name: Type check with mypy
+        if: ${{ github.event_name == 'merge_group' }}
+        run: |
+          poetry run mypy tests
 
       #----------------------------------------------
       #  -----           Run Tests            -----

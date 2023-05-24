@@ -5,7 +5,7 @@ from ethicml.data import available_tabular, get_dataset_obj_by_name
 
 
 @pytest.mark.parametrize("name", available_tabular())
-def test_lookup(name: str):
+def test_lookup(name: str) -> None:
     """Test the lookup of  a dataset by name."""
     assert name == get_dataset_obj_by_name(name).__name__.lower()
     assert name.replace("_", "") == get_dataset_obj_by_name(name)().name.lower().split()[:1][0]

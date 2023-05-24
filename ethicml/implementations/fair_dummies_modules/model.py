@@ -483,7 +483,7 @@ class EquiClassLearner:
     def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
-        p_success, dummy = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())
+        p_success, _ = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())
 
         rng = np.random.default_rng(seed)
 
@@ -633,7 +633,7 @@ class EquiRegLearner:
     def fit(self, train: DataTuple, seed: int) -> None:
         """Fit."""
         fast_loader = self.batch_size >= train.x.shape[0]
-        p_success, dummy = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())
+        p_success, _ = density_estimation(y=train.y.to_numpy(), a=train.s.to_numpy())
 
         x = torch.from_numpy(train.x.to_numpy()).float()
         y = torch.from_numpy(train.y.to_numpy()).float()

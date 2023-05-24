@@ -21,7 +21,7 @@ from ethicml.run import evaluate_models
 @pytest.mark.slow()
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
 @pytest.mark.xdist_group("results_files")
-def test_plot_tsne(toy_train_test: TrainTestPair):
+def test_plot_tsne(toy_train_test: TrainTestPair) -> None:
     """Test plot."""
     train, _ = toy_train_test
     save_2d_plot(train, "./plots/test.png")
@@ -29,7 +29,7 @@ def test_plot_tsne(toy_train_test: TrainTestPair):
 
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
 @pytest.mark.xdist_group("results_files")
-def test_plot_no_tsne(toy_train_test: TrainTestPair):
+def test_plot_no_tsne(toy_train_test: TrainTestPair) -> None:
     """Test plot."""
     train, _ = toy_train_test
     train = train.replace(x=train.x[train.x.columns[:2]])
@@ -38,7 +38,7 @@ def test_plot_no_tsne(toy_train_test: TrainTestPair):
 
 @pytest.mark.usefixtures("plot_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_joint_plot(toy_train_test: TrainTestPair):
+def test_joint_plot(toy_train_test: TrainTestPair) -> None:
     """Test joint plot."""
     train, _ = toy_train_test
     save_jointplot(train, "./plots/joint.png")
@@ -47,7 +47,7 @@ def test_joint_plot(toy_train_test: TrainTestPair):
 @pytest.mark.slow()
 @pytest.mark.usefixtures("plot_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_multijoint_plot(toy_train_test: TrainTestPair):
+def test_multijoint_plot(toy_train_test: TrainTestPair) -> None:
     """Test joint plot."""
     train, _ = toy_train_test
     save_multijointplot(train, "./plots/joint.png")
@@ -55,7 +55,7 @@ def test_multijoint_plot(toy_train_test: TrainTestPair):
 
 @pytest.mark.usefixtures("plot_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_label_plot():
+def test_label_plot() -> None:
     """Test label plot."""
     data: DataTuple = load_data(Adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
@@ -66,7 +66,7 @@ def test_label_plot():
 
 @pytest.mark.usefixtures("plot_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_plot_evals():
+def test_plot_evals() -> None:
     """Test plot evals."""
     results: Results = evaluate_models(
         datasets=[Toy()],

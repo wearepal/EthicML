@@ -16,7 +16,7 @@ class DROClassifier(nn.Module):
     def __init__(self, in_size: int, out_size: int, network_size: list[int], eta: float) -> None:
         super().__init__()
 
-        self.loss = DROLoss(loss_module=CrossEntropyLoss, eta=eta)
+        self.loss = DROLoss(loss_module=CrossEntropyLoss, eta=eta)  # type: ignore[arg-type]
 
         self.seq = nn.Sequential()
         if not network_size:  # In the case that encoder size [] is specified

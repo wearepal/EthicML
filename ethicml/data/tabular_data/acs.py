@@ -6,7 +6,6 @@ Paper: https://arxiv.org/abs/2108.04884
 # pylint: skip-file
 # Pylint will go crazy as we're reimplementing the Dataset Init.
 from __future__ import annotations
-from collections.abc import Sequence
 import contextlib
 import os
 from pathlib import Path
@@ -322,7 +321,7 @@ class AcsIncome(_AcsBase):
         )
 
     @staticmethod
-    def cat_lookup(key: str) -> Sequence[int]:
+    def cat_lookup(key: str) -> list[int]:
         """Look up categories."""
         table = {
             "COW": range(1, 9),
@@ -333,7 +332,7 @@ class AcsIncome(_AcsBase):
             'PINCP': range(2),
         }
 
-        return table[key]
+        return list(table[key])
 
     @override
     def load(
@@ -471,7 +470,7 @@ class AcsEmployment(_AcsBase):
         )
 
     @staticmethod
-    def cat_lookup(key: str) -> Sequence[int]:
+    def cat_lookup(key: str) -> list[int]:
         """Look up categories."""
         table = {
             'SCHL': range(1, 25),
@@ -492,7 +491,7 @@ class AcsEmployment(_AcsBase):
             'ESR': range(1, 7),
         }
 
-        return table[key]
+        return list(table[key])
 
     @override
     def load(
