@@ -12,7 +12,7 @@ from ethicml import DataTuple, ProportionalSplit
 from ethicml.data import Adult, Toy, load_data
 
 
-def test_train_test_split():
+def test_train_test_split() -> None:
     """Test train test split."""
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
@@ -27,7 +27,7 @@ def test_train_test_split():
 
 
 @pytest.mark.parametrize("train_pct", range(0, 100, 10))
-def test_train_test_split_param(train_pct: float):
+def test_train_test_split_param(train_pct: float) -> None:
     """Test train test split."""
     data: DataTuple = load_data(Toy())
     num_samples = len(data)
@@ -42,7 +42,7 @@ def test_train_test_split_param(train_pct: float):
 
 
 @pytest.mark.parametrize("test_samples", range(10, 100, 10))
-def test_train_test_split_samples_param(test_samples: int):
+def test_train_test_split_samples_param(test_samples: int) -> None:
     """Test train test split."""
     data: DataTuple = load_data(Toy())
     num_train_samples = len(data) - test_samples
@@ -52,7 +52,7 @@ def test_train_test_split_samples_param(test_samples: int):
     assert test.s.shape[0] == test_samples
 
 
-def test_prop_train_test_split():
+def test_prop_train_test_split() -> None:
     """Test prop train test split."""
     data: DataTuple = load_data(Toy())
     train: DataTuple
@@ -125,7 +125,7 @@ def test_prop_train_test_split():
     assert test.name == "Toy - Test"
 
 
-def test_random_seed():
+def test_random_seed() -> None:
     """Test random seed."""
     data: DataTuple = load_data(Toy())
     train_test_0: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
@@ -173,7 +173,7 @@ def test_random_seed():
     assert train_3.s.shape[0] == train_3.y.shape[0]
 
 
-def test_binning():
+def test_binning() -> None:
     """Test binning."""
     data: DataTuple = load_data(Adult())
 
@@ -183,7 +183,7 @@ def test_binning():
     assert "age" not in binned.x.columns
 
 
-def test_sequential_split():
+def test_sequential_split() -> None:
     """Test sequential split."""
     data: DataTuple = load_data(Toy())
     train: DataTuple
@@ -195,7 +195,7 @@ def test_sequential_split():
     assert len(test) == 80
 
 
-def test_biased_split():
+def test_biased_split() -> None:
     """Test biased split."""
     data = DataTuple.from_df(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
@@ -303,7 +303,7 @@ def test_biased_split():
     assert count == 374 // 2
 
 
-def test_biased_split_sizes():
+def test_biased_split_sizes() -> None:
     """Test biased split sizes."""
     data = DataTuple.from_df(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
@@ -327,7 +327,7 @@ def test_biased_split_sizes():
     assert len(biased2) > len(debiased)
 
 
-def test_biased_split_nonbinary():
+def test_biased_split_nonbinary() -> None:
     """Test biased split nonbinary."""
     # generate data that uses -1 and 1 instead of 0 and 1 for s and y
     data = DataTuple.from_df(
@@ -341,7 +341,7 @@ def test_biased_split_nonbinary():
     assert len(biased1) == approx(len(subset), abs=4)
 
 
-def test_balanced_test_split(simple_data: DataTuple):
+def test_balanced_test_split(simple_data: DataTuple) -> None:
     """Test biased split sizes."""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(train_percentage=train_percentage)(simple_data)
@@ -360,7 +360,7 @@ def test_balanced_test_split(simple_data: DataTuple):
     assert split_info["percent_dropped"] == 0.496
 
 
-def test_balanced_test_split_by_s(simple_data: DataTuple):
+def test_balanced_test_split_by_s(simple_data: DataTuple) -> None:
     """Test biased split sizes."""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(
@@ -381,7 +381,7 @@ def test_balanced_test_split_by_s(simple_data: DataTuple):
     assert split_info["percent_dropped"] == 0.304
 
 
-def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
+def test_balanced_test_split_by_s_and_y(simple_data: DataTuple) -> None:
     """Test biased split sizes."""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(

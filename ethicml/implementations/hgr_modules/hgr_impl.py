@@ -5,6 +5,7 @@
 # https://github.com/criteo-research/continuous-fairness/tree/master/facl/independence
 from __future__ import annotations
 import random
+from typing import Literal
 from typing_extensions import Self
 
 import numpy as np
@@ -26,7 +27,7 @@ from .density_estimation import Kde
 from .facl_hgr import chi_2_cond
 
 
-def chi_squared_l1_kde(x, y, z):
+def chi_squared_l1_kde(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor) -> torch.Tensor:
     """Chi Squared."""
     return torch.mean(chi_2_cond(x, y, z, Kde))
 
@@ -34,7 +35,17 @@ def chi_squared_l1_kde(x, y, z):
 class HgrRegLearner:
     """HGR Regression."""
 
-    def __init__(self, lr, epochs: int, mu, cost_pred, in_shape, out_shape, batch_size, model_type):
+    def __init__(
+        self,
+        lr: float,
+        epochs: int,
+        mu: float,
+        cost_pred: nn.Module,
+        in_shape: int,
+        out_shape: int,
+        batch_size: int,
+        model_type: ModelType,
+    ):
         self.in_shape = in_shape
         self.model_type = model_type
 
@@ -62,7 +73,7 @@ class HgrRegLearner:
             raise NotImplementedError
         self.loss_optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr_loss)
 
-    def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.ndarray:
+    def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.floating:
         """Internal epochs."""
         # fit pred func
         epoch_losses = []
@@ -74,6 +85,7 @@ class HgrRegLearner:
             # utility loss
             pred_loss = self.cost_pred(batch_yhat, y)
 
+            dis_loss: torch.Tensor | Literal[0]
             if self.out_shape == 1:
                 dis_loss = chi_squared_l1_kde(batch_yhat, s, y)
             else:
@@ -103,7 +115,7 @@ class HgrRegLearner:
         torch.manual_seed(seed)
         random.seed(seed)
         np.random.seed(seed)
-        train_data, train_loader = make_dataset_and_loader(
+        _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
         self.run_epochs(train_loader)
@@ -197,7 +209,7 @@ class HgrClassLearner:
         np.random.seed(seed)
         torch.use_deterministic_algorithms(True)
         # train
-        train_data, train_loader = make_dataset_and_loader(
+        _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
         self.model.train()

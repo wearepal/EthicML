@@ -49,7 +49,7 @@ def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1
     return torch.svd(Q)[1][1]
 
 
-def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 0) -> float:
+def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 0) -> torch.Tensor:
     r"""The :math:`\chi^2` divergence between the joint distribution and the product of marginals.
 
     This is know to be the square of an upper-bound on the Hirschfeld-Gebelein-Renyi maximum

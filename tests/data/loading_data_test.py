@@ -38,7 +38,7 @@ from ethicml.data import (
 from ethicml.data.dataset import _generate_complementary_column
 
 
-def test_can_load_test_data(data_root: Path):
+def test_can_load_test_data(data_root: Path) -> None:
     """Test whether we can load test data."""
     data_loc = data_root / "toy.csv"
     data: pd.DataFrame = pd.read_csv(data_loc)
@@ -60,11 +60,11 @@ class DT(NamedTuple):
     sum_s: int
     sum_y: int
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.name}"
 
 
-def idfn(val: DT):
+def idfn(val: DT) -> str:
     """Use the NamedTuple repr as the pytest ID."""
     return f"{val}"
 
@@ -610,7 +610,7 @@ dts: Final = [
 
 @pytest.mark.parametrize("dt", dts, ids=idfn)
 @pytest.mark.xdist_group("data_files")
-def test_data_shape(dt: DT):
+def test_data_shape(dt: DT) -> None:
     """Test loading data."""
     data: DataTuple = dt.dataset.load()
     assert (dt.samples, dt.x_features) == data.x.shape
@@ -655,7 +655,7 @@ def test_data_shape(dt: DT):
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
 def test_synth_data_shape(
     scenario: SyntheticScenarios, target: SyntheticTargets, fair: bool, samples: int
-):
+) -> None:
     """Test loading data."""
     dataset = Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
@@ -681,7 +681,7 @@ def test_synth_data_shape(
     assert (samples,) == data.y.shape
 
 
-def test_load_data_as_a_function(data_root: Path):
+def test_load_data_as_a_function(data_root: Path) -> None:
     """Test load data as a function."""
     data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
@@ -703,7 +703,7 @@ def test_load_data_as_a_function(data_root: Path):
     assert len(data_obj) == 400
 
 
-def test_joining_2_load_functions(data_root: Path):
+def test_joining_2_load_functions(data_root: Path) -> None:
     """Test joining 2 load functions."""
     data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
@@ -713,7 +713,7 @@ def test_joining_2_load_functions(data_root: Path):
     assert data.y.shape == (400,)
 
 
-def test_load_compas_feature_length():
+def test_load_compas_feature_length() -> None:
     """Test load compas feature length."""
     data: DataTuple = Compas().load()
     assert len(Compas().feature_split()["x"]) == 400
@@ -726,7 +726,7 @@ def test_load_compas_feature_length():
     assert data.y.shape == (6167,)
 
 
-def test_load_adult_explicitly_sex():
+def test_load_adult_explicitly_sex() -> None:
     """Test load adult explicitly sex."""
     adult_sex = Adult(split=Adult.Splits.SEX)
     data: DataTuple = adult_sex.load()
@@ -738,7 +738,7 @@ def test_load_adult_explicitly_sex():
     assert "salary" not in adult_sex.disc_feature_groups
 
 
-def test_load_adult_race():
+def test_load_adult_race() -> None:
     """Test load adult race."""
     adult_race = Adult(split=Adult.Splits.RACE)
     data: DataTuple = adult_race.load()
@@ -751,7 +751,7 @@ def test_load_adult_race():
     assert "salary" not in adult_race.disc_feature_groups
 
 
-def test_load_adult_race_sex():
+def test_load_adult_race_sex() -> None:
     """Test load adult race sex."""
     adult_race_sex = Adult(split=Adult.Splits.RACE_SEX)
     data: DataTuple = adult_race_sex.load()
@@ -765,7 +765,7 @@ def test_load_adult_race_sex():
     assert "salary" not in adult_race_sex.disc_feature_groups
 
 
-def test_load_adult_drop_native():
+def test_load_adult_drop_native() -> None:
     """Test load adult drop native."""
     adult_data = Adult(split=Adult.Splits.SEX, binarize_nationality=True)
     assert adult_data.name == "Adult Sex, binary nationality"
@@ -797,7 +797,7 @@ def test_load_adult_drop_native():
     assert (native_cols.sum(axis="columns") == 1).all()
 
 
-def test_load_adult_education():
+def test_load_adult_education() -> None:
     """Test load adult education."""
     adult_data = Adult(split=Adult.Splits.EDUCTAION)
     assert adult_data.name == "Adult Education"
@@ -822,7 +822,7 @@ def test_load_adult_education():
     assert data.s.name == "education"
 
 
-def test_load_adult_education_drop():
+def test_load_adult_education_drop() -> None:
     """Test load adult education."""
     adult_data = Adult(split=Adult.Splits.EDUCTAION, binarize_nationality=True)
     assert adult_data.name == "Adult Education, binary nationality"
@@ -847,7 +847,7 @@ def test_load_adult_education_drop():
     assert data.s.name == "education"
 
 
-def test_additional_columns_load(data_root: Path):
+def test_additional_columns_load(data_root: Path) -> None:
     """Test additional columns load."""
     data_loc = data_root / "adult.csv.zip"
     data_obj: Dataset = create_data_obj(
@@ -863,7 +863,7 @@ def test_additional_columns_load(data_root: Path):
     assert data.y.shape == (45222,)
 
 
-def test_domain_adapt_adult():
+def test_domain_adapt_adult() -> None:
     """Test domain adapt adult."""
     data: DataTuple = Adult().load()
     train, test = em.domain_split(
@@ -906,7 +906,7 @@ def test_domain_adapt_adult():
     assert test.y.shape == (21256,)
 
 
-def test_query():
+def test_query() -> None:
     """Test query."""
     x: pd.DataFrame = pd.DataFrame(columns=["0a", "b"], data=[[0, 1], [2, 3], [4, 5]])
     s: pd.Series = pd.Series(name="c=", data=[6, 7, 8])
@@ -918,7 +918,7 @@ def test_query():
     pd.testing.assert_series_equal(selected.y, y.head(1))
 
 
-def test_concat():
+def test_concat() -> None:
     """Test concat."""
     x: pd.DataFrame = pd.DataFrame(columns=["a"], data=[[1]])
     s: pd.Series = pd.Series(name="b", data=[2])
@@ -934,7 +934,7 @@ def test_concat():
     pd.testing.assert_series_equal(data3.y, pd.Series(name="c", data=[3, 6]))
 
 
-def test_group_prefixes():
+def test_group_prefixes() -> None:
     """Test group prefixes."""
     names = ["a_asf", "a_fds", "good_lhdf", "good_dsdw", "sas"]
     grouped_indices = group_disc_feat_indices(names, prefix_sep="_")
@@ -945,7 +945,7 @@ def test_group_prefixes():
     assert grouped_indices[2] == slice(4, 5)
 
 
-def test_expand_s():
+def test_expand_s() -> None:
     """Test expanding s."""
     sens_attr_spec = {
         "Gender": LabelGroup(["Female", "Male"], multiplier=3),
@@ -1014,7 +1014,7 @@ def test_complementary_column() -> None:
         _generate_complementary_column(data_full, ["non existent"])
 
 
-def test_simple_spec():
+def test_simple_spec() -> None:
     """Test the simple spec function."""
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
     spec = spec_from_binary_cols(sens_attrs)
@@ -1026,7 +1026,7 @@ def test_simple_spec():
 
 @pytest.mark.slow()
 @pytest.mark.parametrize("data", [Adult, Admissions, Compas, Credit, Crime, German])
-def test_aif_conversion(data: Callable[[], LegacyDataset]):
+def test_aif_conversion(data: Callable[[], LegacyDataset]) -> None:
     """Load a dataset in AIF form.
 
     There might be a case where you want to load an EthicML dataset

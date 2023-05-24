@@ -22,7 +22,7 @@ class Calders(PreAlgorithm):
     disadvantaged_group: int = 0
 
     def __post_init__(self) -> None:
-        self._out_size: Optional[int] = None  # pyright: ignore
+        self._out_size: Optional[int] = None
 
     @property
     @override

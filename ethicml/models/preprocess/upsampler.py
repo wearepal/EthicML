@@ -36,7 +36,7 @@ class Upsampler(PreAlgorithm):
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
 
     def __post_init__(self) -> None:
-        self._out_size: Optional[int] = None  # pyright: ignore
+        self._out_size: Optional[int] = None
 
     @property
     @override
