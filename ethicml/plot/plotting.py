@@ -74,9 +74,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(
-        x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde"
-    )
+    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
 
     file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
