@@ -52,7 +52,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
-    plot = sns.scatterplot(  # type: ignore[attr-defined]
+    plot = sns.scatterplot(
         x=x1_name,
         y=x2_name,
         hue=data.y.name,
@@ -74,9 +74,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(  # type: ignore[attr-defined]
-        x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde"
-    )
+    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
 
     file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
@@ -101,15 +99,15 @@ def _multivariate_grid(
 
         return scatter
 
-    sns.set_palette("husl")  # type: ignore[attr-defined]
+    sns.set_palette("husl")
 
-    g = sns.JointGrid(x=col_x, y=col_y, data=df)  # type: ignore[attr-defined]
+    g = sns.JointGrid(x=col_x, y=col_y, data=df)
     color = None
     legends = []
     for name, df_group in df.groupby([sens_col, outcome_col]):
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
-        sns.histplot(  # type: ignore[attr-defined]
+        sns.histplot(
             df_group[col_x].to_numpy(),
             ax=g.ax_marg_x,
             color=color,
@@ -117,7 +115,7 @@ def _multivariate_grid(
             stat="density",
             kde_kws=dict(cut=3),
         )
-        sns.histplot(  # type: ignore[attr-defined]
+        sns.histplot(
             df_group[col_y].to_numpy(),
             ax=g.ax_marg_y,
             vertical=True,

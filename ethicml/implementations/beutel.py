@@ -251,7 +251,7 @@ class GradReverse(Function):
 
 
 def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
-    return GradReverse.apply(features, lambda_)  # type: ignore
+    return GradReverse.apply(features, lambda_)  # pyright: ignore
 
 
 class Encoder(nn.Module):

@@ -1458,7 +1458,7 @@ cli = ["click (>=5.0)"]
 
 [[package]]
 name = "python-type-stubs"
-version = "0.1.4.dev0"
+version = "0.1.5.dev0"
 description = "A set of type stubs for popular Python packages."
 optional = false
 python-versions = ">=3.8"
@@ -1468,8 +1468,8 @@ develop = false
 [package.source]
 type = "git"
 url = "https://github.com/wearepal/python-type-stubs.git"
-reference = "2ea8053"
-resolved_reference = "2ea805330c43c54bb10b2481a76b359967513ef8"
+reference = "6767223"
+resolved_reference = "6767223f908472892c57ec29327dc7e09252dfcb"
 
 [[package]]
 name = "pytz"
@@ -2048,4 +2048,4 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "1b14a2745f2754f09f61a674539c34d6f1a6753e474c0605b3f449636faee62f"
+content-hash = "a7c62198a547cbd5df700a2e59b01945f93b50ee41a74aa662e50f0333eff5a2"
