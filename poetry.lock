@@ -72,22 +72,23 @@ files = [
 
 [[package]]
 name = "cachecontrol"
-version = "0.12.11"
+version = "0.13.1"
 description = "httplib2 caching for requests"
 optional = true
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "CacheControl-0.12.11-py2.py3-none-any.whl", hash = "sha256:2c75d6a8938cb1933c75c50184549ad42728a27e9f6b92fd677c3151aa72555b"},
-    {file = "CacheControl-0.12.11.tar.gz", hash = "sha256:a5b9fcc986b184db101aa280b42ecdcdfc524892596f606858e0b7a8b4d9e144"},
+    {file = "cachecontrol-0.13.1-py3-none-any.whl", hash = "sha256:95dedbec849f46dda3137866dc28b9d133fc9af55f5b805ab1291833e4457aa4"},
+    {file = "cachecontrol-0.13.1.tar.gz", hash = "sha256:f012366b79d2243a6118309ce73151bf52a38d4a5dac8ea57f09bd29087e506b"},
 ]
 
 [package.dependencies]
-lockfile = {version = ">=0.9", optional = true, markers = "extra == \"filecache\""}
+filelock = {version = ">=3.8.0", optional = true, markers = "extra == \"filecache\""}
 msgpack = ">=0.5.2"
-requests = "*"
+requests = ">=2.16.0"
 
 [package.extras]
-filecache = ["lockfile (>=0.9)"]
+dev = ["CacheControl[filecache,redis]", "black", "build", "cherrypy", "mypy", "pytest", "pytest-cov", "sphinx", "tox", "types-redis", "types-requests"]
+filecache = ["filelock (>=3.8.0)"]
 redis = ["redis (>=2.10.5)"]
 
 [[package]]
@@ -676,17 +677,6 @@ files = [
 ]
 
 [[package]]
-name = "lockfile"
-version = "0.12.2"
-description = "Platform-independent file locking module"
-optional = true
-python-versions = "*"
-files = [
-    {file = "lockfile-0.12.2-py2.py3-none-any.whl", hash = "sha256:6c3cb24f344923d30b2785d5ad75182c8ea7ac1b6171b08657258ec7429d50fa"},
-    {file = "lockfile-0.12.2.tar.gz", hash = "sha256:6aed02de03cba24efabcd600b30540140634fc06cfa603822d508d5361e9f799"},
-]
-
-[[package]]
 name = "markupsafe"
 version = "2.1.2"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -1129,18 +1119,18 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.6.1"
+version = "2.7.4"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pdm-2.6.1-py3-none-any.whl", hash = "sha256:9d1c92a0199536f1c971bced8d33f9188eeb70edff6469d00cdd812d4426498a"},
-    {file = "pdm-2.6.1.tar.gz", hash = "sha256:105958849a2f8d9aa9ef2183a2c50eae9eb4ac47fc81272cd504fdd9c90edea2"},
+    {file = "pdm-2.7.4-py3-none-any.whl", hash = "sha256:7884f030d6c18bdf5f92bab085c96c74c4ef24844fa5e57bc3adc52d9578765f"},
+    {file = "pdm-2.7.4.tar.gz", hash = "sha256:c77f8df1ccb7d701f005e3a430da4b8a196a2824e23e69d2d5abebafaf6e50ce"},
 ]
 
 [package.dependencies]
 blinker = "*"
-cachecontrol = {version = ">=0.12.11", extras = ["filecache"]}
+cachecontrol = {version = ">=0.13.0", extras = ["filecache"]}
 certifi = "*"
 findpython = ">=0.2.2"
 importlib-metadata = {version = ">=3.6", markers = "python_version < \"3.10\""}
