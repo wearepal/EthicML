@@ -1533,23 +1533,23 @@ files = [
 
 [[package]]
 name = "ranzen"
-version = "2.1.2"
+version = "2.1.3"
 description = "A toolkit facilitating machine-learning experimentation."
 optional = false
 python-versions = ">=3.8.0,<3.12"
 files = [
-    {file = "ranzen-2.1.2-py3-none-any.whl", hash = "sha256:514341856155e70f7ceb03e62716f16d4e6441379e7c21fd3ad968a4867480c6"},
-    {file = "ranzen-2.1.2.tar.gz", hash = "sha256:295b894aacb9c05cd6863d9f3dff5ea0e9addfc2cbf587ab4b06e922d2670fcc"},
+    {file = "ranzen-2.1.3-py3-none-any.whl", hash = "sha256:e1e9f25450c8b31d7048798e3e50b0a3bd50bca8ae2e45fa6581611247e24cad"},
+    {file = "ranzen-2.1.3.tar.gz", hash = "sha256:83cede6157c2f4ad69c43de4f493fc5803639ac21d117b73d67d3cb0d2e6ad2d"},
 ]
 
 [package.dependencies]
+numpy = ">=1.23.2,<2.0.0"
 typing-extensions = ">=4.5.0"
 
 [package.extras]
-all = ["hydra-core (>=1.3.0,<2.0.0)", "loguru (>=0.6.0,<0.7.0)", "neoconfigen (>=2.3.3)", "numpy (>=1.23.2,<2.0.0)", "pandas (>=1.5.0,<2.0.0)", "torch (>=1.12.1)", "wandb (>=0.12,<0.14)"]
+all = ["hydra-core (>=1.3.0,<2.0.0)", "loguru (>=0.6.0,<0.7.0)", "neoconfigen (>=2.3.3)", "pandas (>=1.5.0,<2.0.0)", "wandb (>=0.12,<0.14)"]
 hydra = ["hydra-core (>=1.3.0,<2.0.0)", "neoconfigen (>=2.3.3)"]
 logging = ["loguru (>=0.6.0,<0.7.0)"]
-torch = ["numpy (>=1.23.2,<2.0.0)", "torch (>=1.12.1)"]
 wandb = ["pandas (>=1.5.0,<2.0.0)", "wandb (>=0.12,<0.14)"]
 
 [[package]]
