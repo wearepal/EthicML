@@ -47,7 +47,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         use_pdm: bool = False,
     ):
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
-        self._store_dir: Path = Path(".") / dir_name  # directory where code and venv are stored
+        self._store_dir: Path = Path() / dir_name  # directory where code and venv are stored
         self._top_dir: str = top_dir
 
         if url is not None:

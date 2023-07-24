@@ -238,6 +238,7 @@ ignore = [
     "PT013", # don't allow `from pytest import ...`
     "PLR0913", # too many arguments
     "PLW2901", # overwriting loop variables
+    "PLC0105", # mark variance in typevar name
     "TID252", # relative imports
 ]
 target-version = "py38"
