@@ -183,7 +183,7 @@ def test_run_alg_suite() -> None:
         topic="pytest",
     )
 
-    files = os.listdir(Path(".") / "results")
+    files = os.listdir(Path() / "results")
     file_names = [
         "pytest_Adult Race-Binary_Upsample uniform.csv",
         "pytest_Adult Race-Binary_no_transform.csv",
@@ -200,7 +200,7 @@ def test_run_alg_suite() -> None:
 
     reloaded = load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
-    read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
+    read = pd.read_csv(Path() / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
     read = read.set_index(["dataset", "scaler", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(reloaded, read)
 

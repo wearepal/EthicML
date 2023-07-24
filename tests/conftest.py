@@ -40,8 +40,8 @@ def plot_cleanup() -> Generator[None, None, None]:
     """Clean up after the tests by removing the `plots` and `results` directories."""
     yield None
     print("remove generated directory")
-    plt_dir = Path(".") / "plots"
-    res_dir = Path(".") / "results"
+    plt_dir = Path() / "plots"
+    res_dir = Path() / "results"
     if plt_dir.exists():
         shutil.rmtree(plt_dir)
     if res_dir.exists():
@@ -53,7 +53,7 @@ def results_cleanup() -> Generator[None, None, None]:
     """Clean up after the tests by removing the `results` directory."""
     yield None
     print("remove generated directory")
-    res_dir = Path(".") / "results"
+    res_dir = Path() / "results"
     if res_dir.exists():
         shutil.rmtree(res_dir)
 

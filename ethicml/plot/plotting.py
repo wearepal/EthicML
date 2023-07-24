@@ -337,7 +337,7 @@ def plot_results(
     :returns: A list of all figures and plots.
     :raises ValueError: If no columns matching ``metric_y`` and ``metric_x`` are found.
     """
-    directory = Path(".") / "plots"
+    directory = Path() / "plots"
     directory.mkdir(exist_ok=True)
 
     def _get_columns(metric: Metric) -> list[str]:

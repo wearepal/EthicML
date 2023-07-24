@@ -59,7 +59,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
     advantage of this is that it allows for parallelization.
     """
 
-    dir: Path = Path(".")
+    dir: Path = Path()
 
     @property
     @final
