@@ -492,7 +492,7 @@ class EquiClassLearner:
 
         for _ in range(self.pretrain_pred_epochs):
             random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
-            z_tilde = (random_array < p_success).astype(float)
+            z_tilde = (random_array < p_success).astype(np.dtype(float))
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
@@ -513,7 +513,7 @@ class EquiClassLearner:
 
         for _ in range(self.pretrain_dis_epochs):
             random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
-            z_tilde = (random_array < p_success).astype(float)
+            z_tilde = (random_array < p_success).astype(np.dtype(float))
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
@@ -536,7 +536,7 @@ class EquiClassLearner:
 
         for _ in range(1, self.epochs):
             random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
-            z_tilde = (random_array < p_success).astype(float)
+            z_tilde = (random_array < p_success).astype(np.dtype(float))
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
@@ -645,7 +645,7 @@ class EquiRegLearner:
 
         for _ in range(self.pretrain_pred_epochs):
             random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
-            z_tilde = (random_array < p_success).astype(float)
+            z_tilde = (random_array < p_success).astype(np.dtype(float))
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
@@ -675,7 +675,7 @@ class EquiRegLearner:
 
         for _ in range(self.pretrain_dis_epochs):
             random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
-            z_tilde = (random_array < p_success).astype(float)
+            z_tilde = (random_array < p_success).astype(np.dtype(float))
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
@@ -710,7 +710,7 @@ class EquiRegLearner:
 
         for _ in range(1, self.epochs):
             random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
-            z_tilde = (random_array < p_success).astype(float)
+            z_tilde = (random_array < p_success).astype(np.dtype(float))
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
