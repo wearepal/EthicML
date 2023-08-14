@@ -183,7 +183,7 @@ class Hardt(PostAlgorithm):
         p2n_indices = othr_pp_indices[: int(len(othr_pp_indices) * (1 - op2p))]
         othr_fair_pred[p2n_indices] = self.unfavorable_label
 
-        new_labels = np.zeros_like(test_preds_numpy, dtype=np.dtype(np.float64))
+        new_labels = np.zeros_like(test_preds_numpy, dtype=np.float64)
         new_labels[mask_s1] = self_fair_pred
         new_labels[mask_s0] = othr_fair_pred
 
