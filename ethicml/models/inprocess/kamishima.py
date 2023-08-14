@@ -84,7 +84,7 @@ class Kamishima(InstalledModel):
         cmd = [script, "-i", test_path, "-m", fit_info.model_path, "-o", output_path, "--quiet"]
         self.call_script([str(e) for e in cmd])
         output = np.loadtxt(output_path)
-        predictions = output[:, 1].astype(np.dtype(np.float32))
+        predictions = output[:, 1].astype(np.float32)
         # except RuntimeError:
         #     predictions = np.ones_like(test.y.to_numpy())
 
@@ -102,10 +102,9 @@ def _create_file_in_kamishima_format(data: DataTuple | TestTuple, file_path: Pat
     :param data: Data to write to the file.
     :param file_path: Path to the file.
     """
-    dtype = np.dtype(np.float64)
     if isinstance(data, DataTuple):
-        result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(dtype)
+        result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
     else:
         zeros = pd.DataFrame([0 for _ in range(data.x.shape[0])], columns=["y"])
-        result = pd.concat([data.x, data.s, zeros], axis="columns").to_numpy().astype(dtype)
+        result = pd.concat([data.x, data.s, zeros], axis="columns").to_numpy().astype(np.float64)
     np.savetxt(file_path, result)

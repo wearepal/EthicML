@@ -42,7 +42,6 @@ class CfmMetric(MetricStaticName, ABC):
             raise LabelOutOfBoundsError("Positive class specified must exist in the test set")
 
         tp_idx: np.int64 = (_labels == self.pos_class).nonzero()[0].item()
-        tp_idx = int(tp_idx)
 
         true_pos = conf_matr[tp_idx, tp_idx]
         false_pos = conf_matr[:, tp_idx].sum() - true_pos
