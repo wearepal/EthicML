@@ -39,13 +39,13 @@ jobs:
     - name: Install ruff
       run: |
         poetry env use 3.8
-        poetry install --only lint
+        poetry install --only lint --no-interaction --no-root
     - name: Lint with ruff
       run: |
-        ruff check --format=github ethicml
+        poetry run ruff check --format=github ethicml
     - name: Lint with ruff
       run: |
-        ruff check --format=github tests
+        poetry run ruff check --format=github tests
 
   format_with_black:
 
@@ -62,11 +62,11 @@ jobs:
     - name: Install black
       run: |
         poetry env use 3.8
-        poetry install --only format
+        poetry install --only format --no-interaction --no-root
     - name: Format with black
       run: |
-        python -m black --check -l 100 -t py38 -S ethicml/
-        python -m black --check -l 100 -t py38 -S tests/
+        poetry run black --check -l 100 -t py38 -S ethicml/
+        poetry run black --check -l 100 -t py38 -S tests/
 
   check_docstrings:
 
