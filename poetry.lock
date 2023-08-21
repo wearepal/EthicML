@@ -2032,4 +2032,4 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "f9e2ebbffc3a1b360c61f6e8cb953efd55777386b2455c5e669fbdf1abe8d217"
+content-hash = "2c02cc92d6e613f2046c6728d9915a4f7bd331d2ed33a3acb00ccac80cc26316"
