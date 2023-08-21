@@ -46,6 +46,7 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
                 env=env,
                 cwd=cwd,
                 timeout=two_hours,
+                check=False,  # we'll check the return code manually
             )
         except subprocess.TimeoutExpired as error:
             raise RuntimeError("The script timed out.") from error
