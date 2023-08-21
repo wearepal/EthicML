@@ -139,7 +139,7 @@ jobs:
         run: |
           # keep the following in sync with `test_with_pytest`!
           poetry env use 3.8
-          poetry install --no-interaction --no-root -E all --with ci --with torchcpu
+          poetry install --no-interaction --no-root -E all --with ci --with torchcpu --without lint --without format
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -170,7 +170,7 @@ jobs:
         run: |
           # keep the following in sync with `test_full_dependencies`!
           poetry env use 3.8
-          poetry install --no-interaction --no-root -E all --with ci --with torchcpu
+          poetry install --no-interaction --no-root -E all --with ci --with torchcpu --without lint --without format
 
       #----------------------------------------------
       #  -----           Run MyPy             -----
