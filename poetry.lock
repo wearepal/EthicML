@@ -1119,13 +1119,13 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.8.2"
+version = "2.9.1"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pdm-2.8.2-py3-none-any.whl", hash = "sha256:b1de3411d26cc7525741c7f0a84a00e6834f63105c19da13df9a61c229ba45d9"},
-    {file = "pdm-2.8.2.tar.gz", hash = "sha256:b948d00bf620682b0ac4c80d228cb305a2b0150e497ee6931da30e3cc305bfdc"},
+    {file = "pdm-2.9.1-py3-none-any.whl", hash = "sha256:7ac3b81eb299d64ce9598f047af3edbb911ed2363297954d8caebafd284cab8a"},
+    {file = "pdm-2.9.1.tar.gz", hash = "sha256:fc8014dd2ffb727179a8ec0243cfac9ed3a9dc45348be1d7f97d1f290ad60fcb"},
 ]
 
 [package.dependencies]
@@ -1146,17 +1146,17 @@ rich = ">=12.3.0"
 shellingham = ">=1.3.2"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 tomlkit = ">=0.11.1,<1"
+truststore = {version = "*", markers = "python_version >= \"3.10\""}
 unearth = ">=0.10.0"
 virtualenv = ">=20"
 
 [package.extras]
-all = ["pdm[keyring,template,truststore]"]
+all = ["pdm[keyring,template]"]
 cookiecutter = ["cookiecutter"]
-copier = ["copier"]
+copier = ["copier (>=8.0.0)"]
 keyring = ["keyring"]
 pytest = ["pytest", "pytest-mock"]
 template = ["pdm[cookiecutter,copier]"]
-truststore = ["truststore"]
 
 [[package]]
 name = "pillow"
@@ -1921,6 +1921,17 @@ scipy = ["scipy"]
 type = "legacy"
 url = "https://download.pytorch.org/whl/cpu"
 reference = "torchcpu"
+
+[[package]]
+name = "truststore"
+version = "0.7.0"
+description = "Verify certificates using native system trust stores"
+optional = true
+python-versions = ">= 3.10"
+files = [
+    {file = "truststore-0.7.0-py3-none-any.whl", hash = "sha256:a4b410a365cafec4c2b386b30df53d89a6a4466cc229c7026e41c2d847f94fe9"},
+    {file = "truststore-0.7.0.tar.gz", hash = "sha256:72e784507a624375434381e4bad3eff8614bc8c845a7f5ae16a25a2624d0683f"},
+]
 
 [[package]]
 name = "types-pytz"
