@@ -73,7 +73,7 @@ class VFAENetwork(nn.Module):
 
     def forward(
         self, x: Tensor, s: Tensor, y: Tensor
-    ) -> tuple[LvInfo, LvInfo | None, LvInfo | None, Tensor, Tensor | None,]:
+    ) -> tuple[LvInfo, LvInfo | None, LvInfo | None, Tensor, Tensor | None]:
         """Forward pass for network."""
         z1_mu, z1_logvar = self.encode_z1(x, s)
         z1 = self.reparameterize(z1_mu, z1_logvar)
