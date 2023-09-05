@@ -123,15 +123,15 @@ def main() -> None:
         import cloudpickle  # pyright: ignore
 
         # Need to install cloudpickle for now. See https://github.com/fairlearn/fairlearn/issues/569
+
     except ImportError as e:
         raise RuntimeError("In order to use Agarwal, install fairlearn and cloudpickle.") from e
 
     if in_algo_args["mode"] == "run":
         random.seed(in_algo_args["seed"])
         np.random.seed(in_algo_args["seed"])
-        train, test = DataTuple.from_file(Path(in_algo_args["train"])), SubgroupTuple.from_file(
-            Path(in_algo_args["test"])
-        )
+        train = DataTuple.from_file(Path(in_algo_args["train"]))
+        test = SubgroupTuple.from_file(Path(in_algo_args["test"]))
         Prediction(
             hard=train_and_predict(train, test, flags, in_algo_args["seed"])["preds"]
         ).save_to_file(Path(in_algo_args["predictions"]))
