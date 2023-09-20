@@ -108,7 +108,8 @@ def _multivariate_grid(
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
         sns.histplot(
-            df_group[col_x].to_numpy(),
+            df_group,
+            x=col_x,  # column to plot
             ax=g.ax_marg_x,
             color=color,
             kde=True,
@@ -116,16 +117,16 @@ def _multivariate_grid(
             kde_kws=dict(cut=3),
         )
         sns.histplot(
-            df_group[col_y].to_numpy(),
+            df_group,
+            y=col_y,  # plot this column on the y-axis
             ax=g.ax_marg_y,
-            vertical=True,
             kde=True,
             stat="density",
             kde_kws=dict(cut=3),
         )
     # Do also global Hist:
     # sns.histplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
-    # sns.histplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
+    # sns.histplot(df, y=col_y, ax=g.ax_marg_y, color='grey')
     plt.legend(legends)
 
 
