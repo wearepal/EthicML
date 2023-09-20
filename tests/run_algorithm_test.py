@@ -17,14 +17,14 @@ from ethicml.models.inprocess.in_algorithm import InAlgorithmDC
 from ethicml.run import evaluate_models, load_results, run_in_parallel
 
 
-def test_can_load_test_data(toy_train_test: em.TrainTestPair):
+def test_can_load_test_data(toy_train_test: em.TrainTestPair) -> None:
     """Test whether we can load test data."""
     train, test = toy_train_test
     assert train is not None
     assert test is not None
 
 
-def test_run_parallel(toy_train_val: em.TrainValPair):
+def test_run_parallel(toy_train_val: em.TrainValPair) -> None:
     """Test run parallel."""
     data0 = toy_train_val
     data1 = toy_train_val
@@ -53,7 +53,7 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
 
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_empty_evaluate():
+def test_empty_evaluate() -> None:
     """Test empty evaluate."""
     empty_result = evaluate_models([emda.Toy()], repeats=3)
     expected_result = pd.DataFrame(
@@ -68,7 +68,7 @@ def test_empty_evaluate():
 @pytest.mark.parametrize("repeats", [1, 2, 3])
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_alg_repeats_error(repeats: int):
+def test_run_alg_repeats_error(repeats: int) -> None:
     """Add a test to check that the right number of reults are produced with repeats."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
     datasets: List[emda.Dataset] = [dataset]
@@ -94,7 +94,7 @@ def test_run_alg_repeats_error(repeats: int):
 @pytest.mark.parametrize("repeats", [2, 3, 5])
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
+def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]) -> None:
     """Check the repeat_on arg."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
     datasets: List[emda.Dataset] = [dataset]
@@ -127,7 +127,7 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
 
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_alg_suite_scaler():
+def test_run_alg_suite_scaler() -> None:
     """Test run alg suite."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
     datasets: List[emda.Dataset] = [dataset, emda.Toy()]
@@ -164,7 +164,7 @@ def test_run_alg_suite_scaler():
 
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_alg_suite():
+def test_run_alg_suite() -> None:
     """Test run alg suite."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
     datasets: List[emda.Dataset] = [dataset, emda.Toy()]
@@ -183,7 +183,7 @@ def test_run_alg_suite():
         topic="pytest",
     )
 
-    files = os.listdir(Path(".") / "results")
+    files = os.listdir(Path() / "results")
     file_names = [
         "pytest_Adult Race-Binary_Upsample uniform.csv",
         "pytest_Adult Race-Binary_no_transform.csv",
@@ -200,14 +200,14 @@ def test_run_alg_suite():
 
     reloaded = load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
-    read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
+    read = pd.read_csv(Path() / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
     read = read.set_index(["dataset", "scaler", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(reloaded, read)
 
 
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_alg_suite_wrong_metrics():
+def test_run_alg_suite_wrong_metrics() -> None:
     """Test run alg suite wrong metrics."""
     datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
     preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
@@ -229,7 +229,7 @@ def test_run_alg_suite_wrong_metrics():
 
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_alg_suite_err_handling():
+def test_run_alg_suite_err_handling() -> None:
     """Test run alg suite handles when an err is thrown."""
 
     @dataclass
@@ -270,7 +270,7 @@ def test_run_alg_suite_err_handling():
 @pytest.mark.slow()
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
-def test_run_alg_suite_no_pipeline():
+def test_run_alg_suite_no_pipeline() -> None:
     """Run alg suite while avoiding the 'fair pipeline'."""
     datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
     preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]

@@ -5,7 +5,7 @@ This file is automatically imported by pytest (no need to import it) and defines
 from pathlib import Path
 import shutil
 import tempfile
-from typing import Generator
+from typing import Generator, List, Union
 
 import pandas as pd
 import pytest
@@ -36,12 +36,12 @@ def toy_train_val() -> TrainValPair:
 
 
 @pytest.fixture(scope="module")
-def plot_cleanup():
+def plot_cleanup() -> Generator[None, None, None]:
     """Clean up after the tests by removing the `plots` and `results` directories."""
     yield None
     print("remove generated directory")
-    plt_dir = Path(".") / "plots"
-    res_dir = Path(".") / "results"
+    plt_dir = Path() / "plots"
+    res_dir = Path() / "results"
     if plt_dir.exists():
         shutil.rmtree(plt_dir)
     if res_dir.exists():
@@ -49,11 +49,11 @@ def plot_cleanup():
 
 
 @pytest.fixture()
-def results_cleanup():
+def results_cleanup() -> Generator[None, None, None]:
     """Clean up after the tests by removing the `results` directory."""
     yield None
     print("remove generated directory")
-    res_dir = Path(".") / "results"
+    res_dir = Path() / "results"
     if res_dir.exists():
         shutil.rmtree(res_dir)
 
@@ -85,7 +85,7 @@ def temp_dir() -> Generator[Path, None, None]:
         yield Path(tmpdir)
 
 
-def get_id(value):
+def get_id(value: object) -> Union[str, object]:
     """Get ID."""
     return getattr(value, "name", value)
 
@@ -103,17 +103,17 @@ def simulate_no_torch() -> Generator[None, None, None]:
     em.common.TORCH_AVAILABLE = torch_available
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: pytest.Parser) -> None:
     """Add arg for running all tests including those marked as slow."""
     parser.addoption("--runslow", action="store_true", default=False, help="run slow tests")
 
 
-def pytest_configure(config):
+def pytest_configure(config: pytest.Config) -> None:
     """Ad slow as a mark option."""
     config.addinivalue_line("markers", "slow: mark test as slow to run")
 
 
-def pytest_collection_modifyitems(config, items):
+def pytest_collection_modifyitems(config: pytest.Config, items: List[pytest.Item]) -> None:
     """By default, skip tests marked with @pytest.mark.slow."""
     if config.getoption("--runslow"):
         # --runslow given in cli: do not skip slow tests

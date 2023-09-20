@@ -33,7 +33,7 @@ class PerSensMetricTest(NamedTuple):
     expected_values: Dict[str, float]
 
 
-def test_issue_431():
+def test_issue_431() -> None:
     """Test issue 431.
 
     This issue highlighted that an error would be raised due to not all values existing in subsets
@@ -168,7 +168,7 @@ PER_SENS = [
 )
 def test_metric_per_sens_attr(
     dataset: Dataset, classifier: InAlgorithm, metric: Metric, expected_values: Dict[str, float]
-):
+) -> None:
     """Test accuracy per sens attr."""
     data: DataTuple = load_data(dataset)
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)

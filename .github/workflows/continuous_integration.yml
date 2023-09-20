@@ -30,20 +30,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
     - name: Install ruff
       run: |
-        python -m pip install --upgrade pip
-        pip install ruff
+        poetry env use 3.8
+        poetry install --only lint --no-interaction --no-root
     - name: Lint with ruff
       run: |
-        ruff check --format=github ethicml
+        poetry run ruff check --format=github ethicml
     - name: Lint with ruff
       run: |
-        ruff check --format=github tests
+        poetry run ruff check --format=github tests
 
   format_with_black:
 
@@ -51,18 +53,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
     - name: Install black
       run: |
-        python -m pip install --upgrade pip
-        pip install 'black<=23'
+        poetry env use 3.8
+        poetry install --only format --no-interaction --no-root
     - name: Format with black
       run: |
-        python -m black --check -l 100 -t py38 -S ethicml/
-        python -m black --check -l 100 -t py38 -S tests/
+        poetry run black --check -l 100 -t py38 -S ethicml/
+        poetry run black --check -l 100 -t py38 -S tests/
 
   check_docstrings:
 
@@ -135,7 +139,7 @@ jobs:
         run: |
           # keep the following in sync with `test_with_pytest`!
           poetry env use 3.8
-          poetry install --no-interaction --no-root -E all --with ci --with torchcpu
+          poetry install --no-interaction --no-root -E all --with ci --with torchcpu --without lint --without format
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -166,7 +170,7 @@ jobs:
         run: |
           # keep the following in sync with `test_full_dependencies`!
           poetry env use 3.8
-          poetry install --no-interaction --no-root -E all --with ci --with torchcpu
+          poetry install --no-interaction --no-root -E all --with ci --with torchcpu --without lint --without format
 
       #----------------------------------------------
       #  -----           Run MyPy             -----
@@ -174,8 +178,17 @@ jobs:
       - name: Type check with mypy
         if: ${{ github.event_name == 'merge_group' }}
         run: |
-          poetry run python run_mypy.py
-          poetry run python run_mypy_tests.py
+          poetry run mypy ethicml
+          poetry run mypy --warn-unused-ignores ethicml || true
+
+      #----------------------------------------------
+      #  -----       Run MyPy on tests         -----
+      #----------------------------------------------
+      - name: Type check tests with mypy
+        if: ${{ github.event_name == 'merge_group' }}
+        run: |
+          poetry run mypy tests
+          poetry run mypy --warn-unused-ignores tests || true
 
       #----------------------------------------------
       #  -----           Run Tests            -----

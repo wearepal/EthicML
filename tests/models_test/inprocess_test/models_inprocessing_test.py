@@ -10,6 +10,7 @@ from pytest import approx
 from ethicml import (
     ClassifierType,
     DataTuple,
+    EvalTuple,
     FairnessType,
     HyperParamType,
     KernelType,
@@ -115,7 +116,9 @@ INPROCESS_TESTS = [
 
 
 @pytest.mark.parametrize(("name", "model", "num_pos"), INPROCESS_TESTS)
-def test_inprocess(toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int):
+def test_inprocess(
+    toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
+) -> None:
     """Test an inprocess model."""
     train, test = toy_train_val
 
@@ -128,7 +131,7 @@ def test_inprocess(toy_train_val: TrainValPair, name: str, model: InAlgorithm, n
     assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - num_pos
 
 
-def test_kamiran_weights(toy_train_test: TrainTestPair):
+def test_kamiran_weights(toy_train_test: TrainTestPair) -> None:
     """Test the weights of the Kamiran model are accessible."""
     train, test = toy_train_test
 
@@ -235,7 +238,7 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> N
     assert np.count_nonzero(new_predictions.hard.to_numpy() == 0) == 38
 
 
-def test_local_installed_lr(toy_train_test: TrainTestPair):
+def test_local_installed_lr(toy_train_test: TrainTestPair) -> None:
     """Test local installed lr."""
     train, test = toy_train_test
 
@@ -268,7 +271,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 @pytest.mark.slow()
 @pytest.mark.xdist_group("results_files")
-def test_threaded_agarwal():
+def test_threaded_agarwal() -> None:
     """Test threaded agarwal."""
     models: List[InAlgorithmSubprocess] = [
         Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
@@ -278,7 +281,7 @@ def test_threaded_agarwal():
         _name: ClassVar[str] = "assert_result"
 
         @override
-        def score(self, prediction, actual) -> float:
+        def score(self, prediction: Prediction, actual: EvalTuple) -> float:
             return (
                 np.count_nonzero(prediction.hard.to_numpy() == 1) == 45
                 and np.count_nonzero(prediction.hard.to_numpy() == 0) == 35

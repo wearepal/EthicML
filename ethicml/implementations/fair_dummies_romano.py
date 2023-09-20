@@ -63,9 +63,8 @@ def main() -> None:
     flags: FairDummiesArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
-        train, test = DataTuple.from_file(Path(in_algo_args["train"])), SubgroupTuple.from_file(
-            Path(in_algo_args["test"])
-        )
+        train = DataTuple.from_file(Path(in_algo_args["train"]))
+        test = SubgroupTuple.from_file(Path(in_algo_args["test"]))
         SoftPrediction(
             soft=train_and_predict(train, test, flags, in_algo_args["seed"])
         ).save_to_file(Path(in_algo_args["predictions"]))

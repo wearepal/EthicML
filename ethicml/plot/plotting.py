@@ -52,7 +52,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
-    plot = sns.scatterplot(  # type: ignore[attr-defined]
+    plot = sns.scatterplot(
         x=x1_name,
         y=x2_name,
         hue=data.y.name,
@@ -74,9 +74,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(  # type: ignore[attr-defined]
-        x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde"
-    )
+    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
 
     file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
@@ -101,33 +99,34 @@ def _multivariate_grid(
 
         return scatter
 
-    sns.set_palette("husl")  # type: ignore[attr-defined]
+    sns.set_palette("husl")
 
-    g = sns.JointGrid(x=col_x, y=col_y, data=df)  # type: ignore[attr-defined]
+    g = sns.JointGrid(x=col_x, y=col_y, data=df)
     color = None
     legends = []
     for name, df_group in df.groupby([sens_col, outcome_col]):
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
-        sns.histplot(  # type: ignore[attr-defined]
-            df_group[col_x].to_numpy(),
+        sns.histplot(
+            df_group,
+            x=col_x,  # column to plot
             ax=g.ax_marg_x,
             color=color,
             kde=True,
             stat="density",
             kde_kws=dict(cut=3),
         )
-        sns.histplot(  # type: ignore[attr-defined]
-            df_group[col_y].to_numpy(),
+        sns.histplot(
+            df_group,
+            y=col_y,  # plot this column on the y-axis
             ax=g.ax_marg_y,
-            vertical=True,
             kde=True,
             stat="density",
             kde_kws=dict(cut=3),
         )
     # Do also global Hist:
     # sns.histplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
-    # sns.histplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
+    # sns.histplot(df, y=col_y, ax=g.ax_marg_y, color='grey')
     plt.legend(legends)
 
 
@@ -339,7 +338,7 @@ def plot_results(
     :returns: A list of all figures and plots.
     :raises ValueError: If no columns matching ``metric_y`` and ``metric_x`` are found.
     """
-    directory = Path(".") / "plots"
+    directory = Path() / "plots"
     directory.mkdir(exist_ok=True)
 
     def _get_columns(metric: Metric) -> list[str]:

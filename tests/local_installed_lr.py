@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
-def main():
+def main() -> None:
     """This function runs the logistic regression model as a standalone program."""
     args: InAlgoArgs = json.loads(sys.argv[1])
     assert args["mode"] == "run", "model doesn’t support the fit/predict split yet"

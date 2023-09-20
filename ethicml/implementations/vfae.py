@@ -26,7 +26,7 @@ if TYPE_CHECKING:
     from ethicml.models.preprocess.vfae import VfaeArgs
 
 
-def fit(train: DataTuple, flags: VfaeArgs):
+def fit(train: DataTuple, flags: VfaeArgs) -> VFAENetwork:
     """Train the model."""
     dataset = get_dataset_obj_by_name(flags["dataset"])()
     assert isinstance(dataset, CSVDataset)
@@ -110,9 +110,10 @@ def train_model(
         train_loss += loss.item()
         optimizer.step()
         if batch_idx % 100 == 0:
+            num_epochs = len(train_loader.dataset)  # type: ignore[arg-type]
             if flags["supervised"]:
                 print(
-                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"
+                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{num_epochs}"
                     f"({100. * batch_idx / len(train_loader):.0f}%)]\t"
                     f"Loss: {loss.item() / len(data_x):.6f}\t"
                     f"pred_loss: {prediction_loss.item():.6f}\t"
@@ -122,14 +123,15 @@ def train_model(
                 )
             else:
                 print(
-                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"
+                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{num_epochs}"
                     f"({100. * batch_idx / len(train_loader):.0f}%)]\t"
                     f"Loss: {loss.item() / len(data_x):.6f}\t"
                     f"recon_loss: {reconstruction_loss.item():.6f}\t"
                     f"mmd_loss: {flags['batch_size'] * mmd_loss.item():.6f}"
                 )
 
-    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")
+    num_epochs = len(train_loader.dataset)  # type: ignore[arg-type]
+    print(f"====> Epoch: {epoch} Average loss: {train_loss / num_epochs:.4f}")
 
 
 def main() -> None:

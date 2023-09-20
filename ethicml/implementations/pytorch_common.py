@@ -83,7 +83,7 @@ def make_dataset_and_loader(
 ) -> tuple[CustomDataset, torch.utils.data.DataLoader]:
     """Given a datatuple, create a dataset and a corresponding dataloader."""
 
-    def seed_worker(worker_id):  # noqa: ARG001
+    def seed_worker(worker_id: int) -> None:  # noqa: ARG001
         worker_seed = torch.initial_seed() % 2**32
         np.random.seed(worker_seed)
         random.seed(worker_seed)
@@ -152,10 +152,14 @@ def compute_projection_gradients(
     :param alpha: Pre-factor for adversarial loss.
     """
     grad_p = torch.autograd.grad(
-        loss_p, model.parameters(), retain_graph=True  # type: ignore[arg-type]
+        loss_p,
+        model.parameters(),  # type: ignore[arg-type]
+        retain_graph=True,
     )
     grad_a = torch.autograd.grad(
-        loss_a, model.parameters(), retain_graph=True  # type: ignore[arg-type]
+        loss_a,
+        model.parameters(),  # type: ignore[arg-type]
+        retain_graph=True,
     )
 
     def _proj(a: Tensor, b: Tensor) -> Tensor:
@@ -170,11 +174,11 @@ def compute_projection_gradients(
 class PandasDataSet(TensorDataset):
     """Pandas Dataset."""
 
-    def __init__(self, *dataframes):
+    def __init__(self, *dataframes: pd.DataFrame | pd.Series):
         tensors = (self._df_to_tensor(df) for df in dataframes)
         super().__init__(*tensors)
 
-    def _df_to_tensor(self, df):
+    def _df_to_tensor(self, df: pd.DataFrame | pd.Series) -> Tensor:
         if isinstance(df, pd.Series):
             df = df.to_frame('dummy')
         return torch.from_numpy(df.to_numpy()).float()
@@ -209,10 +213,6 @@ class DeepModel(torch.nn.Module):
         self.dim_h = 64
         self.dropout = 0.5
         self.out_shape = out_shape
-        self.build_model()
-
-    def build_model(self) -> None:
-        """Build Model."""
         self.base_model = nn.Sequential(
             nn.Linear(self.in_shape, self.dim_h, bias=True),
             nn.ReLU(),
@@ -233,10 +233,6 @@ class DeepRegModel(torch.nn.Module):
         self.in_shape = in_shape
         self.dim_h = 64  # in_shape*10
         self.out_shape = out_shape
-        self.build_model()
-
-    def build_model(self) -> None:
-        """Build model."""
         self.base_model = nn.Sequential(
             nn.Linear(self.in_shape, self.dim_h, bias=True),
             nn.ReLU(),
@@ -257,10 +253,6 @@ class DeepProbaModel(torch.nn.Module):
         self.dim_h = 64  # in_shape*10
         self.dropout = 0.5
         self.out_shape = 1
-        self.build_model()
-
-    def build_model(self) -> None:
-        """Build Model."""
         self.base_model = nn.Sequential(
             nn.Linear(self.in_shape, self.dim_h, bias=True),
             nn.ReLU(),
@@ -319,11 +311,11 @@ class GeneralLearner:
         # minibatch size
         self.batch_size = batch_size
 
-    def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.ndarray:
+    def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.floating:
         """Fit a model by sweeping over all data points."""
         # fit pred func
         epoch_losses = []
-        for x, s, y in dataloader:
+        for x, _, y in dataloader:
             self.optimizer.zero_grad()
             # utility loss
             batch_yhat = self.model(x)

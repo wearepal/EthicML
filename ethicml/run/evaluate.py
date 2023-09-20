@@ -39,7 +39,7 @@ def load_results(
     dataset_name: str,
     transform_name: str,
     topic: str | None = None,
-    outdir: Path = Path(".") / "results",
+    outdir: Path = Path() / "results",
 ) -> Results | None:
     """Load results from a CSV file that was created by :func:`evaluate_models`.
 
@@ -131,7 +131,7 @@ def evaluate_models(
 
     default_transform_name = "no_transform"
 
-    outdir = Path(".") / "results"  # OS-independent way of saying './results'
+    outdir = Path() / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
 
     if delete_previous:

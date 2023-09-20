@@ -12,7 +12,7 @@ def density_estimation(
     if y_test is None:
         y_test = np.array([])
     assert y_test is not None
-    bandwidth = np.sqrt(max(np.median(np.abs(y)), 0.01))
+    bandwidth = np.sqrt(max(np.median(np.abs(y)).item(), 0.01))
 
     kde_0 = KernelDensity(kernel='linear', bandwidth=bandwidth).fit(y[a == 0][:, np.newaxis])
     kde_1 = KernelDensity(kernel='linear', bandwidth=bandwidth).fit(y[a == 1][:, np.newaxis])

@@ -337,8 +337,11 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[tuple[DataTuple, DataTupl
         assert val_s.shape == (len(val_inds),)
         assert val_y.shape == (len(val_inds),)
 
-        yield DataTuple.from_df(
-            x=train_x, s=train_s, y=train_y, name=f"{data.name} - train fold {i}"
-        ), DataTuple.from_df(x=val_x, s=val_s, y=val_y, name=f"{data.name} - test fold {i}")
+        yield (
+            DataTuple.from_df(
+                x=train_x, s=train_s, y=train_y, name=f"{data.name} - train fold {i}"
+            ),
+            DataTuple.from_df(x=val_x, s=val_s, y=val_y, name=f"{data.name} - test fold {i}"),
+        )
 
         current = stop
