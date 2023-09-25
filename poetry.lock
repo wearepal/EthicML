@@ -415,13 +415,13 @@ typing = ["typing-extensions (>=4.7.1)"]
 
 [[package]]
 name = "findpython"
-version = "0.3.1"
+version = "0.4.0"
 description = "A utility to find python versions on your system"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "findpython-0.3.1-py3-none-any.whl", hash = "sha256:b57a67fc95cc687bfcfa4944c730a5e368b8cbe20f84ad4cdbc9d6bfe128f50b"},
-    {file = "findpython-0.3.1.tar.gz", hash = "sha256:7621f8a9c199a70d219831cddaeb84ca7e83e20b8358172bff47871a18a5eda4"},
+    {file = "findpython-0.4.0-py3-none-any.whl", hash = "sha256:087148ac5935f9be458f36a05f3fa479efdf2c629f5d386c73ea481cfecff15e"},
+    {file = "findpython-0.4.0.tar.gz", hash = "sha256:18b14d115678da18ae92ee22d7001cc30915ea531053f77010ee05a39680f438"},
 ]
 
 [package.dependencies]
@@ -1127,20 +1127,20 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.9.1"
+version = "2.9.3"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pdm-2.9.1-py3-none-any.whl", hash = "sha256:7ac3b81eb299d64ce9598f047af3edbb911ed2363297954d8caebafd284cab8a"},
-    {file = "pdm-2.9.1.tar.gz", hash = "sha256:fc8014dd2ffb727179a8ec0243cfac9ed3a9dc45348be1d7f97d1f290ad60fcb"},
+    {file = "pdm-2.9.3-py3-none-any.whl", hash = "sha256:0b55fcaa61ed70b9dacd03c4a937f15e908c8c031b621523890de9cdf04325fd"},
+    {file = "pdm-2.9.3.tar.gz", hash = "sha256:0b1195b51e9630b5a0b063f27dfcb0120cb6ea284f1a4cd975a3a26f0856d253"},
 ]
 
 [package.dependencies]
 blinker = "*"
 cachecontrol = {version = ">=0.13.0", extras = ["filecache"]}
 certifi = "*"
-findpython = ">=0.3.0,<1.0.0a0"
+findpython = ">=0.4.0,<1.0.0a0"
 importlib-metadata = {version = ">=3.6", markers = "python_version < \"3.10\""}
 importlib-resources = {version = ">=5", markers = "python_version < \"3.9\""}
 installer = ">=0.7,<0.8"
