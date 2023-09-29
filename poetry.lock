@@ -429,19 +429,20 @@ packaging = ">=20"
 
 [[package]]
 name = "folktables"
-version = "0.0.11"
+version = "0.0.12"
 description = "New machine learning benchmarks from tabular datasets."
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "folktables-0.0.11.tar.gz", hash = "sha256:e8e133e08975d9c28800fee0385a45fe123d26dad6b887bef7177360217f279d"},
+    {file = "folktables-0.0.12-py3-none-any.whl", hash = "sha256:979cda1900094b845ab3a8a3ae1b848f0138b780d5f8d17eeb6eb04c3c0c6617"},
+    {file = "folktables-0.0.12.tar.gz", hash = "sha256:e83dde0cbcdd54c7c39b175006a50bdfc4adc351f69d4389f82aaba3eee02115"},
 ]
 
 [package.dependencies]
 numpy = "*"
 pandas = "*"
 requests = "*"
-sklearn = "*"
+scikit-learn = "*"
 
 [[package]]
 name = "fonttools"
@@ -1803,19 +1804,6 @@ files = [
 ]
 
 [[package]]
-name = "sklearn"
-version = "0.0"
-description = "A set of python modules for machine learning and data mining"
-optional = true
-python-versions = "*"
-files = [
-    {file = "sklearn-0.0.tar.gz", hash = "sha256:e23001573aa194b834122d2b9562459bf5ae494a2d59ca6b8aa22c85a44c0e31"},
-]
-
-[package.dependencies]
-scikit-learn = "*"
-
-[[package]]
 name = "smmap"
 version = "5.0.0"
 description = "A pure Python implementation of a sliding window memory map manager"
@@ -2089,4 +2077,4 @@ plot = ["matplotlib", "seaborn"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "2c02cc92d6e613f2046c6728d9915a4f7bd331d2ed33a3acb00ccac80cc26316"
+content-hash = "d67ffe2f836b5f3eeaf11694935c1e5d9accb4af44d74499426b95ff2266bac3"

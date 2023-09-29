@@ -27,7 +27,7 @@ GitPython = { version = "^3.1.20", optional = true }
 cloudpickle = { version = "^2.0.0", optional= true }
 fairlearn = { version = "0.8.0", optional = true }
 filelock = "*"
-folktables = { version = "^0.0.11", optional = true }
+folktables = { version = ">=0.0.12", optional = true }
 gitdb2 = { version = "4.0.2", optional = true }
 jinja2 = "*"
 joblib = "^1.1.0"
