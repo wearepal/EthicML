@@ -207,7 +207,7 @@ def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
     elif fairness is FairnessType.eq_odds:
         raise NotImplementedError("Not implemented Eq. Odds yet")
     elif fairness is FairnessType.dp:
-        mask = torch.ones(s_pred.shape, dtype=torch.uint8)
+        mask = torch.ones(s_pred.shape, dtype=torch.bool)
     else:
         raise NotImplementedError("Shouldn't be hit.")
     return mask
