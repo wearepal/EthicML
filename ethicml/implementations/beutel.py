@@ -134,7 +134,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple
             elif fairness is FairnessType.eq_odds:
                 raise NotImplementedError("Not implemented Eq. Odds yet")
             elif fairness is FairnessType.dp:
-                mask = torch.ones(s_pred.shape, dtype=torch.uint8)
+                mask = torch.ones(s_pred.shape, dtype=torch.bool)
             else:
                 raise NotImplementedError(f"Unknown value: {fairness}")
             loss += s_loss_fn(
