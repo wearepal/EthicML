@@ -4,13 +4,12 @@ from typing import Type
 
 import numpy as np
 import torch
+from torch import Tensor
 
 from .density_estimation import Kde
 
 
-def _joint_2(
-    x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1e-10
-) -> torch.Tensor:
+def _joint_2(x: Tensor, y: Tensor, density: Type[Kde], damping: float = 1e-10) -> Tensor:
     x = (x - x.mean()) / x.std()
     y = (y - y.mean()) / y.std()
     data = torch.cat([x.unsqueeze(-1), y.unsqueeze(-1)], -1)
@@ -23,12 +22,12 @@ def _joint_2(
 
     xx, yy = torch.meshgrid([x_centers, y_centers])
     grid = torch.cat([xx.unsqueeze(-1), yy.unsqueeze(-1)], -1)
-    h2d: torch.Tensor = joint_density.pdf(grid) + damping
+    h2d: Tensor = joint_density.pdf(grid) + damping
     h2d /= h2d.sum()
     return h2d
 
 
-def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1e-10) -> float:
+def hgr(x: Tensor, y: Tensor, density: Type[Kde], damping: float = 1e-10) -> Tensor:
     """An estimator of the Hirschfeld-Gebelein-Renyi maximum correlation coefficient.
 
     This function is using Witsenhausen’s Characterization.
@@ -49,7 +48,7 @@ def hgr(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 1
     return torch.svd(Q)[1][1]
 
 
-def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float = 0) -> torch.Tensor:
+def chi_2(x: Tensor, y: Tensor, density: Type[Kde], damping: float = 0) -> Tensor:
     r"""The :math:`\chi^2` divergence between the joint distribution and the product of marginals.
 
     This is know to be the square of an upper-bound on the Hirschfeld-Gebelein-Renyi maximum
@@ -72,9 +71,7 @@ def chi_2(x: torch.Tensor, y: torch.Tensor, density: Type[Kde], damping: float =
 # Independence of conditional variables
 
 
-def _joint_3(
-    x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kde], damping: float = 1e-10
-) -> torch.Tensor:
+def _joint_3(x: Tensor, y: Tensor, z: Tensor, density: Type[Kde], damping: float = 1e-10) -> Tensor:
     x = (x - x.mean()) / x.std()
     y = (y - y.mean()) / y.std()
     z = (z - z.mean()) / z.std()
@@ -88,12 +85,12 @@ def _joint_3(
     xx, yy, zz = torch.meshgrid([x_centers, y_centers, z_centers])
     grid = torch.cat([xx.unsqueeze(-1), yy.unsqueeze(-1), zz.unsqueeze(-1)], -1)
 
-    h3d: torch.Tensor = joint_density.pdf(grid) + damping
+    h3d: Tensor = joint_density.pdf(grid) + damping
     h3d /= h3d.sum()
     return h3d
 
 
-def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kde]) -> np.ndarray:
+def hgr_cond(x: Tensor, y: Tensor, z: Tensor, density: Type[Kde]) -> np.ndarray:
     r"""An estimator of the function :math:`z\to HGR(x|z, y|z)`.
 
     Where HGR is the Hirschfeld-Gebelein-Renyi maximum correlation
@@ -116,9 +113,7 @@ def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kd
     return np.array([torch.svd(Q[:, :, i])[1][1] for i in range(Q.shape[2])])
 
 
-def chi_2_cond(
-    x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kde]
-) -> torch.Tensor:
+def chi_2_cond(x: Tensor, y: Tensor, z: Tensor, density: Type[Kde]) -> Tensor:
     r"""An estimator of the function :math:`z\to chi^2(x|z, y|z)`.
 
     Where :math:`\chi^2` is the :math:`\chi^2` divergence between the joint distribution on (x,y)
