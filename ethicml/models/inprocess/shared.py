@@ -28,9 +28,5 @@ def settings_for_svm_lr(
             raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
-        kernel = (
-            KernelType[SVC().kernel]
-            if classifier is ClassifierType.svm
-            else None
-        )
+        kernel = KernelType[SVC().kernel] if classifier is ClassifierType.svm else None
     return C, kernel
