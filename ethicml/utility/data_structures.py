@@ -78,7 +78,7 @@ class SubsetMixin(ABC):
 
     @property
     @final
-    def s(self) -> pd.Series[int]:
+    def s(self) -> "pd.Series[int]":
         """Getter for property s."""
         return self.data[self.s_column]
 
@@ -116,7 +116,7 @@ class SubgroupTuple(SubsetMixin):
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
 
     @classmethod
-    def from_df(cls, *, x: pd.DataFrame, s: pd.Series[int], name: str | None = None) -> Self:
+    def from_df(cls, *, x: pd.DataFrame, s: "pd.Series[int]", name: str | None = None) -> Self:
         """Make a SubgroupTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
@@ -202,7 +202,7 @@ class DataTuple(SubsetMixin):
 
     @classmethod
     def from_df(
-        cls, *, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: str | None = None
+        cls, *, x: pd.DataFrame, s: "pd.Series[int]", y: "pd.Series[int]", name: str | None = None
     ) -> Self:
         """Make a DataTuple."""
         s_column = s.name
@@ -228,7 +228,7 @@ class DataTuple(SubsetMixin):
         return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
-    def y(self) -> pd.Series[int]:
+    def y(self) -> "pd.Series[int]":
         """Getter for property y."""
         return self.data[self.y_column]
 
@@ -322,9 +322,7 @@ class LabelTuple(SubsetMixin):
         assert self.y_column in self.data.columns, f"column {self.y_column} not present"
 
     @classmethod
-    def from_df(
-        cls, *, s: pd.Series[int], y: pd.Series[int], name: str | None = None
-    ) -> Self:
+    def from_df(cls, *, s: "pd.Series[int]", y: "pd.Series[int]", name: str | None = None) -> Self:
         """Make a LabelTuple."""
         s_column = s.name
         y_column = y.name
@@ -355,7 +353,7 @@ class LabelTuple(SubsetMixin):
         )
 
     @property
-    def y(self) -> pd.Series[int]:
+    def y(self) -> "pd.Series[int]":
         """Getter for property y."""
         return self.data[self.y_column]
 
