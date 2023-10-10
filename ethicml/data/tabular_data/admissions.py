@@ -37,7 +37,6 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 }
 ```
 """
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type

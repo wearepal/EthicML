@@ -1,7 +1,6 @@
 """Implementation of Beutel's adversarially learned fair representations."""
 # Disable pylint checking overwritten method signatures. Pytorch forward passes use **kwargs
 # pylint: disable=arguments-differ
-from __future__ import annotations
 import json
 from pathlib import Path
 import random
@@ -32,6 +31,125 @@ if TYPE_CHECKING:
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss(), "CrossEntropyLoss()": nn.CrossEntropyLoss()}
+
+
+class Encoder(nn.Module):
+    """Encoder of the GAN."""
+
+    def __init__(self, enc_size: Sequence[int], init_size: int, activation: nn.Module | None):
+        super().__init__()
+        self.encoder = nn.Sequential()
+        if not enc_size:  # In the case that encoder size [] is specified
+            self.encoder.add_module("single encoder layer", nn.Linear(init_size, init_size))
+            self.encoder.add_module("single layer encoder activation", activation)
+        else:
+            self.encoder.add_module("encoder layer 0", nn.Linear(init_size, enc_size[0]))
+            self.encoder.add_module("encoder activation 0", activation)
+            for k in range(len(enc_size) - 1):
+                self.encoder.add_module(
+                    f"encoder layer {k + 1}", nn.Linear(enc_size[k], enc_size[k + 1])
+                )
+                self.encoder.add_module(f"encoder activation {k + 1}", activation)
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Forward pass."""
+        return self.encoder(x)
+
+
+class Adversary(nn.Module):
+    """Adversary of the GAN."""
+
+    def __init__(
+        self,
+        fairness: FairnessType,
+        adv_size: Sequence[int],
+        init_size: int,
+        s_size: int,
+        activation: nn.Module,
+        adv_weight: float,
+    ):
+        super().__init__()
+        self.fairness = fairness
+        self.init_size = init_size
+        self.adv_weight = adv_weight
+        self.adversary = nn.Sequential()
+        if not adv_size:  # In the case that encoder size [] is specified
+            self.adversary.add_module("single adversary layer", nn.Linear(init_size, s_size))
+            self.adversary.add_module("single layer adversary activation", activation)
+        else:
+            self.adversary.add_module("adversary layer 0", nn.Linear(init_size, adv_size[0]))
+            self.adversary.add_module("adversary activation 0", activation)
+            for k in range(len(adv_size) - 1):
+                self.adversary.add_module(
+                    f"adversary layer {k + 1}", nn.Linear(adv_size[k], adv_size[k + 1])
+                )
+                self.adversary.add_module(f"adversary activation {k + 1}", activation)
+            self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
+            self.adversary.add_module("adversary last activation", activation)
+
+    def forward(self, x: Tensor, y: Tensor) -> Tensor:
+        """Forward pass."""
+        x = _grad_reverse(x, lambda_=self.adv_weight)
+
+        if self.fairness is FairnessType.eq_opp:
+            mask = y.view(-1, 1).ge(0.5)
+            x = torch.masked_select(x, mask).view(-1, self.init_size)
+            x = self.adversary(x)
+        elif self.fairness is FairnessType.eq_odds:
+            raise NotImplementedError("Not implemented equalized odds yet")
+        elif self.fairness is FairnessType.dp:
+            x = self.adversary(x)
+        else:
+            raise NotImplementedError("Shouldn't be hit.")
+        return x
+
+
+class Predictor(nn.Module):
+    """Predictor of the GAN."""
+
+    def __init__(
+        self, pred_size: Sequence[int], init_size: int, class_label_size: int, activation: nn.Module
+    ):
+        super().__init__()
+        self.predictor = nn.Sequential()
+        if not pred_size:  # In the case that encoder size [] is specified
+            self.predictor.add_module(
+                "single adversary layer", nn.Linear(init_size, class_label_size)
+            )
+            self.predictor.add_module("single layer adversary activation", activation)
+        else:
+            self.predictor.add_module("adversary layer 0", nn.Linear(init_size, pred_size[0]))
+            self.predictor.add_module("adversary activation 0", nn.Sigmoid())
+            for k in range(len(pred_size) - 1):
+                self.predictor.add_module(
+                    f"adversary layer {k + 1}", nn.Linear(pred_size[k], pred_size[k + 1])
+                )
+                self.predictor.add_module(f"adversary activation {k + 1}", nn.Sigmoid())
+            self.predictor.add_module(
+                "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
+            )
+            self.predictor.add_module("adversary last activation", nn.Softmax())
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Forward pass."""
+        return self.predictor(x)
+
+
+class Model(nn.Module):
+    """Whole GAN model."""
+
+    def __init__(self, enc: Encoder, adv: Adversary, pred: Predictor) -> None:
+        super().__init__()
+        self.enc = enc
+        self.adv = adv
+        self.pred = pred
+
+    def forward(self, x: Tensor, y: Tensor) -> tuple[Tensor, Tensor, Tensor]:
+        """Forward pass."""
+        encoded = self.enc(x)
+        s_hat = self.adv(encoded, y)
+        y_hat = self.pred(encoded)
+        return encoded, s_hat, y_hat
 
 
 def set_seed(seed: int) -> None:
@@ -252,125 +370,6 @@ class GradReverse(Function):
 
 def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
     return GradReverse.apply(features, lambda_)  # pyright: ignore
-
-
-class Encoder(nn.Module):
-    """Encoder of the GAN."""
-
-    def __init__(self, enc_size: Sequence[int], init_size: int, activation: nn.Module | None):
-        super().__init__()
-        self.encoder = nn.Sequential()
-        if not enc_size:  # In the case that encoder size [] is specified
-            self.encoder.add_module("single encoder layer", nn.Linear(init_size, init_size))
-            self.encoder.add_module("single layer encoder activation", activation)
-        else:
-            self.encoder.add_module("encoder layer 0", nn.Linear(init_size, enc_size[0]))
-            self.encoder.add_module("encoder activation 0", activation)
-            for k in range(len(enc_size) - 1):
-                self.encoder.add_module(
-                    f"encoder layer {k + 1}", nn.Linear(enc_size[k], enc_size[k + 1])
-                )
-                self.encoder.add_module(f"encoder activation {k + 1}", activation)
-
-    def forward(self, x: Tensor) -> Tensor:
-        """Forward pass."""
-        return self.encoder(x)
-
-
-class Adversary(nn.Module):
-    """Adversary of the GAN."""
-
-    def __init__(
-        self,
-        fairness: FairnessType,
-        adv_size: Sequence[int],
-        init_size: int,
-        s_size: int,
-        activation: nn.Module,
-        adv_weight: float,
-    ):
-        super().__init__()
-        self.fairness = fairness
-        self.init_size = init_size
-        self.adv_weight = adv_weight
-        self.adversary = nn.Sequential()
-        if not adv_size:  # In the case that encoder size [] is specified
-            self.adversary.add_module("single adversary layer", nn.Linear(init_size, s_size))
-            self.adversary.add_module("single layer adversary activation", activation)
-        else:
-            self.adversary.add_module("adversary layer 0", nn.Linear(init_size, adv_size[0]))
-            self.adversary.add_module("adversary activation 0", activation)
-            for k in range(len(adv_size) - 1):
-                self.adversary.add_module(
-                    f"adversary layer {k + 1}", nn.Linear(adv_size[k], adv_size[k + 1])
-                )
-                self.adversary.add_module(f"adversary activation {k + 1}", activation)
-            self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
-            self.adversary.add_module("adversary last activation", activation)
-
-    def forward(self, x: Tensor, y: Tensor) -> Tensor:
-        """Forward pass."""
-        x = _grad_reverse(x, lambda_=self.adv_weight)
-
-        if self.fairness is FairnessType.eq_opp:
-            mask = y.view(-1, 1).ge(0.5)
-            x = torch.masked_select(x, mask).view(-1, self.init_size)
-            x = self.adversary(x)
-        elif self.fairness is FairnessType.eq_odds:
-            raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness is FairnessType.dp:
-            x = self.adversary(x)
-        else:
-            raise NotImplementedError("Shouldn't be hit.")
-        return x
-
-
-class Predictor(nn.Module):
-    """Predictor of the GAN."""
-
-    def __init__(
-        self, pred_size: Sequence[int], init_size: int, class_label_size: int, activation: nn.Module
-    ):
-        super().__init__()
-        self.predictor = nn.Sequential()
-        if not pred_size:  # In the case that encoder size [] is specified
-            self.predictor.add_module(
-                "single adversary layer", nn.Linear(init_size, class_label_size)
-            )
-            self.predictor.add_module("single layer adversary activation", activation)
-        else:
-            self.predictor.add_module("adversary layer 0", nn.Linear(init_size, pred_size[0]))
-            self.predictor.add_module("adversary activation 0", nn.Sigmoid())
-            for k in range(len(pred_size) - 1):
-                self.predictor.add_module(
-                    f"adversary layer {k + 1}", nn.Linear(pred_size[k], pred_size[k + 1])
-                )
-                self.predictor.add_module(f"adversary activation {k + 1}", nn.Sigmoid())
-            self.predictor.add_module(
-                "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
-            )
-            self.predictor.add_module("adversary last activation", nn.Softmax())
-
-    def forward(self, x: Tensor) -> Tensor:
-        """Forward pass."""
-        return self.predictor(x)
-
-
-class Model(nn.Module):
-    """Whole GAN model."""
-
-    def __init__(self, enc: Encoder, adv: Adversary, pred: Predictor) -> None:
-        super().__init__()
-        self.enc = enc
-        self.adv = adv
-        self.pred = pred
-
-    def forward(self, x: Tensor, y: Tensor) -> tuple[Tensor, Tensor, Tensor]:
-        """Forward pass."""
-        encoded = self.enc(x)
-        s_hat = self.adv(encoded, y)
-        y_hat = self.pred(encoded)
-        return encoded, s_hat, y_hat
 
 
 def main() -> None:

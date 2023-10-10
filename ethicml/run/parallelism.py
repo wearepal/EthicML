@@ -1,5 +1,4 @@
 """Collection of functions that enable parallelism."""
-from __future__ import annotations
 from typing import TYPE_CHECKING, List, Protocol, Sequence, Tuple, TypeVar, cast, overload
 from typing_extensions import TypeAlias
 

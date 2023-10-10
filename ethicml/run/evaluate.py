@@ -1,5 +1,4 @@
 """Runs given metrics on given algorithms for given datasets."""
-from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal, NamedTuple, Sequence
 

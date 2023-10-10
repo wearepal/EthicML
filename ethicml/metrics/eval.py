@@ -1,5 +1,4 @@
 """Runs given metrics on the given results."""
-from __future__ import annotations
 from typing import TYPE_CHECKING, Sequence
 
 from ethicml.metrics.per_sensitive_attribute import (

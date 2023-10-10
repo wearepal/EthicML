@@ -1,5 +1,4 @@
 """Class to describe features of the toy dataset with more than 2 classes."""
-from __future__ import annotations
 from dataclasses import dataclass
 
 from ..dataset import LegacyDataset

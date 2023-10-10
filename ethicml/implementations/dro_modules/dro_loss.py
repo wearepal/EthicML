@@ -1,5 +1,4 @@
 """DRO Loss."""
-from __future__ import annotations
 from typing import Type
 from typing_extensions import override
 

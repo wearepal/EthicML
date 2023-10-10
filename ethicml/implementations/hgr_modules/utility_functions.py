@@ -1,6 +1,4 @@
 """Utility Functins for HGR method."""
-from __future__ import annotations
-
 import torch
 
 

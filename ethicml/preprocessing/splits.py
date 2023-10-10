@@ -1,5 +1,4 @@
 """Split into train and test data."""
-from __future__ import annotations
 from abc import ABC, abstractmethod
 import itertools
 from typing import Iterator, Literal
