@@ -142,7 +142,7 @@ jobs:
         run: sudo apt-get install -y pandoc
       - name: Build with sphinx
         run: |
-          sphinx-build -W -b html ./docs ./docs/_build
+          poetry run sphinx-build -W -b html ./docs ./docs/_build
 
   test_with_pytest:
     needs: [lint_with_ruff, format_with_black, check_docstrings, check_with_darglint, test_minimal_dependencies, test_full_dependencies]

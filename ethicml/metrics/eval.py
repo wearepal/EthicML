@@ -1,18 +1,14 @@
 """Runs given metrics on the given results."""
-from typing import TYPE_CHECKING, Sequence
+from collections.abc import Set as AbstractSet
+from typing import Sequence
 
+from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (
     MetricNotApplicableError,
     PerSens,
     metric_per_sens,
 )
 from ethicml.utility.data_structures import EvalTuple, Prediction
-
-if TYPE_CHECKING:  # the following imports are only needed for type checking
-    from collections.abc import Set as AbstractSet
-
-    from ethicml.metrics.metric import Metric
-
 
 __all__ = ["run_metrics", "per_sens_metrics_check"]
 

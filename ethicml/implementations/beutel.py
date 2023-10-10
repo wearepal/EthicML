@@ -161,7 +161,7 @@ def set_seed(seed: int) -> None:
 
 
 def build_networks(
-    flags: BeutelArgs,
+    flags: "BeutelArgs",
     train_data: CustomDataset,
     enc_activation: nn.Module,
     adv_activation: nn.Module,
@@ -193,7 +193,7 @@ def build_networks(
     return enc, model
 
 
-def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple, Encoder]:
+def fit(train: DataTuple, flags: "BeutelArgs", seed: int = 888) -> tuple[DataTuple, Encoder]:
     """Train the fair autoencoder on the training data and then transform both training and test."""
     set_seed(seed)
     fairness = FairnessType[flags["fairness"]]
@@ -293,7 +293,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple
     return transformed_train, enc
 
 
-def transform(data: SubgroupTuple, enc: torch.nn.Module, flags: BeutelArgs) -> SubgroupTuple:
+def transform(data: SubgroupTuple, enc: torch.nn.Module, flags: "BeutelArgs") -> SubgroupTuple:
     """Transform the test data using the trained autoencoder."""
     test_data = TestDataset(data)
     test_loader = DataLoader(dataset=test_data, batch_size=flags["batch_size"], shuffle=False)
@@ -301,7 +301,7 @@ def transform(data: SubgroupTuple, enc: torch.nn.Module, flags: BeutelArgs) -> S
 
 
 def train_and_transform(
-    train: DataTuple, test: SubgroupTuple, flags: BeutelArgs, seed: int
+    train: DataTuple, test: SubgroupTuple, flags: "BeutelArgs", seed: int
 ) -> tuple[DataTuple, SubgroupTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test."""
     transformed_train, enc = fit(train, flags, seed)
@@ -317,7 +317,7 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
     scheduler.step(iteration)
 
 
-def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
+def get_mask(flags: "BeutelArgs", s_pred: Tensor, class_label: Tensor) -> Tensor:
     """Get a mask to enforce different fairness types."""
     fairness = FairnessType[flags["fairness"]]
     if fairness is FairnessType.eq_opp:
@@ -374,8 +374,8 @@ def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
 
 def main() -> None:
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
-    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
-    flags: BeutelArgs = json.loads(sys.argv[2])
+    pre_algo_args: "PreAlgoArgs" = json.loads(sys.argv[1])
+    flags: "BeutelArgs" = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         train, test = load_data_from_flags(pre_algo_args)
         save_transformations(

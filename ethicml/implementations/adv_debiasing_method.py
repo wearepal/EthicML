@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
-def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClassLearner:
+def fit(train: DataTuple, args: "AdvDebArgs", seed: int = 888) -> AdvDebiasingClassLearner:
     """Fit a model."""
     random.seed(seed)
     np.random.seed(seed)
@@ -45,7 +45,7 @@ def predict(model: AdvDebiasingClassLearner, test: SubgroupTuple) -> np.ndarray:
 
 
 def train_and_predict(
-    train: DataTuple, test: SubgroupTuple, args: AdvDebArgs, seed: int
+    train: DataTuple, test: SubgroupTuple, args: "AdvDebArgs", seed: int
 ) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
@@ -54,8 +54,8 @@ def train_and_predict(
 
 def main() -> None:
     """Run the adversarial debiasing model as a standalone program."""
-    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
-    flags: AdvDebArgs = json.loads(sys.argv[2])
+    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
+    flags: "AdvDebArgs" = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
         train = DataTuple.from_file(Path(in_algo_args["train"]))

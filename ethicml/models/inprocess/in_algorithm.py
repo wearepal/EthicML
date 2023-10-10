@@ -79,6 +79,6 @@ class InAlgorithmDC(InAlgorithm, ABC):
 
     @property
     @final
-    def hyperparameters(self: DataclassInstance) -> HyperParamType:
+    def hyperparameters(self: "DataclassInstance") -> HyperParamType:
         """Return list of hyperparameters."""
         return asdict(self)
