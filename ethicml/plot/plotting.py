@@ -180,7 +180,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     y_0_label = y_s0.index[0]
     y_1_label = y_s0.index[1]
 
-    plt.style.use("seaborn-pastel")
+    plt.style.use("seaborn-v0_8-pastel")
     # plt.xkcd()
 
     plot: Axes
