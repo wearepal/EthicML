@@ -49,7 +49,7 @@ class NMI(_DependenceMeasure):
     @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
-        return normalized_mutual_info_score(  # type: ignore[return-value]
+        return normalized_mutual_info_score(
             base_values.to_numpy().ravel(),
             prediction.hard.to_numpy().ravel(),
             average_method="arithmetic",
