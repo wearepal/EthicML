@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 from scipy.spatial.distance import cdist
-from scipy.special import softmax  # type: ignore[attr-defined]
+from scipy.special import softmax
 
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, SubgroupTuple, TestTuple
@@ -135,7 +135,7 @@ def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
     bnd = [(0, 1)] * flags["clusters"] + [(None, None)] * features_dim * flags["clusters"]
     LFR_optim_objective.steps = 0  # type: ignore[attr-defined]
 
-    learned_model = optim.fmin_l_bfgs_b(  # type: ignore[attr-defined]
+    learned_model = optim.fmin_l_bfgs_b(
         LFR_optim_objective,
         x0=parameters_initialization,
         epsilon=1e-5,

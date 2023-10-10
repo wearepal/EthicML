@@ -4,7 +4,7 @@ from typing import Any, Literal, NamedTuple
 from typing_extensions import TypeAlias
 
 from matplotlib import legend
-from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
 import pandas as pd
 
 LegendType: TypeAlias = Literal["inside", "outside"]  # pylint: disable=invalid-name
@@ -29,7 +29,7 @@ class PlotDef(NamedTuple):
 
 
 def common_plotting_settings(
-    plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
+    plot: Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
 ) -> legend.Legend | None:
     """Commonly used settings for plots.
 
@@ -60,7 +60,7 @@ def common_plotting_settings(
 
 
 def errorbox(
-    plot: plt.Axes,
+    plot: Axes,
     plot_def: PlotDef,
     xaxis: tuple[str, str],
     yaxis: tuple[str, str],
@@ -172,7 +172,7 @@ def errorbox(
 
 
 def scatter(
-    plot: plt.Axes,
+    plot: Axes,
     plot_def: PlotDef,
     xaxis: tuple[str, str],
     yaxis: tuple[str, str],

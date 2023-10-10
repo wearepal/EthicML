@@ -27,7 +27,7 @@ class LR(InAlgorithmDC):
     """
 
     is_fairness_algo: ClassVar[bool] = False
-    C: float = field(default_factory=lambda: LogisticRegression().C)  # type: ignore[attr-defined]
+    C: float = field(default_factory=lambda: LogisticRegression().C)
 
     @property
     @override

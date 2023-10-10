@@ -6,7 +6,7 @@ from typing_extensions import override
 import numpy as np
 from numpy.random import RandomState
 import pandas as pd
-from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
+from scipy.optimize import OptimizeResult, linprog
 
 from ethicml.metrics.per_sensitive_attribute import metric_per_sens
 from ethicml.metrics.tnr import TNR

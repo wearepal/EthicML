@@ -28,9 +28,9 @@ class SVM(InAlgorithmDC):
     """
 
     is_fairness_algo: ClassVar[bool] = False
-    C: float = field(default_factory=lambda: SVC().C)  # type: ignore[attr-defined]
+    C: float = field(default_factory=lambda: SVC().C)
     kernel: KernelType = field(
-        default_factory=lambda: KernelType[SVC().kernel],  # type: ignore[attr-defined]
+        default_factory=lambda: KernelType[SVC().kernel],
     )
 
     @property

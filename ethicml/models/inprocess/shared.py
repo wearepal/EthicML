@@ -21,15 +21,15 @@ def settings_for_svm_lr(
         return 1.0, None
     if C is None:
         if classifier is ClassifierType.lr:
-            C = LogisticRegression().C  # type: ignore[attr-defined]
+            C = LogisticRegression().C
         elif classifier is ClassifierType.svm:
-            C = SVC().C  # type: ignore[attr-defined]
+            C = SVC().C
         else:
             raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
         kernel = (
-            KernelType[SVC().kernel]  # type: ignore[attr-defined]
+            KernelType[SVC().kernel]
             if classifier is ClassifierType.svm
             else None
         )
