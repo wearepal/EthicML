@@ -78,7 +78,7 @@ sphinx = "*"
 autodocsumm = "*"
 furo = "*"
 toml = "*"
-nbsphinx = {git = "https://github.com/tmke8/nbsphinx.git", rev = "e69b06f"}
+nbsphinx = {git = "https://github.com/tmke8/nbsphinx.git", rev = "0291ae7"}
 ipython-pygments = "*"
 
 [tool.poetry.group.ci]
