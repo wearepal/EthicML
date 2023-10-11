@@ -20,7 +20,6 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
      year = {2017}
    }
 """
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Mapping, Type

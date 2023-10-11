@@ -1,5 +1,4 @@
 """Methods that are shared among the inprocess algorithms."""
-from __future__ import annotations
 from typing import Union
 
 from sklearn.linear_model import LogisticRegression

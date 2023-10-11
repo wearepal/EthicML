@@ -1,5 +1,4 @@
 """Implementation of Heaviside decision function."""
-from __future__ import annotations
 
 import numpy
 

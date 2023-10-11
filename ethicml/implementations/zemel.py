@@ -1,5 +1,4 @@
 """Zemel algorithm."""
-from __future__ import annotations
 import json
 from pathlib import Path
 import sys
@@ -89,7 +88,7 @@ def get_xhat_y_hat(
 
 
 def train_and_transform(
-    train: DataTuple, test: SubgroupTuple, flags: ZemelArgs, seed: int
+    train: DataTuple, test: SubgroupTuple, flags: "ZemelArgs", seed: int
 ) -> tuple[DataTuple, SubgroupTuple]:
     """Train and transform."""
     prototypes, w = fit(train, flags, seed=seed)
@@ -114,7 +113,7 @@ def transform(data: SubgroupTuple, prototypes: np.ndarray, w: np.ndarray) -> Sub
     return data.replace(x=transformed)
 
 
-def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
+def fit(train: DataTuple, flags: "ZemelArgs", seed: int) -> Model:
     """Train the Zemel model and return the transformed features of the train and test sets."""
     np.random.seed(seed)
 
@@ -196,8 +195,8 @@ def main() -> None:
     Based on code from https://github.com/zjelveh/learning-fair-representations
     Which in turn, we've got from AIF360
     """
-    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
-    flags: ZemelArgs = json.loads(sys.argv[2])
+    pre_algo_args: "PreAlgoArgs" = json.loads(sys.argv[1])
+    flags: "ZemelArgs" = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         train, test = load_data_from_flags(pre_algo_args)
         save_transformations(

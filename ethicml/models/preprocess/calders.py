@@ -1,8 +1,7 @@
 """Kamiran&Calders 2012, massaging."""
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import pandas as pd
 
@@ -36,7 +35,7 @@ class Calders(PreAlgorithm):
         return "Calders"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Calders, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Self, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = _calders_algorithm(
             train, train, self.preferable_class, self.disadvantaged_group, seed

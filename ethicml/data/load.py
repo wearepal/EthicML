@@ -1,5 +1,4 @@
 """Load Data from .csv files."""
-from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
@@ -22,25 +21,6 @@ def load_data(dataset: Dataset) -> DataTuple:
     :returns: DataTuple with dataframes of features, labels and sensitive attributes
     """
     return dataset.load()
-
-
-def create_data_obj(
-    filepath: Path, s_column: str, y_column: str, additional_to_drop: list[str] | None = None
-) -> ConfigurableDataset:
-    """Create a `ConfigurableDataset` from the given file.
-
-    :param filepath: path to a CSV file
-    :param s_column: column that represents sensitive attributes
-    :param y_column: column that contains lables
-    :param additional_to_drop: other columns that should be dropped (Default: None)
-    :returns: Dataset object
-    """
-    return ConfigurableDataset(
-        filepath_=filepath,
-        s_column=s_column,
-        y_column=y_column,
-        additional_to_drop=additional_to_drop,
-    )
 
 
 @dataclass
@@ -76,3 +56,22 @@ class ConfigurableDataset(LegacyDataset):
             class_label_spec=y_column,
             filename_or_path=filepath,
         )
+
+
+def create_data_obj(
+    filepath: Path, s_column: str, y_column: str, additional_to_drop: list[str] | None = None
+) -> ConfigurableDataset:
+    """Create a `ConfigurableDataset` from the given file.
+
+    :param filepath: path to a CSV file
+    :param s_column: column that represents sensitive attributes
+    :param y_column: column that contains lables
+    :param additional_to_drop: other columns that should be dropped (Default: None)
+    :returns: Dataset object
+    """
+    return ConfigurableDataset(
+        filepath_=filepath,
+        s_column=s_column,
+        y_column=y_column,
+        additional_to_drop=additional_to_drop,
+    )

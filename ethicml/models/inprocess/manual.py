@@ -1,7 +1,6 @@
 """Manually specified (i.e. not learned) models."""
-from __future__ import annotations
 from dataclasses import dataclass
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -27,7 +26,7 @@ class Corels(InAlgorithmNoParams):
         return "CORELS"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> Corels:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         return self
 
     @override

@@ -1,6 +1,4 @@
 """Simple class to make class labels binary. Useful if a network uses BCELoss for example."""
-from __future__ import annotations
-
 import numpy as np
 import pandas as pd
 

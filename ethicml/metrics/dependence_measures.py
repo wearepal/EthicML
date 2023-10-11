@@ -1,5 +1,4 @@
 """For assessing the Mutual Information between s and yhat."""
-from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from enum import auto

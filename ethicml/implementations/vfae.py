@@ -1,5 +1,4 @@
 """Implementation of VFAE."""
-from __future__ import annotations
 import json
 from pathlib import Path
 import sys
@@ -26,7 +25,7 @@ if TYPE_CHECKING:
     from ethicml.models.preprocess.vfae import VfaeArgs
 
 
-def fit(train: DataTuple, flags: VfaeArgs) -> VFAENetwork:
+def fit(train: DataTuple, flags: "VfaeArgs") -> VFAENetwork:
     """Train the model."""
     dataset = get_dataset_obj_by_name(flags["dataset"])()
     assert isinstance(dataset, CSVDataset)
@@ -53,7 +52,7 @@ def fit(train: DataTuple, flags: VfaeArgs) -> VFAENetwork:
     return model
 
 
-def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
+def transform(model: VFAENetwork, dataset: "T", flags: "VfaeArgs") -> "T":
     """Transform the dataset."""
     data: CustomDataset | TestDataset
     if isinstance(dataset, DataTuple):
@@ -79,7 +78,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
 
 
 def train_and_transform(
-    train: DataTuple, test: SubgroupTuple, flags: VfaeArgs
+    train: DataTuple, test: SubgroupTuple, flags: "VfaeArgs"
 ) -> tuple[DataTuple, SubgroupTuple]:
     """Train the model and transform both the train dataset and the test dataset."""
     model = fit(train, flags)
@@ -89,7 +88,7 @@ def train_and_transform(
 
 
 def train_model(
-    epoch: int, model: VFAENetwork, train_loader: DataLoader, optimizer: Adam, flags: VfaeArgs
+    epoch: int, model: VFAENetwork, train_loader: DataLoader, optimizer: Adam, flags: "VfaeArgs"
 ) -> None:
     """Train the model."""
     model.train()
@@ -136,8 +135,8 @@ def train_model(
 
 def main() -> None:
     """Run model."""
-    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
-    flags: VfaeArgs = json.loads(sys.argv[2])
+    pre_algo_args: "PreAlgoArgs" = json.loads(sys.argv[1])
+    flags: "VfaeArgs" = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         set_seed(pre_algo_args["seed"])
         train, test = load_data_from_flags(pre_algo_args)

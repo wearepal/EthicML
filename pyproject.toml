@@ -70,6 +70,17 @@ ruff = ">=0.0.261"
 [tool.poetry.group.format.dependencies]
 black = "^23.1"
 
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+autodocsumm = "*"
+furo = "*"
+toml = "*"
+nbsphinx = {git = "https://github.com/tmke8/nbsphinx.git", rev = "0291ae7"}
+ipython-pygments = "*"
+
 [tool.poetry.group.ci]
 optional = true
 

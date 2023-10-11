@@ -1,5 +1,4 @@
 """Fair Dummies Implementation."""
-from __future__ import annotations
 import json
 from pathlib import Path
 import random
@@ -18,7 +17,7 @@ if TYPE_CHECKING:
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
-def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLearner:
+def fit(train: DataTuple, args: "FairDummiesArgs", seed: int = 888) -> EquiClassLearner:
     """Fit a model."""
     random.seed(seed)
     np.random.seed(seed)
@@ -50,7 +49,7 @@ def predict(model: EquiClassLearner, test: TestTuple) -> np.ndarray:
 
 
 def train_and_predict(
-    train: DataTuple, test: TestTuple, args: FairDummiesArgs, seed: int
+    train: DataTuple, test: TestTuple, args: "FairDummiesArgs", seed: int
 ) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
@@ -59,8 +58,8 @@ def train_and_predict(
 
 def main() -> None:
     """Run the Agarwal model as a standalone program."""
-    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
-    flags: FairDummiesArgs = json.loads(sys.argv[2])
+    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
+    flags: "FairDummiesArgs" = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
         train = DataTuple.from_file(Path(in_algo_args["train"]))

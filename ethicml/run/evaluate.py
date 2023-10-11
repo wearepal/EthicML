@@ -1,12 +1,15 @@
 """Runs given metrics on given algorithms for given datasets."""
-from __future__ import annotations
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, NamedTuple, Sequence
+from typing import Literal, NamedTuple, Sequence
 
 import pandas as pd
 
+from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.metrics.eval import per_sens_metrics_check, run_metrics
+from ethicml.metrics.metric import Metric
+from ethicml.models.inprocess.in_algorithm import InAlgorithm
+from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
 from ethicml.run.parallelism import run_in_parallel
@@ -19,12 +22,6 @@ from ethicml.utility.data_structures import (
     TrainValPair,
     make_results,
 )
-
-if TYPE_CHECKING:  # the following imports are only needed for type checking
-    from ethicml.data.dataset import Dataset
-    from ethicml.metrics.metric import Metric
-    from ethicml.models.inprocess.in_algorithm import InAlgorithm
-    from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 
 __all__ = ["evaluate_models", "load_results"]
 

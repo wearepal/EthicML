@@ -1,7 +1,6 @@
 """Demographic Parity Label flipping approach."""
-from __future__ import annotations
 from dataclasses import dataclass
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -23,7 +22,7 @@ class DPFlip(PostAlgorithm):
         return "DemPar. Post Process"
 
     @override
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> DPFlip:
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> Self:
         return self
 
     @override

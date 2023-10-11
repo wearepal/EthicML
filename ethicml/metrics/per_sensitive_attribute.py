@@ -1,5 +1,4 @@
 """Evaluator for a metric per sensitive attribute class."""
-from __future__ import annotations
 from enum import Enum
 from typing import Callable, ClassVar, Mapping
 
@@ -141,17 +140,17 @@ class PerSens(Enum):
 
     _ignore_ = ["ALL", "DIFFS_RATIOS", "MIN_MAX"]  # these are class variables and not enum members
 
-    ALL: ClassVar[frozenset[PerSens]]
+    ALL: ClassVar[frozenset["PerSens"]]
     """All aggregations."""
     DIFFS = (diff_per_sens,)
     """Differences of the per-group results."""
-    DIFFS_RATIOS: ClassVar[frozenset[PerSens]]
+    DIFFS_RATIOS: ClassVar[frozenset["PerSens"]]
     """Equivalent to ``{DIFFS, RATIOS}``."""
     MAX = (max_per_sens,)
     """Maximum of the per-group results."""
     MIN = (min_per_sens,)
     """Minimum of the per-group results."""
-    MIN_MAX: ClassVar[frozenset[PerSens]]
+    MIN_MAX: ClassVar[frozenset["PerSens"]]
     """Equivalent to ``{MIN, MAX}``."""
     RATIOS = (ratio_per_sens,)
     """Ratios of the per-group results."""

@@ -44,28 +44,28 @@ autodoc_default_options = {
     "special-members": "__len__",
 }
 autodoc_typehints = "description"
-autodoc_type_aliases = {
-    "pd.DataFrame": "pandas.DataFrame",
-    "pd.Series": "pandas.Series",
-    "HyperParamType": "HyperParamType",
-}
-autodoc_mock_imports = [
-    "folktables",
-    "git",
-    "joblib",
-    "kit",
-    "matplotlib",
-    "numpy",
-    "pandas",
-    "ranzen",
-    "scipy",
-    "seaborn",
-    "sklearn",
-    "teext",
-    "torch",
-    "tqdm",
-    "wandb",
-]
+# autodoc_type_aliases = {
+#     "pd.DataFrame": "pandas.DataFrame",
+#     "pd.Series": "pandas.Series",
+#     "HyperParamType": "HyperParamType",
+# }
+# autodoc_mock_imports = [
+#     "folktables",
+#     "git",
+#     "joblib",
+#     "kit",
+#     "matplotlib",
+#     "numpy",
+#     "pandas",
+#     "ranzen",
+#     "scipy",
+#     "seaborn",
+#     "sklearn",
+#     "teext",
+#     "torch",
+#     "tqdm",
+#     "wandb",
+# ]
 add_module_names = False  # do not show classes and functions with full module name (ethicml.data..)
 
 nbsphinx_execute = "never"
