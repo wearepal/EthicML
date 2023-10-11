@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use 3.10
-        poetry install --no-interaction --no-root --all-extras --with docs,torchcpu --without ci,lint,format
+          poetry install --no-interaction --no-root --all-extras --with docs,torchcpu --without ci,lint,format
       - name: Install pandoc
         run: sudo apt-get install -y pandoc
       - name: Build with sphinx
