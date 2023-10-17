@@ -39,7 +39,25 @@ jobs:
       run: |
         echo "pass!"
 
-  check_docstrings:
+  check_with_darglint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check with darglint
+      run: |
+        echo "pass!"
+
+  test_minimal_dependencies:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check with darglint
+      run: |
+        echo "pass!"
+
+  test_build_docs:
 
     runs-on: ubuntu-latest
 
@@ -61,33 +79,6 @@ jobs:
     - name: Build with sphinx
       run: |
         poetry run sphinx-build -W -b html ./docs ./docs/_build
-
-  check_with_darglint:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check with darglint
-      run: |
-        echo "pass!"
-
-  test_minimal_dependencies:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check with darglint
-      run: |
-        echo "pass!"
-
-  test_full_dependencies:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check with darglint
-      run: |
-        echo "pass!"
 
   test_with_pytest:
 
