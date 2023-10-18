@@ -67,30 +67,31 @@ class Law(LegacyDataset):
 
         continuous_features = ["LSAT", "UGPA", "ZFYA"]
 
-        if self.split is LawSplits.SEX:
-            sens_attr_spec: str | Mapping[str, LabelGroup] = "Sex_1"
-            s_prefix = ["Sex", "Race"]
-            class_label_spec = "PF_1"
-            class_label_prefix = ["PF"]
-        elif self.split is LawSplits.RACE:
-            sens_attr_spec = "Race_White"
-            s_prefix = ["Race", "Sex"]
-            class_label_spec = "PF_1"
-            class_label_prefix = ["PF"]
-        elif self.split is LawSplits.SEX_RACE:
-            sens_attr_spec = spec_from_binary_cols(
-                {"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]}
-            )
-            s_prefix = ["Race", "Sex"]
-            class_label_spec = "PF_1"
-            class_label_prefix = ["PF"]
-        elif self.split is LawSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case LawSplits.SEX:
+                sens_attr_spec: str | Mapping[str, LabelGroup] = "Sex_1"
+                s_prefix = ["Sex", "Race"]
+                class_label_spec = "PF_1"
+                class_label_prefix = ["PF"]
+            case LawSplits.RACE:
+                sens_attr_spec = "Race_White"
+                s_prefix = ["Race", "Sex"]
+                class_label_spec = "PF_1"
+                class_label_prefix = ["PF"]
+            case LawSplits.SEX_RACE:
+                sens_attr_spec = spec_from_binary_cols(
+                    {"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]}
+                )
+                s_prefix = ["Race", "Sex"]
+                class_label_spec = "PF_1"
+                class_label_prefix = ["PF"]
+            case LawSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
 
         name = f"Law {self.split.value}"
 

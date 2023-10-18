@@ -58,17 +58,18 @@ def fit(train: DataTuple, args: "AgarwalArgs", seed: int = 888) -> "Exponentiate
         fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
     model: Union["LinearModel", GradientBoostingClassifier]
-    if classifier_type is ClassifierType.svm:
-        assert kernel_type is not None
-        model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
-    elif classifier_type is ClassifierType.lr:
-        random_state = np.random.RandomState(seed=seed)
-        model = LogisticRegression(
-            solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
-        )
-    elif classifier_type is ClassifierType.gbt:
-        random_state = np.random.RandomState(seed=seed)
-        model = GradientBoostingClassifier(random_state=random_state)
+    match classifier_type:
+        case ClassifierType.svm:
+            assert kernel_type is not None
+            model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
+        case ClassifierType.lr:
+            random_state = np.random.RandomState(seed=seed)
+            model = LogisticRegression(
+                solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
+            )
+        case ClassifierType.gbt:
+            random_state = np.random.RandomState(seed=seed)
+            model = GradientBoostingClassifier(random_state=random_state)
 
     data_x = train.x
     data_y = train.y

@@ -209,12 +209,13 @@ class AdvDebiasingClassLearner:
         self.num_classes = num_classes
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
-        elif self.model_type is ModelType.linear:
-            self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
+            case ModelType.linear:
+                self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
+            case _:
+                raise NotImplementedError
 
         self.clf_criterion = cost_pred
         self.clf_optimizer = optim.Adam(self.clf.parameters(), lr=self.lr)
@@ -301,12 +302,13 @@ class AdvDebiasingRegLearner:
         self.out_shape = out_shape
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
         self.clf_criterion = cost_pred
         self.clf_optimizer = optim.Adam(self.clf.parameters(), lr=self.lr)

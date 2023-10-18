@@ -437,28 +437,29 @@ class Compas(LegacyDataset):
         ]
 
         sens_attr_spec: str | LabelSpec
-        if self.split is CompasSplits.SEX:
-            sens_attr_spec = "sex"
-            s_prefix = ["sex"]
-            class_label_spec = "two-year-recid"
-            class_label_prefix = ["two-year-recid"]
-        elif self.split is CompasSplits.RACE:
-            sens_attr_spec = "race"
-            s_prefix = ["race"]
-            class_label_spec = "two-year-recid"
-            class_label_prefix = ["two-year-recid"]
-        elif self.split is CompasSplits.RACE_SEX:
-            sens_attr_spec = spec_from_binary_cols({"sex": ["sex"], "race": ["race"]})
-            s_prefix = ["race", "sex"]
-            class_label_spec = "two-year-recid"
-            class_label_prefix = ["two-year-recid"]
-        elif self.split is CompasSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case CompasSplits.SEX:
+                sens_attr_spec = "sex"
+                s_prefix = ["sex"]
+                class_label_spec = "two-year-recid"
+                class_label_prefix = ["two-year-recid"]
+            case CompasSplits.RACE:
+                sens_attr_spec = "race"
+                s_prefix = ["race"]
+                class_label_spec = "two-year-recid"
+                class_label_prefix = ["two-year-recid"]
+            case CompasSplits.RACE_SEX:
+                sens_attr_spec = spec_from_binary_cols({"sex": ["sex"], "race": ["race"]})
+                s_prefix = ["race", "sex"]
+                class_label_spec = "two-year-recid"
+                class_label_prefix = ["two-year-recid"]
+            case CompasSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
 
         super().__init__(
             name=f"Compas {self.split.value}",

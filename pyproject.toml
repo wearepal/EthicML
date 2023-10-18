@@ -104,7 +104,7 @@ priority = "explicit"
 
 [tool.black]
 line-length = 100
-target-version = ['py37']
+target-version = ['py310']
 include = '''
 (
   ethicml/(.*).pyi?$
@@ -201,6 +201,7 @@ follow_imports_for_stubs = true
 typeCheckingMode = "strict"
 pythonVersion = "3.10"
 reportMissingTypeArgument = "none"
+reportUnnecessaryComparison = "none"
 reportCallInDefaultInitializer = "warning"
 reportPropertyTypeMismatch = "warning"
 reportUninitializedInstanceVariable = "warning"
@@ -212,6 +213,7 @@ reportUnknownMemberType = "none"
 reportUnknownVariableType = "none"
 reportUnknownParameterType = "none"
 reportUnknownArgumentType = "none"
+reportUnknownLambdaType = "none"
 
 [tool.ruff]
 line-length = 100
@@ -219,6 +221,7 @@ select = [
     "A", # flake8-builtins
     # "ANN", # flake8-annotations
     "ARG", # flake8-unused-args
+    "C4", # flake8-comprehensions
     "D", # pydocstyle
     "E", # pycodestyle
     "F", # pyflakes

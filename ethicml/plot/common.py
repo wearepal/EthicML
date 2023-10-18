@@ -202,7 +202,7 @@ def scatter(
             shp_index = filled_counter
             filled_counter += 1
         else:
-            additional_params = dict(markerfacecolor="none")
+            additional_params = {"markerfacecolor": "none"}
             shp_index = i + startindex - filled_counter
         plot.plot(
             entry.vals[xaxis_measure].to_numpy(),

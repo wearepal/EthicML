@@ -128,28 +128,29 @@ class Sqf(LegacyDataset):
         continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
         sens_attr_spec: str | LabelSpec
-        if self.split is SqfSplits.SEX:
-            sens_attr_spec = "sex"
-            s_prefix = ["sex"]
-            class_label_spec = "weapon"
-            class_label_prefix = ["weapon"]
-        elif self.split is SqfSplits.RACE:
-            sens_attr_spec = "race"
-            s_prefix = ["race"]
-            class_label_spec = "weapon"
-            class_label_prefix = ["weapon"]
-        elif self.split is SqfSplits.RACE_SEX:
-            sens_attr_spec = spec_from_binary_cols({"sex": ["sex"], "race": ["race"]})
-            s_prefix = ["race", "sex"]
-            class_label_spec = "weapon"
-            class_label_prefix = ["weapon"]
-        elif self.split is SqfSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case SqfSplits.SEX:
+                sens_attr_spec = "sex"
+                s_prefix = ["sex"]
+                class_label_spec = "weapon"
+                class_label_prefix = ["weapon"]
+            case SqfSplits.RACE:
+                sens_attr_spec = "race"
+                s_prefix = ["race"]
+                class_label_spec = "weapon"
+                class_label_prefix = ["weapon"]
+            case SqfSplits.RACE_SEX:
+                sens_attr_spec = spec_from_binary_cols({"sex": ["sex"], "race": ["race"]})
+                s_prefix = ["race", "sex"]
+                class_label_spec = "weapon"
+                class_label_prefix = ["weapon"]
+            case SqfSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
         super().__init__(
             name=f"SQF {self.split.value}",
             num_samples=12347,

@@ -91,16 +91,17 @@ class Adversary(nn.Module):
         """Forward pass."""
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness is FairnessType.eq_opp:
-            mask = y.view(-1, 1).ge(0.5)
-            x = torch.masked_select(x, mask).view(-1, self.init_size)
-            x = self.adversary(x)
-        elif self.fairness is FairnessType.eq_odds:
-            raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness is FairnessType.dp:
-            x = self.adversary(x)
-        else:
-            raise NotImplementedError("Shouldn't be hit.")
+        match self.fairness:
+            case FairnessType.eq_opp:
+                mask = y.view(-1, 1).ge(0.5)
+                x = torch.masked_select(x, mask).view(-1, self.init_size)
+                x = self.adversary(x)
+            case FairnessType.eq_odds:
+                raise NotImplementedError("Not implemented equalized odds yet")
+            case FairnessType.dp:
+                x = self.adversary(x)
+            case _:
+                raise NotImplementedError("Shouldn't be hit.")
         return x
 
 
@@ -247,14 +248,15 @@ def fit(train: DataTuple, flags: "BeutelArgs", seed: int = 888) -> tuple[DataTup
 
             loss = y_loss_fn(y_pred, class_label.squeeze(-1).long())
 
-            if fairness is FairnessType.eq_opp:
-                mask = class_label.ge(0.5)
-            elif fairness is FairnessType.eq_odds:
-                raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif fairness is FairnessType.dp:
-                mask = torch.ones(s_pred.shape, dtype=torch.bool)
-            else:
-                raise NotImplementedError(f"Unknown value: {fairness}")
+            match fairness:
+                case FairnessType.eq_opp:
+                    mask = class_label.ge(0.5)
+                case FairnessType.eq_odds:
+                    raise NotImplementedError("Not implemented Eq. Odds yet")
+                case FairnessType.dp:
+                    mask = torch.ones(s_pred.shape, dtype=torch.bool)
+                case _:
+                    raise NotImplementedError(f"Unknown value: {fairness}")
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
@@ -320,14 +322,15 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
 def get_mask(flags: "BeutelArgs", s_pred: Tensor, class_label: Tensor) -> Tensor:
     """Get a mask to enforce different fairness types."""
     fairness = FairnessType[flags["fairness"]]
-    if fairness is FairnessType.eq_opp:
-        mask = class_label.ge(0.5)
-    elif fairness is FairnessType.eq_odds:
-        raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif fairness is FairnessType.dp:
-        mask = torch.ones(s_pred.shape, dtype=torch.bool)
-    else:
-        raise NotImplementedError("Shouldn't be hit.")
+    match fairness:
+        case FairnessType.eq_opp:
+            mask = class_label.ge(0.5)
+        case FairnessType.eq_odds:
+            raise NotImplementedError("Not implemented Eq. Odds yet")
+        case FairnessType.dp:
+            mask = torch.ones(s_pred.shape, dtype=torch.bool)
+        case _:
+            raise NotImplementedError("Shouldn't be hit.")
     return mask
 
 
