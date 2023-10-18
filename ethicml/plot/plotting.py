@@ -116,7 +116,7 @@ def _multivariate_grid(
             color=color,
             kde=True,
             stat="density",
-            kde_kws=dict(cut=3),
+            kde_kws={"cut": 3},
         )
         sns.histplot(
             df_group,
@@ -124,7 +124,7 @@ def _multivariate_grid(
             ax=g.ax_marg_y,
             kde=True,
             stat="density",
-            kde_kws=dict(cut=3),
+            kde_kws={"cut": 3},
         )
     # Do also global Hist:
     # sns.histplot(df[col_x].values, ax=g.ax_marg_x, color='grey')

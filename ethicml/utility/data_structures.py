@@ -164,8 +164,8 @@ class SubgroupTuple(SubsetMixin):
         """
         write_as_npz(
             data_path,
-            dict(x=self.x, s=self.s),
-            dict(name=np.array(self.name if self.name is not None else "")),
+            {"x": self.x, "s": self.s},
+            {"name": np.array(self.name if self.name is not None else "")},
         )
 
     @classmethod
@@ -285,8 +285,8 @@ class DataTuple(SubsetMixin):
         """
         write_as_npz(
             data_path,
-            dict(x=self.x, s=self.s, y=self.y),
-            dict(name=np.array(self.name if self.name is not None else "")),
+            {"x": self.x, "s": self.s, "y": self.y},
+            {"name": np.array(self.name if self.name is not None else "")},
         )
 
     @classmethod

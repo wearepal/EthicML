@@ -70,7 +70,7 @@ def run_generate_admissions() -> None:
     data = data.sample(frac=1.0, random_state=888).reset_index(drop=True)
 
     # Save the CSV
-    compression_opts = dict(method='zip', archive_name='admissions.csv')
+    compression_opts = {"method": 'zip', "archive_name": 'admissions.csv'}
     data.to_csv("./admissions.csv.zip", index=False, compression=compression_opts)
 
 
