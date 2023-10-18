@@ -609,7 +609,11 @@ class AcsEmployment(_AcsBase):
                 self._s_prefix = [self.sens_lookup[self.split]]
             case "Race":
                 self._sens_attr_spec = spec_from_binary_cols(
-                    {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
+                    {
+                        self.sens_lookup[self.split]: disc_feature_groups[
+                            self.sens_lookup[self.split]
+                        ]
+                    }
                 )
                 self._s_prefix = [self.sens_lookup[self.split]]
             case "Sex-Race":
