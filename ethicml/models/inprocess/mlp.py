@@ -25,7 +25,7 @@ class MLP(InAlgorithmDC):
 
     is_fairness_algo: ClassVar[bool] = False
     hidden_layer_sizes: Tuple[int, ...] = field(
-        default_factory=lambda: MLPClassifier().hidden_layer_sizes
+        default_factory=lambda: MLPClassifier().hidden_layer_sizes  # type: ignore[attr-defined]
     )
     batch_size: int = 32
     lr: float = 1e-3
