@@ -79,18 +79,19 @@ class Admissions(LegacyDataset):
             "chemistry",
         ]
 
-        if self.split is AdmissionsSplits.GENDER:
-            sens_attr_spec = "gender"
-            s_prefix = ["gender"]
-            class_label_spec = "gpa"
-            class_label_prefix = ["gpa"]
-        elif self.split is AdmissionsSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case AdmissionsSplits.GENDER:
+                sens_attr_spec = "gender"
+                s_prefix = ["gender"]
+                class_label_spec = "gpa"
+                class_label_prefix = ["gpa"]
+            case AdmissionsSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
 
         name = f"Admissions {self.split.value}"
 

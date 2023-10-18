@@ -297,12 +297,13 @@ class GeneralLearner:
 
         # define a predictive model
         self.model_type = model_type
-        if self.model_type == "deep_proba":
-            self.model: nn.Module = DeepProbaModel(in_shape=in_shape)
-        elif self.model_type == "deep_regression":
-            self.model = DeepModel(in_shape=in_shape, out_shape=self.out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case "deep_proba":
+                self.model: nn.Module = DeepProbaModel(in_shape=in_shape)
+            case "deep_regression":
+                self.model = DeepModel(in_shape=in_shape, out_shape=self.out_shape)
+            case _:
+                raise NotImplementedError
 
         # optimizer
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.lr, momentum=0.9)

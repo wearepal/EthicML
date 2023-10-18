@@ -63,13 +63,14 @@ class HgrRegLearner:
         self.batch_size = batch_size
 
         self.out_shape = out_shape
-        if self.model_type is ModelType.deep:
-            self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+        match self.model_type:
+            case ModelType.deep:
+                self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
-        else:
-            raise NotImplementedError
         self.loss_optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr_loss)
 
     def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.floating:
@@ -163,12 +164,13 @@ class HgrClassLearner:
         self.batch_size = batch_size
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
         self.loss_optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr_loss)
 

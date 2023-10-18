@@ -115,14 +115,16 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]) -> None
         topic="pytest",
     )
     assert len(results_no_scaler) == repeats * len(inprocess_models)
-    if on == "data":
-        assert (results_no_scaler["model_seed"] == 0).all()
-        assert results_no_scaler["seed"].sum() > 0
-    elif on == "model":
-        assert (results_no_scaler["seed"] == 0).all()
-        assert results_no_scaler["model_seed"].sum() > 0
-    else:
-        assert (results_no_scaler["seed"] == results_no_scaler["model_seed"] * 2410).all()
+
+    match on:
+        case "data":
+            assert (results_no_scaler["model_seed"] == 0).all()
+            assert results_no_scaler["seed"].sum() > 0
+        case "model":
+            assert (results_no_scaler["seed"] == 0).all()
+            assert results_no_scaler["model_seed"].sum() > 0
+        case _:
+            assert (results_no_scaler["seed"] == results_no_scaler["model_seed"] * 2410).all()
 
 
 @pytest.mark.usefixtures("results_cleanup")

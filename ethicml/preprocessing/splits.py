@@ -260,17 +260,18 @@ class BalancedTestSplit(RandomSplit):
             num_test[(s, y)] = round(quadrant_size * (1 - self.train_percentage))
 
         # compute how much we should take for the test set to make it balanced
-        if self.balance_type == "P(s|y)=0.5":
-            minimize_over_s = {y: min(num_test[(s, y)] for s in s_vals) for y in y_vals}
-            num_test_balanced = {(s, y): minimize_over_s[y] for s in s_vals for y in y_vals}
-        elif self.balance_type == "P(y|s)=0.5":
-            minimize_over_y = {s: min(num_test[(s, y)] for y in y_vals) for s in s_vals}
-            num_test_balanced = {(s, y): minimize_over_y[s] for s in s_vals for y in y_vals}
-        elif self.balance_type == "P(s,y)=0.25":
-            smallest_quadrant = min(num_test[(s, y)] for s in s_vals for y in y_vals)
-            num_test_balanced = {(s, y): smallest_quadrant for s in s_vals for y in y_vals}
-        else:
-            raise ValueError("Unknown balance_type")
+        match self.balance_type:
+            case "P(s|y)=0.5":
+                minimize_over_s = {y: min(num_test[(s, y)] for s in s_vals) for y in y_vals}
+                num_test_balanced = {(s, y): minimize_over_s[y] for s in s_vals for y in y_vals}
+            case "P(y|s)=0.5":
+                minimize_over_y = {s: min(num_test[(s, y)] for y in y_vals) for s in s_vals}
+                num_test_balanced = {(s, y): minimize_over_y[s] for s in s_vals for y in y_vals}
+            case "P(s,y)=0.25":
+                smallest_quadrant = min(num_test[(s, y)] for s in s_vals for y in y_vals)
+                num_test_balanced = {(s, y): smallest_quadrant for s in s_vals for y in y_vals}
+            case _:
+                raise ValueError("Unknown balance_type")
 
         num_dropped = 0
         # iterate over all combinations of s and y

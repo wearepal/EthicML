@@ -201,6 +201,7 @@ follow_imports_for_stubs = true
 typeCheckingMode = "strict"
 pythonVersion = "3.10"
 reportMissingTypeArgument = "none"
+reportUnnecessaryComparison = "none"
 reportCallInDefaultInitializer = "warning"
 reportPropertyTypeMismatch = "warning"
 reportUninitializedInstanceVariable = "warning"
@@ -212,6 +213,7 @@ reportUnknownMemberType = "none"
 reportUnknownVariableType = "none"
 reportUnknownParameterType = "none"
 reportUnknownArgumentType = "none"
+reportUnknownLambdaType = "none"
 
 [tool.ruff]
 line-length = 100
