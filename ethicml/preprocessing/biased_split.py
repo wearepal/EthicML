@@ -21,8 +21,8 @@ __all__ = [
 class BiasedSubset(DataSplitter):
     """Split the given data into a biased subset and a normal subset.
 
-    :param mixing_factors: List of mixing factors; they are chosen based on the split ID
     :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+    :param mixing_factors: List of mixing factors; they are chosen based on the split ID
     :param seed: random seed for the splitting
     :param data_efficient: if True, try to keep as many data points as possible
     """
@@ -116,8 +116,8 @@ def get_biased_subset(
 class BiasedDebiasedSubsets(DataSplitter):
     """Split the given data into a biased subset and a debiased subset.
 
-    :param mixing_factors: List of mixing factors; they are chosen based on the split ID
     :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+    :param mixing_factors: List of mixing factors; they are chosen based on the split ID
     :param seed: random seed for the splitting
     :param fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
     """

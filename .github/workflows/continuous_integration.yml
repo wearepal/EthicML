@@ -68,22 +68,24 @@ jobs:
         poetry run black --check -l 100 -t py310 -S ethicml/
         poetry run black --check -l 100 -t py310 -S tests/
 
-  check_with_darglint:
+  check_with_pydoclint:
 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'  # might as well use 3.11 as it's faster
-    - name: Install darglint
+    - name: Install pydoclint
       run: |
-        python -m pip install --upgrade pip
-        pip install darglint
+        poetry env use 3.11
+        poetry install --only doclint --no-interaction --no-root
     - name: Check with darglint
       run: |
-        sh run_darglint.sh
+        poetry run pydoclint ethicml
 
   test_minimal_dependencies:
     runs-on: ubuntu-latest
