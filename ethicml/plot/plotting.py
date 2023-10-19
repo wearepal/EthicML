@@ -398,6 +398,7 @@ def plot_results(
                 figure_list += [(fig, plot)]
     return figure_list
 
+
 def _get_columns(metric: Metric, columns: pd.Index) -> list[str]:
     cols: list[str] = [col for col in columns if metric.name in col]
     if not cols:
