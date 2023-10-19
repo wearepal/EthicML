@@ -73,6 +73,9 @@ ruff = ">=0.0.261"
 [tool.poetry.group.format.dependencies]
 black = "^23.1"
 
+[tool.poetry.group.doclint.dependencies]
+pydoclint = "^0.3.6"
+
 [tool.poetry.group.docs]
 optional = true
 
@@ -297,3 +300,10 @@ ignore-names = ["C"]
 [tool.ruff.pylint]
 max-statements = 60  # default: 50
 max-branches = 13  # default: 12
+
+[tool.pydoclint]
+style = "sphinx"
+# we don't put types in docstrings
+arg-type-hints-in-docstring = false
+check-return-types = false
+check-yield-types = false

@@ -1,7 +1,7 @@
 """Create plots of a dataset."""
 import itertools
 from pathlib import Path
-from typing import Any, Callable, List, Literal, cast
+from typing import Any, Callable, Literal
 
 from matplotlib import legend
 from matplotlib.axes import Axes
@@ -344,30 +344,20 @@ def plot_results(
     directory = Path() / "plots"
     directory.mkdir(exist_ok=True)
 
-    def _get_columns(metric: Metric) -> list[str]:
-        cols = [col for col in cast(List[str], results.columns) if metric.name in col]
-        if not cols:
-            raise ValueError(f'No matching columns found for Metric "{metric.name}".')
-        # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
-        # case, we *only* want ratios and differences; not the plain result
-        if len(cols) > 1:
-            cols = [col for col in cols if ("-" in col) or ("÷" in col)]
-        return cols
-
     if isinstance(metric_x, str):
         if metric_x not in results.columns:
             raise ValueError(f'No column named "{metric_x}".')
         cols_x = [metric_x]
     else:
         # if the metric is given as a Metric object, look for matching columns
-        cols_x = _get_columns(metric_x)
+        cols_x = _get_columns(metric_x, columns=results.columns)
 
     if isinstance(metric_y, str):
         if metric_y not in results.columns:
             raise ValueError(f'No column named "{metric_y}".')
         cols_y = [metric_y]
     else:
-        cols_y = _get_columns(metric_y)
+        cols_y = _get_columns(metric_y, columns=results.columns)
 
     # generate the Cartesian product of `cols_x` and `cols_y`; i.e. all possible combinations
     # this preserves the order of x and y
@@ -407,3 +397,14 @@ def plot_results(
                 plt.close(fig)
                 figure_list += [(fig, plot)]
     return figure_list
+
+
+def _get_columns(metric: Metric, columns: pd.Index) -> list[str]:
+    cols: list[str] = [col for col in columns if metric.name in col]
+    if not cols:
+        raise ValueError(f'No matching columns found for Metric "{metric.name}".')
+    # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
+    # case, we *only* want ratios and differences; not the plain result
+    if len(cols) > 1:
+        cols = [col for col in cols if ("-" in col) or ("÷" in col)]
+    return cols

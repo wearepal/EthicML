@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Lint with pylint
+    - name: Lint with ruff
       run: |
         echo "pass!"
 
@@ -35,16 +35,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Format with black and isort
+    - name: Format with black
       run: |
         echo "pass!"
 
-  check_with_darglint:
+  check_with_pydoclint:
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check with darglint
+    - name: Check with pydoclint
       run: |
         echo "pass!"
 
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check with darglint
+    - name: Test import
       run: |
         echo "pass!"
 
@@ -73,7 +73,7 @@ jobs:
     - name: Install dependencies
       run: |
         poetry env use 3.10
-        poetry install --no-interaction --no-root --all-extras --with docs,torchcpu --without ci,lint,format
+        poetry install --no-interaction --no-root --all-extras --with docs,torchcpu --without ci,lint,format,doclint
     - name: Install pandoc
       run: sudo apt-get install -y pandoc
     - name: Build with sphinx

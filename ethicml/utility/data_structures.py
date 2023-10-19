@@ -394,7 +394,6 @@ class Prediction:
     """Prediction of an algorithm."""
 
     def __init__(self, hard: pd.Series, info: HyperParamType | None = None):
-        """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
@@ -463,7 +462,6 @@ class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
     def __init__(self, soft: np.ndarray, info: HyperParamType | None = None):
-        """Make a soft prediction object."""
         super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft
 
@@ -581,7 +579,6 @@ class ResultsAggregator:
     """Aggregate results."""
 
     def __init__(self, initial: pd.DataFrame | None = None):
-        """Init results aggregator obj."""
         self._results = make_results(initial)
 
     @property
