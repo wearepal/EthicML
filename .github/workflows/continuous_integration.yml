@@ -83,7 +83,7 @@ jobs:
       run: |
         poetry env use 3.11
         poetry install --only doclint --no-interaction --no-root
-    - name: Check with darglint
+    - name: Check with pydoclint
       run: |
         poetry run pydoclint ethicml
 
@@ -99,7 +99,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use 3.10
-          poetry install --no-interaction --no-root --without dev,test,typecheck,lint,format
+          poetry install --no-interaction --no-root --without dev,test,typecheck,lint,format,doclint
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -119,7 +119,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use 3.10
-          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu,docs --without lint,format
+          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu,docs --without lint,format,doclint
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -130,7 +130,7 @@ jobs:
           poetry run sphinx-build -W -b html ./docs ./docs/_build
 
   test_with_pytest:
-    needs: [lint_with_ruff, format_with_black, check_with_darglint, test_minimal_dependencies, test_build_docs]
+    needs: [lint_with_ruff, format_with_black, check_with_pydoclint, test_minimal_dependencies, test_build_docs]
     runs-on: ubuntu-latest
 
     steps:
@@ -154,7 +154,7 @@ jobs:
         if: ${{ github.event_name == 'merge_group' }}
         run: |
           poetry env use 3.10
-          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu --without lint,format
+          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu --without lint,format,doclint
 
       #----------------------------------------------
       #  -----           Run MyPy             -----
