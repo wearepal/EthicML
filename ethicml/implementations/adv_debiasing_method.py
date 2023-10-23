@@ -66,7 +66,8 @@ def main() -> None:
     elif in_algo_args["mode"] == "fit":
         data = DataTuple.from_file(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
-        setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
+        # need to save the seed as well
+        model.ethicml_random_seed = in_algo_args["seed"]  # type: ignore
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
         test = SubgroupTuple.from_file(Path(in_algo_args["test"]))

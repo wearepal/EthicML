@@ -37,12 +37,12 @@ def fit(train: DataTuple, flags: "VfaeArgs") -> VFAENetwork:
     # Build Network
     model = VFAENetwork(
         dataset,
-        flags["supervised"],
         train_data.xdim,
         latent_dims=flags["latent_dims"],
         z1_enc_size=flags["z1_enc_size"],
         z2_enc_size=flags["z2_enc_size"],
         z1_dec_size=flags["z1_dec_size"],
+        supervised=flags["supervised"],
     ).to("cpu")
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 

@@ -37,7 +37,7 @@ def LFR_optim_objective(  # noqa: N802, PLR0913
     A_y: float,  # noqa: N803
     A_z: float,  # noqa: N803
     print_interval: int,
-    verbose: bool,
+    verbose: bool,  # noqa: FBT001  # disabled because scipy needs positional args
 ) -> np.number:
     """LFR optim objective."""
     _, features_dim = x_unprivileged.shape

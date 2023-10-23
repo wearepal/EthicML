@@ -1,5 +1,4 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
-# pylint: disable=arguments-differ
 from itertools import groupby
 
 import torch
@@ -13,7 +12,7 @@ from .categorical import Categorical
 class Decoder(nn.Module):
     """Decoder for VFAE."""
 
-    def __init__(self, dataset: CSVDataset, deploy: bool = False):
+    def __init__(self, dataset: CSVDataset, *, deploy: bool = False):
         super().__init__()
         self._deploy = deploy
         self.features: list[str] = dataset.feature_split(order=FeatureOrder.cont_first)["x"]

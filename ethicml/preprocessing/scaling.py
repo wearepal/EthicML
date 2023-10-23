@@ -35,6 +35,7 @@ def scale_continuous(
     dataset: Dataset,
     datatuple: DataTuple,
     scaler: ScalerType,
+    *,
     inverse: bool = False,
     fit: bool = True,
 ) -> tuple[DataTuple, ScalerType]:

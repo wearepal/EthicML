@@ -43,6 +43,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         top_dir: str,
         url: str | None = None,
         executable: list[str] | None = None,
+        *,
         use_pdm: bool = False,
     ):
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
@@ -84,7 +85,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             self._store_dir.mkdir()
             git.cmd.Git(self._store_dir).clone(url)
 
-    def _create_venv(self, use_pdm: bool) -> list[str]:
+    def _create_venv(self, *, use_pdm: bool) -> list[str]:
         """Create a venv based on the Pipfile in the repository.
 
         :param use_pdm: Whether to use pdm instead of pipenv.

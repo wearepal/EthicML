@@ -6,8 +6,8 @@ from matplotlib import legend
 from matplotlib.axes import Axes
 import pandas as pd
 
-LegendType: TypeAlias = Literal["inside", "outside"]  # pylint: disable=invalid-name
-PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name
+LegendType: TypeAlias = Literal["inside", "outside"]
+PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]
 
 
 class DataEntry(NamedTuple):
@@ -42,7 +42,7 @@ def common_plotting_settings(
     plot.set_ylabel(yaxis_title)
     if title := plot_def.title:
         plot.set_title(title)
-    plot.grid(True)
+    plot.grid(visible=True)
 
     # get handles and labels for the legend
     handles, labels = plot.get_legend_handles_labels()
@@ -66,6 +66,7 @@ def errorbox(
     firstcolor: int = 0,
     firstshape: int = 0,
     markersize: int = 6,
+    *,
     use_cross: bool = False,
 ) -> legend.Legend | None:
     """Generate a figure with errorboxes that reflect the std dev of an entry.
@@ -177,6 +178,7 @@ def scatter(
     yaxis: tuple[str, str],
     startindex: int = 0,
     markersize: int = 6,
+    *,
     connect_dots: bool = False,
 ) -> legend.Legend | None:
     """Generate a scatter plot.

@@ -32,6 +32,7 @@ class BiasedSubset(DataSplitter):
         unbiased_pcnt: float,
         mixing_factors: Sequence[float] = (0,),
         seed: int = 42,
+        *,
         data_efficient: bool = True,
     ):
         super().__init__()
@@ -46,7 +47,7 @@ class BiasedSubset(DataSplitter):
         """Do BiasedSplit."""
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_subset(
-            data, mixing_factor, self.unbiased_pcnt, self.seed, self.data_efficient
+            data, mixing_factor, self.unbiased_pcnt, self.seed, data_efficient=self.data_efficient
         )
         return biased, unbiased, {"mix_fact": mixing_factor}
 
@@ -56,6 +57,7 @@ def get_biased_subset(
     mixing_factor: float,
     unbiased_pcnt: float,
     seed: int = 42,
+    *,
     data_efficient: bool = True,
 ) -> tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a normal subset.
@@ -127,6 +129,7 @@ class BiasedDebiasedSubsets(DataSplitter):
         unbiased_pcnt: float,
         mixing_factors: Sequence[float] = (0,),
         seed: int = 42,
+        *,
         fixed_unbiased: bool = True,
     ):
         super().__init__()
@@ -141,7 +144,7 @@ class BiasedDebiasedSubsets(DataSplitter):
         """Do Biased and Debiased Split."""
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_and_debiased_subsets(
-            data, mixing_factor, self.unbiased_pcnt, self.seed, self.fixed_unbiased
+            data, mixing_factor, self.unbiased_pcnt, self.seed, fixed_unbiased=self.fixed_unbiased
         )
         return biased, unbiased, {"mix_fact": mixing_factor}
 
@@ -151,6 +154,7 @@ def get_biased_and_debiased_subsets(
     mixing_factor: float,
     unbiased_pcnt: float,
     seed: int = 42,
+    *,
     fixed_unbiased: bool = True,
 ) -> tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a debiased subset.
@@ -166,12 +170,12 @@ def get_biased_and_debiased_subsets(
     * ``mixing_factor=0.5``: biased is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
     * ``mixing_factor=1.0``: in biased, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
 
-    :param data: data in form of a DataTuple
+    :param data: Data in form of a DataTuple.
     :param mixing_factor: How much of the debiased data should be mixed into the biased subset? If
         this factor is 0, the biased subset is maximally biased.
     :param unbiased_pcnt: How much of the data should be reserved for the unbiased subset?
     :param seed: random seed for the splitting (Default: 42)
-    :param fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
+    :param fixed_unbiased: If True, then the unbiased dataset is independent from the mixing factor
         (Default: True)
     :returns: biased and unbiased dataset
     """

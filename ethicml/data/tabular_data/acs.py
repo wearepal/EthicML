@@ -3,8 +3,6 @@
 Uses FolkTables: https://github.com/zykls/folktables
 Paper: https://arxiv.org/abs/2108.04884
 """
-# pylint: skip-file
-# Pylint will go crazy as we're reimplementing the Dataset Init.
 import contextlib
 import os
 from pathlib import Path
@@ -108,6 +106,7 @@ class _AcsBase(Dataset):
         states: list[StateList],
         class_label_spec: str,
         class_label_prefix: list[str],
+        *,
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -298,6 +297,7 @@ class AcsIncome(_AcsBase):
         states: list[StateList],
         split: str = "Sex",
         target_threshold: int = 50_000,
+        *,
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -335,7 +335,7 @@ class AcsIncome(_AcsBase):
 
     @override
     def load(
-        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+        self, order: FeatureOrder = FeatureOrder.disc_first, *, labels_as_features: bool = False
     ) -> DataTuple:
         from folktables import ACSDataSource, adult_filter, folktables
 
@@ -453,6 +453,7 @@ class AcsEmployment(_AcsBase):
         horizon: int,
         states: list[StateList],
         split: str = "Sex",
+        *,
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -499,7 +500,7 @@ class AcsEmployment(_AcsBase):
 
     @override
     def load(
-        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+        self, order: FeatureOrder = FeatureOrder.disc_first, *, labels_as_features: bool = False
     ) -> DataTuple:
         from folktables import ACSDataSource, folktables
 

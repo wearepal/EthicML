@@ -111,7 +111,7 @@ class HgrRegLearner:
 
     def fit(self, train: DataTuple, seed: int) -> None:
         """Fit."""
-        torch.use_deterministic_algorithms(True)
+        torch.use_deterministic_algorithms(mode=True)
         torch.manual_seed(seed)
         random.seed(seed)
         np.random.seed(seed)
@@ -208,7 +208,7 @@ class HgrClassLearner:
         torch.manual_seed(seed)
         random.seed(seed)
         np.random.seed(seed)
-        torch.use_deterministic_algorithms(True)
+        torch.use_deterministic_algorithms(mode=True)
         # train
         _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True

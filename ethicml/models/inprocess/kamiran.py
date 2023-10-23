@@ -135,7 +135,7 @@ class Reweighting(InAlgorithm):
 
 
 def compute_instance_weights(
-    train: DataTuple, balance_groups: bool = False, upweight: bool = False
+    train: DataTuple, *, balance_groups: bool = False, upweight: bool = False
 ) -> pd.DataFrame:
     """Compute weights for all samples.
 

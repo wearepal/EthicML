@@ -24,7 +24,7 @@ import ethicml.data as emda
     ],
 )
 def test_datasets_with_split(
-    data_class: Type[emda.Dataset], value: Union[str, Enum], should_pass: bool
+    data_class: Type[emda.Dataset], value: Union[str, Enum], should_pass: bool  # noqa: FBT001
 ) -> None:
     """Test datasets with split."""
     # This will fail if the supplied `data_class` has types other than bool, int, float, enum, str.

@@ -53,7 +53,7 @@ __all__ = [
     "map_over_results_index",
 ]
 
-AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
+AxisType: TypeAlias = Literal["columns", "index"]
 
 
 class PandasIndex(Enum):
@@ -496,10 +496,7 @@ def write_as_npz(
     np.savez(data_path, **as_numpy, **column_names, **extra)
 
 
-def concat(
-    datatup_list: Sequence[T],
-    ignore_index: bool = False,
-) -> T:
+def concat(datatup_list: Sequence[T], *, ignore_index: bool = False) -> T:
     """Concatenate the data tuples in the given list.
 
     :param datatup_list: List of data tuples to concatenate.
@@ -586,7 +583,7 @@ class ResultsAggregator:
         """Results object over which this class is aggregating."""
         return self._results
 
-    def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
+    def append_df(self, data_frame: pd.DataFrame, *, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object.
 
         :param data_frame: DataFrame to append.
@@ -599,7 +596,7 @@ class ResultsAggregator:
         # set sort=False so that the order of the columns is preserved
         self._results = Results(pd.concat(order, sort=False, axis="index"))
 
-    def append_from_csv(self, csv_file: Path, prepend: bool = False) -> bool:
+    def append_from_csv(self, csv_file: Path, *, prepend: bool = False) -> bool:
         """Append results from a CSV file.
 
         :param csv_file: Path to the CSV file.

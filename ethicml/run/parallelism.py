@@ -46,7 +46,7 @@ def run_in_parallel(
     :returns: list of the results
     """
     if not algos or not data:
-        return cast(List[List[Prediction]], [[]])
+        return cast(List[List[Prediction]], [])
     # The following isinstance check is not at all reliable because `InAlgorithm` is a Protocol,
     # but that's completely fine because this check is only here for mypy anyway.
     if isinstance(algos[0], InAlgorithm):
@@ -91,7 +91,9 @@ def arrange_in_parallel(
     # ================================== create queue of tasks ====================================
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     results = runner(
-        _run(algo, data_item, seed) for algo in algos for (data_item, seed) in zip(data, seeds)
+        _run(algo, data_item, seed)
+        for algo in algos
+        for (data_item, seed) in zip(data, seeds, strict=True)
     )
     # return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
     # we have to reconstruct the nested list from the flattened list

@@ -187,8 +187,8 @@ def evaluate_models(
     # append the transformed data to `transformed_data`
     transformed_data: list[TrainValPair] = []
     transformed_test: list[_DataInfo] = []
-    for transformed, pre_model in zip(all_transformed, preprocess_models):
-        for (transf_train, transf_test), data_info in zip(transformed, test_data):
+    for transformed, pre_model in zip(all_transformed, preprocess_models, strict=True):
+        for (transf_train, transf_test), data_info in zip(transformed, test_data, strict=True):
             transformed_data.append(TrainValPair(transf_train, transf_test))
             transformed_test.append(
                 _DataInfo(
@@ -234,18 +234,21 @@ def _gather_metrics(
     """Take a list of lists of predictions and compute all metrics."""
     columns = ["dataset", "scaler", "transform", "model", "split_id"]
 
-    # transpose `all_results` so that the order in the results dataframe is correct
-    num_cols = len(all_predictions[0]) if all_predictions else 0
-    all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
-
     all_results = ResultsAggregator()
 
+    if not all_predictions or not all_predictions[0]:
+        return all_results.results  # if there are no predictions, return empty result
+
+    # transpose `all_results` so that the order in the results dataframe is correct
+    num_cols = len(all_predictions[0])
+    all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
+
     # compute metrics, collect them and write them to files
-    for preds_for_dataset, data_info in zip(all_predictions_t, test_data):
+    for preds_for_dataset, data_info in zip(all_predictions_t, test_data, strict=True):
         # ============================= handle results of one dataset =============================
         results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
         predictions: Prediction
-        for predictions, model in zip(preds_for_dataset, inprocess_models):
+        for predictions, model in zip(preds_for_dataset, inprocess_models, strict=True):
             # construct a row of the results dataframe
             hyperparameters: dict[str, str | float] = {
                 k: v if isinstance(v, (float, int)) else str(v)

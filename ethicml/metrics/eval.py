@@ -19,6 +19,7 @@ def run_metrics(
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     aggregation: PerSens | AbstractSet[PerSens] = PerSens.DIFFS_RATIOS,
+    *,
     use_sens_name: bool = True,
 ) -> dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
@@ -40,7 +41,7 @@ def run_metrics(
         result[metric.name] = metric.score(predictions, actual)
 
     for metric in per_sens_metrics:
-        per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
+        per_sens = metric_per_sens(predictions, actual, metric, use_sens_name=use_sens_name)
         agg_funcs: AbstractSet[PerSens] = (
             {aggregation} if isinstance(aggregation, PerSens) else aggregation
         )
