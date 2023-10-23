@@ -164,9 +164,9 @@ def compute_projection_gradients(
     def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)
 
-    grad_p = tuple(p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a))
+    grad_p = tuple(p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a, strict=True))
 
-    for param, grad in zip(model.parameters(), grad_p):
+    for param, grad in zip(model.parameters(), grad_p, strict=True):
         param.grad = grad
 
 

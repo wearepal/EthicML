@@ -52,6 +52,7 @@ class DPFlip(PostAlgorithm):
     def _flip(
         preds: Prediction,
         dt: TestTuple,
+        *,
         flip_0_to_1: bool,
         num_to_flip: int,
         s_group: int,

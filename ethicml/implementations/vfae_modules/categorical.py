@@ -1,5 +1,4 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
-# pylint: disable=arguments-differ
 
 import torch
 from torch import nn

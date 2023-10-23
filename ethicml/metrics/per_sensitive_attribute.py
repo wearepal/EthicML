@@ -25,7 +25,7 @@ class MetricNotApplicableError(Exception):
 
 
 def metric_per_sens(
-    prediction: Prediction, actual: EvalTuple, metric: Metric, use_sens_name: bool = True
+    prediction: Prediction, actual: EvalTuple, metric: Metric, *, use_sens_name: bool = True
 ) -> dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:

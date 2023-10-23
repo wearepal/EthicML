@@ -108,7 +108,7 @@ def upsample(
     percentages: dict[tuple[int, int], float] = {}
 
     vals: list[int] = []
-    for key, val in data.items():
+    for val in data.values():
         vals.append(val.x.shape[0])
 
     for key, val in data.items():
@@ -135,7 +135,7 @@ def upsample(
         upsampled[key] = val.replace_data(all_data)
 
     upsampled_datatuple: DataTuple | None = None
-    for key, val in upsampled.items():
+    for val in upsampled.values():
         if upsampled_datatuple is None:
             upsampled_datatuple = val
         else:

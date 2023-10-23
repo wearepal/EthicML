@@ -135,7 +135,6 @@ def _multivariate_grid(
 def save_multijointplot(data: DataTuple, filepath: str) -> None:
     """Make joint plot."""
     file_path = Path(filepath)
-    data.x.columns
 
     amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
@@ -323,6 +322,7 @@ def plot_results(
     metric_y: str | Metric,
     metric_x: str | Metric,
     ptype: PlotType = "box",
+    *,
     save: bool = True,
     dpi: int = 300,
     transforms_separately: bool = True,

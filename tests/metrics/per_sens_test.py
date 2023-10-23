@@ -179,18 +179,18 @@ def test_metric_per_sens_attr(
     try:
         for key, value in acc_per_sens.items():
             assert value == approx(expected_values[key], abs=0.001)
-    except AssertionError:
+    except AssertionError as e:
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
-        raise AssertionError
+        raise AssertionError from e
 
     acc_per_sens = metric_per_sens(predictions, test, metric, use_sens_name=False)
     try:
         for key, value in expected_values.items():
             # Check that the sensitive attribute name is now just 'S'.
             assert acc_per_sens[f"S_{''.join(key.split('_')[-1:])}"] == approx(value, abs=0.001)
-    except AssertionError:
+    except AssertionError as e:
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
-        raise AssertionError
+        raise AssertionError from e
 
 
 def test_persens_enum() -> None:

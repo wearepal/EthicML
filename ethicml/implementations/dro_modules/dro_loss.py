@@ -19,5 +19,5 @@ class DROLoss(nn.Module):
         self.eta = eta
 
     @override
-    def forward(self, pred: Tensor, target: Tensor) -> Tensor:  # pylint: disable=arguments-differ
+    def forward(self, pred: Tensor, target: Tensor) -> Tensor:
         return (self.loss(pred, target=target) - self.eta).relu().pow(2).mean()

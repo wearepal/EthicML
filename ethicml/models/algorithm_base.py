@@ -16,7 +16,7 @@ class Algorithm(ABC):
         """Name of the algorithm."""
 
 
-class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
+class SubprocessAlgorithmMixin(ABC):  # noqa: B024
     """Mixin for running algorithms in a subprocess, to be used with :class:`Algorithm`."""
 
     @property
