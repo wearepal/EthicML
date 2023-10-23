@@ -142,8 +142,8 @@ def test_apply_to_joined_df() -> None:
 def test_data_tuple_len() -> None:
     """Test DataTuple len property."""
     x = pd.DataFrame([3.0, 2.0], columns=["a1"])
-    s = pd.Series([4.0], name="b2")
-    y = pd.Series([6.0], name="c3")
+    s = pd.Series([4], name="b2")
+    y = pd.Series([6], name="c3")
     name = None
     with pytest.raises(AssertionError):
         DataTuple.from_df(x=x, s=s, y=y, name=name)
@@ -167,7 +167,7 @@ def test_overlapping_columns() -> None:
 def test_overlapping_columns_unequal() -> None:
     """Test overlapping column names."""
     x = pd.DataFrame([3.0, 2.0], columns=["a1"])
-    s = pd.Series([4.0, 1.0], name="a1")
+    s = pd.Series([4, 1], name="a1")
     with pytest.raises(AssertionError):
         SubgroupTuple.from_df(x=x, s=s)
 
@@ -175,7 +175,7 @@ def test_overlapping_columns_unequal() -> None:
 def test_overlapping_columns_y() -> None:
     """Test overlapping column names."""
     x = pd.DataFrame([3.0, 2.0], columns=["a1"])
-    y = pd.Series([4.0, 1.0], name="y1")
+    y = pd.Series([4, 1], name="y1")
     datatup = DataTuple.from_df(x=x, s=x["a1"], y=y)
     pd.testing.assert_frame_equal(datatup.x, datatup.s.to_frame())
     pd.testing.assert_series_equal(datatup.y, y)
@@ -184,15 +184,15 @@ def test_overlapping_columns_y() -> None:
 def test_overlapping_columns_unequal_y() -> None:
     """Test overlapping column names."""
     x = pd.DataFrame([3.0, 2.0], columns=["a1"])
-    s = pd.Series([4.0, 1.0], name="a1")
-    y = pd.Series([0.0, 5.0], name="y1")
+    s = pd.Series([4, 1], name="a1")
+    y = pd.Series([0, 5], name="y1")
     with pytest.raises(AssertionError):
         DataTuple.from_df(x=x, s=s, y=y)
 
 
 def test_s_y_same_name() -> None:
     """Test s and y having the same name."""
-    s = pd.Series([4.0, 1.0], name="a")
-    y = pd.Series([0.0, 5.0], name="a")
+    s = pd.Series([4, 1], name="a")
+    y = pd.Series([0, 5], name="a")
     with pytest.raises(AssertionError):
         LabelTuple.from_df(s=s, y=y)
