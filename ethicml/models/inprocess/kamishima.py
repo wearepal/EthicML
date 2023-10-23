@@ -87,7 +87,7 @@ class Kamishima(InstalledModel):
         # except RuntimeError:
         #     predictions = np.ones_like(test.y.to_numpy())
 
-        to_return = pd.Series(predictions)
+        to_return: pd.Series = pd.Series(predictions)
         to_return = to_return.astype(int)
 
         if (min_val := to_return.min()) != to_return.max():
