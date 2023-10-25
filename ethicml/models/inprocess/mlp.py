@@ -68,7 +68,7 @@ def select_mlp(
     random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(
         hidden_layer_sizes=hidden_layer_sizes,
-        solver='adam',
+        solver="adam",
         random_state=random_state,
         learning_rate_init=lr,
         batch_size=batch_size,

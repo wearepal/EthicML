@@ -15,8 +15,8 @@ def main(seed: int, samples: int) -> None:
     feat2_g1: np.ndarray = rng.standard_normal(samples // 2) * 0.9
     feat2_g2: np.ndarray = rng.standard_normal(samples // 2) * 1.1
 
-    disc_1 = rng.choice(a=['a', 'b', 'c', 'd', 'e'], size=samples, replace=True)
-    disc_2 = rng.choice(a=['x', 'y', 'z'], size=samples, replace=True)
+    disc_1 = rng.choice(a=["a", "b", "c", "d", "e"], size=samples, replace=True)
+    disc_2 = rng.choice(a=["x", "y", "z"], size=samples, replace=True)
 
     sensitive_attr_g1 = np.full(feat1_g1.shape, 0)
     sensitive_attr_g2 = np.full(feat1_g2.shape, 1)

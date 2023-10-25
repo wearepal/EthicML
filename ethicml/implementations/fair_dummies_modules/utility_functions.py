@@ -12,8 +12,8 @@ def density_estimation(
     assert y_test is not None
     bandwidth = np.sqrt(max(np.median(np.abs(y)).item(), 0.01))
 
-    kde_0 = KernelDensity(kernel='linear', bandwidth=bandwidth).fit(y[a == 0][:, np.newaxis])
-    kde_1 = KernelDensity(kernel='linear', bandwidth=bandwidth).fit(y[a == 1][:, np.newaxis])
+    kde_0 = KernelDensity(kernel="linear", bandwidth=bandwidth).fit(y[a == 0][:, np.newaxis])
+    kde_1 = KernelDensity(kernel="linear", bandwidth=bandwidth).fit(y[a == 1][:, np.newaxis])
 
     log_dens_0 = np.exp(np.squeeze(kde_0.score_samples(y[:, np.newaxis])))
     log_dens_1 = np.exp(np.squeeze(kde_1.score_samples(y[:, np.newaxis])))

@@ -38,5 +38,5 @@ def main() -> None:
     df.to_csv(str(Path(__file__).parent / "lipton.csv"), index=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

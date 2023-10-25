@@ -225,7 +225,7 @@ class AdvDebiasingClassLearner:
         self.lambdas = torch.Tensor([lambda_vec])
 
         self.adv: nn.Module = Adversary(n_sensitive=1, n_y=num_classes * 2)
-        self.adv_criterion = nn.BCELoss(reduction='none')
+        self.adv_criterion = nn.BCELoss(reduction="none")
         self.adv_optimizer = optim.Adam(self.adv.parameters(), lr=self.lr)
 
         self.n_adv_epochs = n_adv_epochs
