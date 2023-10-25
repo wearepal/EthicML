@@ -113,7 +113,7 @@ class Reweighting(InAlgorithm):
             train.y.to_numpy().ravel(),
             sample_weight=weights,
         )
-        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')
+        weights = weights.value_counts().rename_axis("weight").reset_index(name="count")
         groups = (
             pd.concat([train.s, train.y], axis=1)
             .groupby([train.s.name, train.y.name])

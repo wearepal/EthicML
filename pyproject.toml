@@ -146,7 +146,6 @@ exclude = '''
   )/
 )
 '''
-skip-string-normalization = true
 
 [tool.isort]
 known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch"]
@@ -252,8 +251,10 @@ ignore = [
     "ANN102",
     "D105", # magic methods
     "D107", # __init__
+    "D206", # indent with spaces (conflicts with formatter)
     "D208", # over indentation
     "D401", # imperative mood
+    "E501", # line too long (conflicts with formatter)
     "N812", # case of import alias
     "NPY002", # no global random state
     "PD002", # no inplace
@@ -267,6 +268,7 @@ ignore = [
     "PLW2901", # overwriting loop variables
     "PLC0105", # mark variance in typevar name
     "TID252", # relative imports
+    "W191", # tab indentation (conflicts with formatter)
 ]
 target-version = "py310"
 

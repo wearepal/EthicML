@@ -195,8 +195,8 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         :return: List of strings that can be passed to ``subprocess.run``.
         """
         interface = [
-            json.dumps(pre_algo_args, separators=(',', ':')),
-            json.dumps(self._get_flags(), separators=(',', ':')),
+            json.dumps(pre_algo_args, separators=(",", ":")),
+            json.dumps(self._get_flags(), separators=(",", ":")),
         ]
         return self._get_path_to_script() + interface
 

@@ -65,8 +65,8 @@ jobs:
         poetry install --only format --no-interaction --no-root
     - name: Format with black
       run: |
-        poetry run black --check -l 100 -t py310 -S ethicml/
-        poetry run black --check -l 100 -t py310 -S tests/
+        poetry run black --check ethicml/
+        poetry run black --check tests/
 
   check_with_pydoclint:
 

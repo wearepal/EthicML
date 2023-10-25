@@ -17,8 +17,8 @@ def main(seed: int, samples: int) -> None:
     feat2_g1: np.ndarray = np.random.randn(samples // 2) * 0.9
     feat2_g2: np.ndarray = np.random.randn(samples // 2) * 1.1
 
-    disc_1 = np.random.choice(['a', 'b', 'c', 'd', 'e'], [samples], replace=True)
-    disc_2 = np.random.choice(['x', 'y', 'z'], [samples], replace=True)
+    disc_1 = np.random.choice(["a", "b", "c", "d", "e"], [samples], replace=True)
+    disc_2 = np.random.choice(["x", "y", "z"], [samples], replace=True)
 
     sensitive_attr_g1 = np.full(feat1_g1.shape, 0)
     sensitive_attr_g2 = np.full(feat1_g2.shape, 1)

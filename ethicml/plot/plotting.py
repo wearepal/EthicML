@@ -95,8 +95,8 @@ def _multivariate_grid(
         def scatter(*args: Any, **kwargs: Any) -> None:
             args = (x, y)
             if c is not None:
-                kwargs['c'] = c
-            kwargs['alpha'] = scatter_alpha
+                kwargs["c"] = c
+            kwargs["alpha"] = scatter_alpha
             plt.scatter(*args, **kwargs)
 
         return scatter
@@ -186,7 +186,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,  # type: ignore[index]
+        height=y_s0[y_0_label] * 100,
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -194,7 +194,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant2 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_0_label] * 100,  # type: ignore[index]
+        height=y_s1[y_0_label] * 100,
         width=s_1_val * 100,
         align="edge",
         edgecolor="black",
@@ -202,18 +202,18 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant3 = plot.bar(
         0,
-        height=y_s0[y_1_label] * 100,  # type: ignore[index]
+        height=y_s0[y_1_label] * 100,
         width=s_0_val * 100,
-        bottom=y_s0[y_0_label] * 100,  # type: ignore[index]
+        bottom=y_s0[y_0_label] * 100,
         align="edge",
         edgecolor="black",
         color="C2",
     )
     quadrant4 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_1_label] * 100,  # type: ignore[index]
+        height=y_s1[y_1_label] * 100,
         width=s_1_val * 100,
-        bottom=y_s1[y_0_label] * 100,  # type: ignore[index]
+        bottom=y_s1[y_0_label] * 100,
         align="edge",
         edgecolor="black",
         color="C3",
