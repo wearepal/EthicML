@@ -101,8 +101,11 @@ files = [
     {file = "black-23.10.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7d56124b7a61d092cb52cce34182a5280e160e6aff3137172a68c2c2c4b76bcb"},
     {file = "black-23.10.1-cp311-cp311-win_amd64.whl", hash = "sha256:3f157a8945a7b2d424da3335f7ace89c14a3b0625e6593d21139c2d8214d55ce"},
     {file = "black-23.10.1-cp38-cp38-macosx_10_16_arm64.whl", hash = "sha256:cfcce6f0a384d0da692119f2d72d79ed07c7159879d0bb1bb32d2e443382bf3a"},
+    {file = "black-23.10.1-cp38-cp38-macosx_10_16_x86_64.whl", hash = "sha256:33d40f5b06be80c1bbce17b173cda17994fbad096ce60eb22054da021bf933d1"},
     {file = "black-23.10.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:840015166dbdfbc47992871325799fd2dc0dcf9395e401ada6d88fe11498abad"},
     {file = "black-23.10.1-cp38-cp38-win_amd64.whl", hash = "sha256:037e9b4664cafda5f025a1728c50a9e9aedb99a759c89f760bd83730e76ba884"},
+    {file = "black-23.10.1-cp39-cp39-macosx_10_16_arm64.whl", hash = "sha256:7cb5936e686e782fddb1c73f8aa6f459e1ad38a6a7b0e54b403f1f05a1507ee9"},
+    {file = "black-23.10.1-cp39-cp39-macosx_10_16_x86_64.whl", hash = "sha256:7670242e90dc129c539e9ca17665e39a146a761e681805c54fbd86015c7c84f7"},
     {file = "black-23.10.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5ed45ac9a613fb52dad3b61c8dea2ec9510bf3108d4db88422bacc7d1ba1243d"},
     {file = "black-23.10.1-cp39-cp39-win_amd64.whl", hash = "sha256:6d23d7822140e3fef190734216cefb262521789367fbdc0b3f22af6744058982"},
     {file = "black-23.10.1-py3-none-any.whl", hash = "sha256:d431e6739f727bb2e0495df64a6c7a5310758e87505f5f8cde9ff6c0f2d7e4fe"},
@@ -1562,13 +1565,13 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.9.3"
+version = "2.10.0"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pdm-2.9.3-py3-none-any.whl", hash = "sha256:0b55fcaa61ed70b9dacd03c4a937f15e908c8c031b621523890de9cdf04325fd"},
-    {file = "pdm-2.9.3.tar.gz", hash = "sha256:0b1195b51e9630b5a0b063f27dfcb0120cb6ea284f1a4cd975a3a26f0856d253"},
+    {file = "pdm-2.10.0-py3-none-any.whl", hash = "sha256:2486cb9e66d4a3e3723fd5a8178ebb285d50f8448ecc165e1a2e80124ff066a9"},
+    {file = "pdm-2.10.0.tar.gz", hash = "sha256:ce2249595af9f61b0926a0899632df49b1c711261e8056a4fae14b53f93d9193"},
 ]
 
 [package.dependencies]
@@ -1588,7 +1591,7 @@ shellingham = ">=1.3.2"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 tomlkit = ">=0.11.1,<1"
 truststore = {version = "*", markers = "python_version >= \"3.10\""}
-unearth = ">=0.10.0"
+unearth = ">=0.12.1"
 virtualenv = ">=20"
 
 [package.extras]
@@ -2963,13 +2966,13 @@ files = [
 
 [[package]]
 name = "unearth"
-version = "0.10.0"
+version = "0.12.1"
 description = "A utility to fetch and download python packages"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "unearth-0.10.0-py3-none-any.whl", hash = "sha256:e8b36f6efd6b677a3ff86354675368a79e98ee8ba01aaa601858e2cc043bc51a"},
-    {file = "unearth-0.10.0.tar.gz", hash = "sha256:d5b152a5ab2aa3e5149a11cf7b3ba5c5d493176dca38f66ca8969dadd5a8f645"},
+    {file = "unearth-0.12.1-py3-none-any.whl", hash = "sha256:a5a5c51ca44965cbe3618116bd592bb0bbe3705af5fe14e5792660d904aad7c8"},
+    {file = "unearth-0.12.1.tar.gz", hash = "sha256:4caad941b60f51e50fdc109866234d407910aef77f1233aa1b6b5d168c7427ee"},
 ]
 
 [package.dependencies]
