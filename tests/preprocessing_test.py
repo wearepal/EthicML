@@ -7,8 +7,8 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-import ethicml as em
 from ethicml import DataTuple, ProportionalSplit
+import ethicml as em
 from ethicml.data import Adult, Toy, load_data
 
 

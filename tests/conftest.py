@@ -10,8 +10,8 @@ from typing import Generator, List, Union
 import pandas as pd
 import pytest
 
-import ethicml as em
 from ethicml import DataTuple, TrainTestPair, TrainValPair
+import ethicml as em
 from ethicml.data import FeatureOrder, Toy
 
 
