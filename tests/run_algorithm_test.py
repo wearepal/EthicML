@@ -10,8 +10,8 @@ import pandas as pd
 import pytest
 from sklearn.preprocessing import StandardScaler
 
-import ethicml as em
 from ethicml import ClassifierType, DataTuple, KernelType, Prediction, TestTuple, metrics, models
+import ethicml as em
 import ethicml.data as emda
 from ethicml.models.inprocess.in_algorithm import InAlgorithmDC
 from ethicml.run import evaluate_models, load_results, run_in_parallel
