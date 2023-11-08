@@ -22,8 +22,8 @@ from typing import (
 )
 from typing_extensions import Self, TypeAlias
 
-import numpy as np
 from numpy import typing as npt
+import numpy as np
 import pandas as pd
 from ranzen.misc import StrEnum
 
