@@ -1,5 +1,4 @@
 """For assessing the Mutual Information between s and yhat."""
-from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from enum import auto
@@ -49,11 +48,12 @@ class NMI(_DependenceMeasure):
     @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
-        return normalized_mutual_info_score(  # type: ignore[return-value]
+        nmi = normalized_mutual_info_score(
             base_values.to_numpy().ravel(),
             prediction.hard.to_numpy().ravel(),
             average_method="arithmetic",
         )
+        return nmi if isinstance(nmi, (float, int)) else nmi.item()
 
 
 @dataclass

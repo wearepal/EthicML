@@ -1,11 +1,10 @@
 """Algorithms by Zafar et al. for Demographic Parity."""
-from __future__ import annotations
 from abc import abstractmethod
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Final, NamedTuple
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import pandas as pd
 
@@ -48,7 +47,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         :param file_path: Path to save to.
         :param label_converter: Instance of a LabelBinarizer to convert labels to Zafar's format.
         """
-        out: dict[str, Any] = {'x': data.x.to_numpy().tolist(), "sensitive": {}}
+        out: dict[str, Any] = {"x": data.x.to_numpy().tolist(), "sensitive": {}}
         out["sensitive"][data.s.name] = data.s.to_numpy().tolist()
         if isinstance(data, DataTuple):
             data_converted = label_converter.adjust(data)
@@ -66,7 +65,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             return self._predict(test, tmp_path, fit_params)
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> _ZafarAlgorithmBase:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         with TemporaryDirectory() as tmpdir:
             self._fit_params = self._fit(train, tmp_path=Path(tmpdir), model_dir=self._code_path)
         return self

@@ -1,10 +1,9 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import auto
 import itertools
 from typing import Optional
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import pandas as pd
 from ranzen.misc import StrEnum
@@ -50,7 +49,7 @@ class Upsampler(PreAlgorithm):
         return self._out_size
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Upsampler, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Self, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = upsample(train, train, self.strategy, seed, name=self.name)
         return self, new_train
@@ -109,7 +108,7 @@ def upsample(
     percentages: dict[tuple[int, int], float] = {}
 
     vals: list[int] = []
-    for key, val in data.items():
+    for val in data.values():
         vals.append(val.x.shape[0])
 
     for key, val in data.items():
@@ -136,7 +135,7 @@ def upsample(
         upsampled[key] = val.replace_data(all_data)
 
     upsampled_datatuple: DataTuple | None = None
-    for key, val in upsampled.items():
+    for val in upsampled.values():
         if upsampled_datatuple is None:
             upsampled_datatuple = val
         else:

@@ -1,14 +1,13 @@
 """Common plotting functions / datastructures."""
-from __future__ import annotations
 from typing import Any, Literal, NamedTuple
 from typing_extensions import TypeAlias
 
 from matplotlib import legend
-from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
 import pandas as pd
 
-LegendType: TypeAlias = Literal["inside", "outside"]  # pylint: disable=invalid-name
-PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name
+LegendType: TypeAlias = Literal["inside", "outside"]
+PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]
 
 
 class DataEntry(NamedTuple):
@@ -29,7 +28,7 @@ class PlotDef(NamedTuple):
 
 
 def common_plotting_settings(
-    plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
+    plot: Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
 ) -> legend.Legend | None:
     """Commonly used settings for plots.
 
@@ -43,7 +42,7 @@ def common_plotting_settings(
     plot.set_ylabel(yaxis_title)
     if title := plot_def.title:
         plot.set_title(title)
-    plot.grid(True)
+    plot.grid(visible=True)
 
     # get handles and labels for the legend
     handles, labels = plot.get_legend_handles_labels()
@@ -60,13 +59,14 @@ def common_plotting_settings(
 
 
 def errorbox(
-    plot: plt.Axes,
+    plot: Axes,
     plot_def: PlotDef,
     xaxis: tuple[str, str],
     yaxis: tuple[str, str],
     firstcolor: int = 0,
     firstshape: int = 0,
     markersize: int = 6,
+    *,
     use_cross: bool = False,
 ) -> legend.Legend | None:
     """Generate a figure with errorboxes that reflect the std dev of an entry.
@@ -172,12 +172,13 @@ def errorbox(
 
 
 def scatter(
-    plot: plt.Axes,
+    plot: Axes,
     plot_def: PlotDef,
     xaxis: tuple[str, str],
     yaxis: tuple[str, str],
     startindex: int = 0,
     markersize: int = 6,
+    *,
     connect_dots: bool = False,
 ) -> legend.Legend | None:
     """Generate a scatter plot.
@@ -203,7 +204,7 @@ def scatter(
             shp_index = filled_counter
             filled_counter += 1
         else:
-            additional_params = dict(markerfacecolor="none")
+            additional_params = {"markerfacecolor": "none"}
             shp_index = i + startindex - filled_counter
         plot.plot(
             entry.vals[xaxis_measure].to_numpy(),

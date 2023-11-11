@@ -1,5 +1,4 @@
 """Useful methods that are used in some of the data objects."""
-from __future__ import annotations
 from itertools import groupby
 from typing import Dict, List, Mapping, NamedTuple, Sequence
 from typing_extensions import TypeAlias
@@ -190,7 +189,7 @@ def from_dummies(data: pd.DataFrame, categorical_cols: Mapping[str, Sequence[str
             undummified = (
                 out[list(filter_col)]
                 .idxmax(axis=1)
-                .apply(lambda x: x.split(f"{col_parent}_", 1)[1])
+                .apply(lambda x: x.split(f"{col_parent}_", 1)[1])  # noqa: B023
             )
 
             out[col_parent] = undummified

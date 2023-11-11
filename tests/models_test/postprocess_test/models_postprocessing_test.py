@@ -4,8 +4,8 @@ from typing import NamedTuple
 import numpy as np
 import pytest
 
-import ethicml as em
 from ethicml import Prediction, TrainValPair
+import ethicml as em
 from ethicml.metrics import ProbPos, diff_per_sens, metric_per_sens
 from ethicml.models import DPFlip, Hardt, InAlgorithm, LR, PostAlgorithm
 

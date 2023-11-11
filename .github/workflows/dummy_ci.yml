@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Lint with pylint
+    - name: Lint with ruff
       run: |
         echo "pass!"
 
@@ -35,37 +35,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Format with black and isort
+    - name: Format with black
       run: |
         echo "pass!"
 
-  check_docstrings:
+  check_with_pydoclint:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.10"
-    - name: Install sphinx
-      run: |
-        python -m pip install --upgrade pip
-        pip install wheel
-        pip install -r docs/requirements.txt
-    - name: Install pandoc
-      run: sudo apt-get install -y pandoc
-    - name: Build with sphinx
-      run: |
-        sphinx-build -W -b html ./docs ./docs/_build
-        
-  check_with_darglint:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check with darglint
+    - name: Check with pydoclint
       run: |
         echo "pass!"
 
@@ -74,18 +53,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check with darglint
+    - name: Test import
       run: |
         echo "pass!"
 
-  test_full_dependencies:
+  test_build_docs:
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check with darglint
+    - uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'poetry'
+    - name: Install dependencies
       run: |
-        echo "pass!"
+        poetry env use 3.10
+        poetry install --no-interaction --no-root --all-extras --with docs,torchcpu --without ci,lint,format,doclint
+    - name: Install pandoc
+      run: sudo apt-get install -y pandoc
+    - name: Build with sphinx
+      run: |
+        poetry run sphinx-build -W -b html ./docs ./docs/_build
 
   test_with_pytest:
 

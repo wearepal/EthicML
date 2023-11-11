@@ -5,7 +5,6 @@ Y. Romano, S. Bates, and E. J. Candès, 2020.
 
 https://github.com/yromano/fair_dummies
 """
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypedDict
 from typing_extensions import override

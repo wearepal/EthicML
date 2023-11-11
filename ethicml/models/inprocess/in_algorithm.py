@@ -1,5 +1,4 @@
 """Abstract Base Class of all algorithms in the framework."""
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import asdict
 from typing import TYPE_CHECKING, ClassVar, final
@@ -80,6 +79,6 @@ class InAlgorithmDC(InAlgorithm, ABC):
 
     @property
     @final
-    def hyperparameters(self: DataclassInstance) -> HyperParamType:
+    def hyperparameters(self: "DataclassInstance") -> HyperParamType:
         """Return list of hyperparameters."""
         return asdict(self)

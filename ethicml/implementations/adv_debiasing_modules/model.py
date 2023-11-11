@@ -3,7 +3,6 @@
 Original implementation is modified to handle regression and multi-class
 classification problems
 """
-from __future__ import annotations
 from typing_extensions import Self, override
 
 import numpy as np
@@ -210,12 +209,13 @@ class AdvDebiasingClassLearner:
         self.num_classes = num_classes
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
-        elif self.model_type is ModelType.linear:
-            self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
+            case ModelType.linear:
+                self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
+            case _:
+                raise NotImplementedError
 
         self.clf_criterion = cost_pred
         self.clf_optimizer = optim.Adam(self.clf.parameters(), lr=self.lr)
@@ -225,7 +225,7 @@ class AdvDebiasingClassLearner:
         self.lambdas = torch.Tensor([lambda_vec])
 
         self.adv: nn.Module = Adversary(n_sensitive=1, n_y=num_classes * 2)
-        self.adv_criterion = nn.BCELoss(reduction='none')
+        self.adv_criterion = nn.BCELoss(reduction="none")
         self.adv_optimizer = optim.Adam(self.adv.parameters(), lr=self.lr)
 
         self.n_adv_epochs = n_adv_epochs
@@ -302,12 +302,13 @@ class AdvDebiasingRegLearner:
         self.out_shape = out_shape
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
         self.clf_criterion = cost_pred
         self.clf_optimizer = optim.Adam(self.clf.parameters(), lr=self.lr)

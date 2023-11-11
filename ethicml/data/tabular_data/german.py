@@ -1,5 +1,4 @@
 """Class to describe features of the German dataset."""
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
@@ -112,18 +111,19 @@ class German(LegacyDataset):
             "people-liable-for",
         ]
 
-        if self.split is GermanSplits.SEX:
-            sens_attr_spec = "sex"
-            s_prefix = ["sex"]
-            class_label_spec = "credit-label"
-            class_label_prefix = ["credit-label"]
-        elif self.split is GermanSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case GermanSplits.SEX:
+                sens_attr_spec = "sex"
+                s_prefix = ["sex"]
+                class_label_spec = "credit-label"
+                class_label_prefix = ["credit-label"]
+            case GermanSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
 
         super().__init__(
             name=f"German {self.split.value}",

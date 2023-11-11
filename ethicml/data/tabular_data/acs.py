@@ -3,9 +3,6 @@
 Uses FolkTables: https://github.com/zykls/folktables
 Paper: https://arxiv.org/abs/2108.04884
 """
-# pylint: skip-file
-# Pylint will go crazy as we're reimplementing the Dataset Init.
-from __future__ import annotations
 import contextlib
 import os
 from pathlib import Path
@@ -32,57 +29,57 @@ from ..util import (
 __all__ = ["AcsIncome", "AcsEmployment"]
 
 StateList: TypeAlias = Literal[
-    'AL',
-    'AK',
-    'AZ',
-    'AR',
-    'CA',
-    'CO',
-    'CT',
-    'DE',
-    'FL',
-    'GA',
-    'HI',
-    'ID',
-    'IL',
-    'IN',
-    'IA',
-    'KS',
-    'KY',
-    'LA',
-    'ME',
-    'MD',
-    'MA',
-    'MI',
-    'MN',
-    'MS',
-    'MO',
-    'MT',
-    'NE',
-    'NV',
-    'NH',
-    'NJ',
-    'NM',
-    'NY',
-    'NC',
-    'ND',
-    'OH',
-    'OK',
-    'OR',
-    'PA',
-    'RI',
-    'SC',
-    'SD',
-    'TN',
-    'TX',
-    'UT',
-    'VT',
-    'VA',
-    'WA',
-    'WV',
-    'WI',
-    'WY',
-    'PR',
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+    "PR",
 ]
 
 
@@ -109,6 +106,7 @@ class _AcsBase(Dataset):
         states: list[StateList],
         class_label_spec: str,
         class_label_prefix: list[str],
+        *,
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -299,6 +297,7 @@ class AcsIncome(_AcsBase):
         states: list[StateList],
         split: str = "Sex",
         target_threshold: int = 50_000,
+        *,
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -325,43 +324,43 @@ class AcsIncome(_AcsBase):
         """Look up categories."""
         table = {
             "COW": range(1, 9),
-            'MAR': range(1, 6),
-            'RELP': range(18),
-            'SEX': range(1, 3),
-            'RAC1P': range(1, 10),
-            'PINCP': range(2),
+            "MAR": range(1, 6),
+            "RELP": range(18),
+            "SEX": range(1, 3),
+            "RAC1P": range(1, 10),
+            "PINCP": range(2),
         }
 
         return list(table[key])
 
     @override
     def load(
-        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+        self, order: FeatureOrder = FeatureOrder.disc_first, *, labels_as_features: bool = False
     ) -> DataTuple:
         from folktables import ACSDataSource, adult_filter, folktables
 
         datasource = ACSDataSource(
-            survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
+            survey_year=self.year, horizon=f"{self.horizon}-Year", survey=self.survey
         )
 
         with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
 
         disc_feats = [
-            'COW',
-            'MAR',
-            'RELP',
-            'SEX',
-            'RAC1P',
-            'PINCP',
+            "COW",
+            "MAR",
+            "RELP",
+            "SEX",
+            "RAC1P",
+            "PINCP",
         ]
 
         continuous_features = [
-            'AGEP',
-            'OCCP',
-            'POBP',
-            'SCHL',
-            'WKHP',
+            "AGEP",
+            "OCCP",
+            "POBP",
+            "SCHL",
+            "WKHP",
         ]
 
         data_obj = folktables.BasicProblem(
@@ -379,29 +378,29 @@ class AcsIncome(_AcsBase):
         for feat in disc_feats:
             dataframe[feat] = (
                 dataframe[feat]
-                .astype('int')
+                .astype("int")
                 .astype(pd.CategoricalDtype(categories=self.cat_lookup(feat)))
             )
 
-        dataframe[continuous_features] = dataframe[continuous_features].astype('int')
+        dataframe[continuous_features] = dataframe[continuous_features].astype("int")
 
         dataframe = pd.get_dummies(dataframe[disc_feats + continuous_features])
 
         dataframe = dataframe.apply(data_obj._postprocess)
 
-        cow_cols = [col for col in dataframe.columns if col.startswith('COW')]
-        mar_cols = [col for col in dataframe.columns if col.startswith('MAR')]
-        relp_cols = [col for col in dataframe.columns if col.startswith('RELP')]
-        sex_cols = [col for col in dataframe.columns if col.startswith('SEX')]
-        rac1p_cols = [col for col in dataframe.columns if col.startswith('RAC1P')]
-        pincp_cols = [col for col in dataframe.columns if col.startswith('PINCP')]
+        cow_cols = [col for col in dataframe.columns if col.startswith("COW")]
+        mar_cols = [col for col in dataframe.columns if col.startswith("MAR")]
+        relp_cols = [col for col in dataframe.columns if col.startswith("RELP")]
+        sex_cols = [col for col in dataframe.columns if col.startswith("SEX")]
+        rac1p_cols = [col for col in dataframe.columns if col.startswith("RAC1P")]
+        pincp_cols = [col for col in dataframe.columns if col.startswith("PINCP")]
         disc_feature_groups = {
             "COW": cow_cols,
-            'MAR': mar_cols,
-            'RELP': relp_cols,
-            'SEX': sex_cols,
-            'RAC1P': rac1p_cols,
-            'PINCP': pincp_cols,
+            "MAR": mar_cols,
+            "RELP": relp_cols,
+            "SEX": sex_cols,
+            "RAC1P": rac1p_cols,
+            "PINCP": pincp_cols,
         }
         discrete_features = flatten_dict(disc_feature_groups)
 
@@ -413,26 +412,31 @@ class AcsIncome(_AcsBase):
 
         self._discrete_feature_groups = disc_feature_groups
 
-        if self.split == "Sex":
-            self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
-            self._s_prefix = [self.sens_lookup[self.split]]
-        elif self.split == "Race":
-            self._sens_attr_spec = spec_from_binary_cols(
-                {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
-            )
-            self._s_prefix = [self.sens_lookup[self.split]]
-        elif self.split == "Sex-Race":
-            self._sens_attr_spec = spec_from_binary_cols(
-                {
-                    f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
-                    f"{self.sens_lookup['Race']}": disc_feature_groups[
-                        f"{self.sens_lookup['Race']}"
-                    ],
-                }
-            )
-            self._s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
-        else:
-            raise NotImplementedError
+        match self.split:
+            case "Sex":
+                self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
+                self._s_prefix = [self.sens_lookup[self.split]]
+            case "Race":
+                self._sens_attr_spec = spec_from_binary_cols(
+                    {
+                        self.sens_lookup[self.split]: disc_feature_groups[
+                            self.sens_lookup[self.split]
+                        ]
+                    }
+                )
+                self._s_prefix = [self.sens_lookup[self.split]]
+            case "Sex-Race":
+                self._sens_attr_spec = spec_from_binary_cols(
+                    {
+                        f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
+                        f"{self.sens_lookup['Race']}": disc_feature_groups[
+                            f"{self.sens_lookup['Race']}"
+                        ],
+                    }
+                )
+                self._s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
+            case _:
+                raise NotImplementedError
 
         dataframe = dataframe.reset_index(drop=True)
 
@@ -449,6 +453,7 @@ class AcsEmployment(_AcsBase):
         horizon: int,
         states: list[StateList],
         split: str = "Sex",
+        *,
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -473,60 +478,60 @@ class AcsEmployment(_AcsBase):
     def cat_lookup(key: str) -> list[int]:
         """Look up categories."""
         table = {
-            'SCHL': range(1, 25),
-            'MAR': range(1, 6),
-            'SEX': range(1, 3),
-            'DIS': range(1, 3),
-            'ESP': range(1, 9),
-            'MIG': range(1, 4),
-            'CIT': range(1, 5),
-            'MIL': range(1, 5),
-            'ANC': (1, 2, 4, 8),
-            'NATIVITY': range(1, 3),
-            'RELP': range(18),
-            'DEAR': range(1, 3),
-            'DEYE': range(1, 3),
-            'DREM': range(1, 3),
-            'RAC1P': range(1, 10),
-            'ESR': range(1, 7),
+            "SCHL": range(1, 25),
+            "MAR": range(1, 6),
+            "SEX": range(1, 3),
+            "DIS": range(1, 3),
+            "ESP": range(1, 9),
+            "MIG": range(1, 4),
+            "CIT": range(1, 5),
+            "MIL": range(1, 5),
+            "ANC": (1, 2, 4, 8),
+            "NATIVITY": range(1, 3),
+            "RELP": range(18),
+            "DEAR": range(1, 3),
+            "DEYE": range(1, 3),
+            "DREM": range(1, 3),
+            "RAC1P": range(1, 10),
+            "ESR": range(1, 7),
         }
 
         return list(table[key])
 
     @override
     def load(
-        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+        self, order: FeatureOrder = FeatureOrder.disc_first, *, labels_as_features: bool = False
     ) -> DataTuple:
         from folktables import ACSDataSource, folktables
 
         datasource = ACSDataSource(
-            survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
+            survey_year=self.year, horizon=f"{self.horizon}-Year", survey=self.survey
         )
 
         with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
 
         disc_feats = [
-            'SCHL',
-            'MAR',
-            'RELP',
-            'DIS',
-            'ESP',
-            'CIT',
-            'MIG',
-            'MIL',
-            'ANC',
-            'NATIVITY',
-            'DEAR',
-            'DEYE',
-            'DREM',
-            'SEX',
-            'RAC1P',
-            'ESR',
+            "SCHL",
+            "MAR",
+            "RELP",
+            "DIS",
+            "ESP",
+            "CIT",
+            "MIG",
+            "MIL",
+            "ANC",
+            "NATIVITY",
+            "DEAR",
+            "DEYE",
+            "DREM",
+            "SEX",
+            "RAC1P",
+            "ESR",
         ]
 
         continuous_features = [
-            'AGEP',
+            "AGEP",
         ]
 
         data_obj = folktables.BasicProblem(
@@ -545,49 +550,49 @@ class AcsEmployment(_AcsBase):
         for feat in disc_feats:
             dataframe[feat] = (
                 dataframe[feat]
-                .astype('int')
+                .astype("int")
                 .astype(pd.CategoricalDtype(categories=self.cat_lookup(feat)))
             )
 
-        dataframe[continuous_features] = dataframe[continuous_features].astype('int')
+        dataframe[continuous_features] = dataframe[continuous_features].astype("int")
 
         dataframe = pd.get_dummies(dataframe[disc_feats + continuous_features])
 
         dataframe = dataframe.apply(data_obj._postprocess)
 
-        schl_cols = [col for col in dataframe.columns if col.startswith('SCHL')]
-        mar_cols = [col for col in dataframe.columns if col.startswith('MAR')]
-        relp_cols = [col for col in dataframe.columns if col.startswith('RELP')]
-        dis_cols = [col for col in dataframe.columns if col.startswith('DIS')]
-        esp_cols = [col for col in dataframe.columns if col.startswith('ESP')]
-        cit_cols = [col for col in dataframe.columns if col.startswith('CIT')]
-        mig_cols = [col for col in dataframe.columns if col.startswith('MIG')]
-        mil_cols = [col for col in dataframe.columns if col.startswith('MIL')]
-        anc_cols = [col for col in dataframe.columns if col.startswith('ANC')]
-        nativity_cols = [col for col in dataframe.columns if col.startswith('NATIVITY')]
-        dear_cols = [col for col in dataframe.columns if col.startswith('DEAR')]
-        deye_cols = [col for col in dataframe.columns if col.startswith('DEYE')]
-        drem_cols = [col for col in dataframe.columns if col.startswith('DREM')]
-        sex_cols = [col for col in dataframe.columns if col.startswith('SEX')]
-        rac1p_cols = [col for col in dataframe.columns if col.startswith('RAC1P')]
-        esr_cols = [col for col in dataframe.columns if col.startswith('ESR')]
+        schl_cols = [col for col in dataframe.columns if col.startswith("SCHL")]
+        mar_cols = [col for col in dataframe.columns if col.startswith("MAR")]
+        relp_cols = [col for col in dataframe.columns if col.startswith("RELP")]
+        dis_cols = [col for col in dataframe.columns if col.startswith("DIS")]
+        esp_cols = [col for col in dataframe.columns if col.startswith("ESP")]
+        cit_cols = [col for col in dataframe.columns if col.startswith("CIT")]
+        mig_cols = [col for col in dataframe.columns if col.startswith("MIG")]
+        mil_cols = [col for col in dataframe.columns if col.startswith("MIL")]
+        anc_cols = [col for col in dataframe.columns if col.startswith("ANC")]
+        nativity_cols = [col for col in dataframe.columns if col.startswith("NATIVITY")]
+        dear_cols = [col for col in dataframe.columns if col.startswith("DEAR")]
+        deye_cols = [col for col in dataframe.columns if col.startswith("DEYE")]
+        drem_cols = [col for col in dataframe.columns if col.startswith("DREM")]
+        sex_cols = [col for col in dataframe.columns if col.startswith("SEX")]
+        rac1p_cols = [col for col in dataframe.columns if col.startswith("RAC1P")]
+        esr_cols = [col for col in dataframe.columns if col.startswith("ESR")]
         disc_feature_groups = {
             "SCHL": schl_cols,
-            'MAR': mar_cols,
-            'RELP': relp_cols,
-            'DIS': dis_cols,
-            'ESP': esp_cols,
-            'CIT': cit_cols,
-            'MIG': mig_cols,
-            'MIL': mil_cols,
-            'ANC': anc_cols,
-            'NATIVITY': nativity_cols,
-            'DEAR': dear_cols,
-            'DEYE': deye_cols,
-            'DREM': drem_cols,
-            'SEX': sex_cols,
-            'RAC1P': rac1p_cols,
-            'ESR': esr_cols,
+            "MAR": mar_cols,
+            "RELP": relp_cols,
+            "DIS": dis_cols,
+            "ESP": esp_cols,
+            "CIT": cit_cols,
+            "MIG": mig_cols,
+            "MIL": mil_cols,
+            "ANC": anc_cols,
+            "NATIVITY": nativity_cols,
+            "DEAR": dear_cols,
+            "DEYE": deye_cols,
+            "DREM": drem_cols,
+            "SEX": sex_cols,
+            "RAC1P": rac1p_cols,
+            "ESR": esr_cols,
         }
         discrete_features = flatten_dict(disc_feature_groups)
 
@@ -599,26 +604,31 @@ class AcsEmployment(_AcsBase):
 
         self._discrete_feature_groups = disc_feature_groups
 
-        if self.split == "Sex":
-            self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
-            self._s_prefix = [self.sens_lookup[self.split]]
-        elif self.split == "Race":
-            self._sens_attr_spec = spec_from_binary_cols(
-                {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
-            )
-            self._s_prefix = [self.sens_lookup[self.split]]
-        elif self.split == "Sex-Race":
-            self._sens_attr_spec = spec_from_binary_cols(
-                {
-                    f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
-                    f"{self.sens_lookup['Race']}": disc_feature_groups[
-                        f"{self.sens_lookup['Race']}"
-                    ],
-                }
-            )
-            self._s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
-        else:
-            raise NotImplementedError
+        match self.split:
+            case "Sex":
+                self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
+                self._s_prefix = [self.sens_lookup[self.split]]
+            case "Race":
+                self._sens_attr_spec = spec_from_binary_cols(
+                    {
+                        self.sens_lookup[self.split]: disc_feature_groups[
+                            self.sens_lookup[self.split]
+                        ]
+                    }
+                )
+                self._s_prefix = [self.sens_lookup[self.split]]
+            case "Sex-Race":
+                self._sens_attr_spec = spec_from_binary_cols(
+                    {
+                        f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
+                        f"{self.sens_lookup['Race']}": disc_feature_groups[
+                            f"{self.sens_lookup['Race']}"
+                        ],
+                    }
+                )
+                self._s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
+            case _:
+                raise NotImplementedError
 
         dataframe = dataframe.reset_index(drop=True)
 

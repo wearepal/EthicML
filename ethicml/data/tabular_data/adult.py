@@ -1,5 +1,4 @@
 """Class to describe features of the Adult dataset."""
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Final, Type
@@ -61,35 +60,35 @@ class Adult(StaticCSVDataset):
     def get_label_specs(self) -> LabelSpecsPair:
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
-        if self.split is AdultSplits.SEX:
-            sens_attr_spec = single_col_spec("sex_Male")
-            label_feature_groups += ["sex"]
-        elif self.split is AdultSplits.RACE:
-            sens_attr_spec = spec_from_binary_cols({"race": DISC_FEATURE_GROUPS["race"]})
-            label_feature_groups += ["race"]
-        elif self.split is AdultSplits.RACE_BINARY:
-            sens_attr_spec = single_col_spec("race_White")
-            label_feature_groups += ["race"]
-        elif self.split is AdultSplits.RACE_SEX:
-            sens_attr_spec = spec_from_binary_cols(
-                {"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]}
-            )
-            label_feature_groups += ["sex", "race"]
-        elif self.split is AdultSplits.NATIONALITY:
-            sens = "native-country"
-            sens_attr_spec = spec_from_binary_cols({sens: DISC_FEATURE_GROUPS[sens]})
-            label_feature_groups += ["native-country"]
-        elif self.split is AdultSplits.EDUCTAION:
-            to_keep = ["education_HS-grad", "education_Some-college"]
-            remaining_feature_name = "other"
+        match self.split:
+            case AdultSplits.SEX:
+                sens_attr_spec = single_col_spec("sex_Male")
+                label_feature_groups += ["sex"]
+            case AdultSplits.RACE:
+                sens_attr_spec = spec_from_binary_cols({"race": DISC_FEATURE_GROUPS["race"]})
+                label_feature_groups += ["race"]
+            case AdultSplits.RACE_BINARY:
+                sens_attr_spec = single_col_spec("race_White")
+                label_feature_groups += ["race"]
+            case AdultSplits.RACE_SEX:
+                sens_attr_spec = spec_from_binary_cols(
+                    {"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]}
+                )
+                label_feature_groups += ["sex", "race"]
+            case AdultSplits.NATIONALITY:
+                sens = "native-country"
+                sens_attr_spec = spec_from_binary_cols({sens: DISC_FEATURE_GROUPS[sens]})
+                label_feature_groups += ["native-country"]
+            case AdultSplits.EDUCTAION:
+                to_keep = ["education_HS-grad", "education_Some-college"]
+                remaining_feature_name = "other"
 
-            sens_attr_spec = spec_from_binary_cols(
-                {"education": to_keep + [f"education_{remaining_feature_name}"]}
-            )
-            label_feature_groups += ["education"]
-
-        else:
-            raise NotImplementedError
+                sens_attr_spec = spec_from_binary_cols(
+                    {"education": to_keep + [f"education_{remaining_feature_name}"]}
+                )
+                label_feature_groups += ["education"]
+            case _:
+                raise NotImplementedError
         return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec, to_remove=label_feature_groups)
 
     @property

@@ -1,5 +1,4 @@
 """FairDummies Models."""
-from __future__ import annotations
 import random
 from typing import Callable
 from typing_extensions import Self
@@ -444,7 +443,7 @@ class EquiClassLearner:
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(seed)
 
-        torch.use_deterministic_algorithms(True)
+        torch.use_deterministic_algorithms(mode=True)
 
         self.seed = seed
         self.lr = lr
@@ -453,12 +452,13 @@ class EquiClassLearner:
         self.num_classes = num_classes
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
-        elif self.model_type is ModelType.linear:
-            self.model = LinearModel(in_shape=in_shape, out_shape=num_classes)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
+            case ModelType.linear:
+                self.model = LinearModel(in_shape=in_shape, out_shape=num_classes)
+            case _:
+                raise NotImplementedError
 
         self.pred_loss = cost_pred
         self.clf_optimizer = optim.Adam(self.model.parameters(), lr=self.lr)
@@ -607,12 +607,13 @@ class EquiRegLearner:
         self.use_standardscaler = use_standardscaler
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
         self.pred_loss = cost_pred
         self.clf_optimizer = torch.optim.SGD(self.model.parameters(), lr=self.lr)

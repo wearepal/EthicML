@@ -3,7 +3,6 @@
 # https://github.com/criteo-research/continuous-fairness
 # The function for measuring HGR is in the facl package, can be downloaded from
 # https://github.com/criteo-research/continuous-fairness/tree/master/facl/independence
-from __future__ import annotations
 import random
 from typing import Literal
 from typing_extensions import Self
@@ -64,13 +63,14 @@ class HgrRegLearner:
         self.batch_size = batch_size
 
         self.out_shape = out_shape
-        if self.model_type is ModelType.deep:
-            self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+        match self.model_type:
+            case ModelType.deep:
+                self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
-        else:
-            raise NotImplementedError
         self.loss_optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr_loss)
 
     def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.floating:
@@ -111,7 +111,7 @@ class HgrRegLearner:
 
     def fit(self, train: DataTuple, seed: int) -> None:
         """Fit."""
-        torch.use_deterministic_algorithms(True)
+        torch.use_deterministic_algorithms(mode=True)
         torch.manual_seed(seed)
         random.seed(seed)
         np.random.seed(seed)
@@ -164,12 +164,13 @@ class HgrClassLearner:
         self.batch_size = batch_size
 
         self.model_type = model_type
-        if self.model_type is ModelType.deep:
-            self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type is ModelType.linear:
-            self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case ModelType.deep:
+                self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=out_shape)
+            case ModelType.linear:
+                self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
+            case _:
+                raise NotImplementedError
 
         self.loss_optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr_loss)
 
@@ -207,7 +208,7 @@ class HgrClassLearner:
         torch.manual_seed(seed)
         random.seed(seed)
         np.random.seed(seed)
-        torch.use_deterministic_algorithms(True)
+        torch.use_deterministic_algorithms(mode=True)
         # train
         _, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True

@@ -1,7 +1,6 @@
 """Data structures that are used throughout the code."""
-from __future__ import annotations
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import Enum, auto
 import json
 from pathlib import Path
@@ -23,8 +22,8 @@ from typing import (
 )
 from typing_extensions import Self, TypeAlias
 
-import numpy as np
 from numpy import typing as npt
+import numpy as np
 import pandas as pd
 from ranzen.misc import StrEnum
 
@@ -54,7 +53,7 @@ __all__ = [
     "map_over_results_index",
 ]
 
-AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
+AxisType: TypeAlias = Literal["columns", "index"]
 
 
 class PandasIndex(Enum):
@@ -79,7 +78,7 @@ class SubsetMixin(ABC):
 
     @property
     @final
-    def s(self) -> pd.Series[int]:
+    def s(self) -> "pd.Series[int]":
         """Getter for property s."""
         return self.data[self.s_column]
 
@@ -117,9 +116,7 @@ class SubgroupTuple(SubsetMixin):
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
 
     @classmethod
-    def from_df(
-        cls, *, x: pd.DataFrame, s: pd.Series[int], name: str | None = None
-    ) -> SubgroupTuple:
+    def from_df(cls, *, x: pd.DataFrame, s: "pd.Series[int]", name: str | None = None) -> Self:
         """Make a SubgroupTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
@@ -145,27 +142,20 @@ class SubgroupTuple(SubsetMixin):
         """Iterator of ``self.x`` and ``self.s``."""
         return iter([self.x, self.s])
 
-    def replace(
-        self, *, x: pd.DataFrame | None = None, s: pd.Series | None = None
-    ) -> SubgroupTuple:
+    def replace(self, *, x: pd.DataFrame | None = None, s: pd.Series | None = None) -> Self:
         """Create a copy of the SubgroupTuple but change the given values."""
-        return SubgroupTuple.from_df(
+        return self.from_df(
             x=x if x is not None else self.x, s=s if s is not None else self.s, name=self.name
         )
 
-    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> SubgroupTuple:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> Self:
         """Make a copy of the DataTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
-        return SubgroupTuple(
-            data=data,
-            s_column=self.s_column,
-            s_in_x=self.s_in_x,
-            name=self.name if name is None else name,
-        )
+        return replace(self, data=data, name=self.name if name is None else name)
 
-    def rename(self, name: str) -> SubgroupTuple:
+    def rename(self, name: str) -> Self:
         """Change only the name."""
-        return SubgroupTuple(data=self.data, s_column=self.s_column, s_in_x=self.s_in_x, name=name)
+        return replace(self, name=name)
 
     def save_to_file(self, data_path: Path) -> None:
         """Save SubgroupTuple as an npz file.
@@ -174,12 +164,12 @@ class SubgroupTuple(SubsetMixin):
         """
         write_as_npz(
             data_path,
-            dict(x=self.x, s=self.s),
-            dict(name=np.array(self.name if self.name is not None else "")),
+            {"x": self.x, "s": self.s},
+            {"name": np.array(self.name if self.name is not None else "")},
         )
 
     @classmethod
-    def from_file(cls, data_path: Path) -> SubgroupTuple:
+    def from_file(cls, data_path: Path) -> Self:
         """Load test tuple from npz file.
 
         :param data_path: Path to load the npz file.
@@ -212,8 +202,8 @@ class DataTuple(SubsetMixin):
 
     @classmethod
     def from_df(
-        cls, *, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: str | None = None
-    ) -> DataTuple:
+        cls, *, x: pd.DataFrame, s: "pd.Series[int]", y: "pd.Series[int]", name: str | None = None
+    ) -> Self:
         """Make a DataTuple."""
         s_column = s.name
         y_column = y.name
@@ -238,7 +228,7 @@ class DataTuple(SubsetMixin):
         return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
-    def y(self) -> pd.Series[int]:
+    def y(self) -> "pd.Series[int]":
         """Getter for property y."""
         return self.data[self.y_column]
 
@@ -261,38 +251,26 @@ class DataTuple(SubsetMixin):
         x: pd.DataFrame | None = None,
         s: pd.Series | None = None,
         y: pd.Series | None = None,
-    ) -> DataTuple:
+    ) -> Self:
         """Create a copy of the DataTuple but change the given values."""
-        return DataTuple.from_df(
+        return self.from_df(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             y=y if y is not None else self.y,
             name=self.name,
         )
 
-    def rename(self, name: str) -> DataTuple:
+    def rename(self, name: str) -> Self:
         """Change only the name."""
-        return DataTuple(
-            data=self.data,
-            s_column=self.s_column,
-            y_column=self.y_column,
-            s_in_x=self.s_in_x,
-            name=name,
-        )
+        return replace(self, name=name)
 
-    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> DataTuple:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> Self:
         """Make a copy of the DataTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
         assert self.y_column in data.columns, f"column {self.y_column} not present"
-        return DataTuple(
-            data=data,
-            s_column=self.s_column,
-            y_column=self.y_column,
-            s_in_x=self.s_in_x,
-            name=self.name if name is None else name,
-        )
+        return replace(self, data=data, name=self.name if name is None else name)
 
-    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
+    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> Self:
         """Concatenate the dataframes in the DataTuple and then apply a function to it.
 
         :param mapper: A function that takes a dataframe and returns a dataframe.
@@ -307,12 +285,12 @@ class DataTuple(SubsetMixin):
         """
         write_as_npz(
             data_path,
-            dict(x=self.x, s=self.s, y=self.y),
-            dict(name=np.array(self.name if self.name is not None else "")),
+            {"x": self.x, "s": self.s, "y": self.y},
+            {"name": np.array(self.name if self.name is not None else "")},
         )
 
     @classmethod
-    def from_file(cls, data_path: Path) -> DataTuple:
+    def from_file(cls, data_path: Path) -> Self:
         """Load data tuple from npz file.
 
         :param data_path: Path to the npz file.
@@ -344,9 +322,7 @@ class LabelTuple(SubsetMixin):
         assert self.y_column in self.data.columns, f"column {self.y_column} not present"
 
     @classmethod
-    def from_df(
-        cls, *, s: pd.Series[int], y: pd.Series[int], name: str | None = None
-    ) -> LabelTuple:
+    def from_df(cls, *, s: "pd.Series[int]", y: "pd.Series[int]", name: str | None = None) -> Self:
         """Make a LabelTuple."""
         s_column = s.name
         y_column = y.name
@@ -364,7 +340,7 @@ class LabelTuple(SubsetMixin):
     @classmethod
     def from_np(
         cls, *, s: npt.NDArray, y: npt.NDArray, s_name: str = "s", y_name: str = "y"
-    ) -> LabelTuple:
+    ) -> Self:
         """Create a LabelTuple from numpy arrays."""
         s_pd = pd.Series(s, name=s_name)
         y_pd = pd.Series(y, name=y_name)
@@ -377,7 +353,7 @@ class LabelTuple(SubsetMixin):
         )
 
     @property
-    def y(self) -> pd.Series[int]:
+    def y(self) -> "pd.Series[int]":
         """Getter for property y."""
         return self.data[self.y_column]
 
@@ -385,26 +361,21 @@ class LabelTuple(SubsetMixin):
         """Iterator of ``self.x`` and ``self.y``."""
         return iter([self.s, self.y])
 
-    def replace(self, *, s: pd.Series | None = None, y: pd.Series | None = None) -> LabelTuple:
+    def replace(self, *, s: pd.Series | None = None, y: pd.Series | None = None) -> Self:
         """Create a copy of the LabelTuple but change the given values."""
-        return LabelTuple.from_df(
+        return self.from_df(
             s=s if s is not None else self.s, y=y if y is not None else self.y, name=self.name
         )
 
-    def rename(self, name: str) -> LabelTuple:
+    def rename(self, name: str) -> Self:
         """Change only the name."""
-        return LabelTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
+        return replace(self, name=name)
 
-    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> LabelTuple:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> Self:
         """Make a copy of the LabelTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
         assert self.y_column in data.columns, f"column {self.y_column} not present"
-        return LabelTuple(
-            data=data,
-            s_column=self.s_column,
-            y_column=self.y_column,
-            name=self.name if name is None else name,
-        )
+        return replace(self, data=data, name=self.name if name is None else name)
 
 
 TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
@@ -423,13 +394,12 @@ class Prediction:
     """Prediction of an algorithm."""
 
     def __init__(self, hard: pd.Series, info: HyperParamType | None = None):
-        """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
 
     @classmethod
-    def from_np(cls, preds: npt.NDArray) -> Prediction:
+    def from_np(cls, preds: npt.NDArray) -> Self:
         """Construct a prediction object from a numpy array."""
         return cls(hard=pd.Series(preds))
 
@@ -437,7 +407,7 @@ class Prediction:
         """Length of the predictions object."""
         return len(self._hard)
 
-    def get_s_subset(self, s_data: pd.Series, s: int) -> Prediction:
+    def get_s_subset(self, s_data: pd.Series, s: int) -> "Prediction":
         """Return a subset of the DataTuple where S=s.
 
         :param s_data: Dataframe with the s-values.
@@ -457,7 +427,7 @@ class Prediction:
         return self._info
 
     @staticmethod
-    def from_file(npz_path: Path) -> Prediction:
+    def from_file(npz_path: Path) -> "Prediction":
         """Load prediction from npz file.
 
         :param npz_path: Path to the npz file.
@@ -492,7 +462,6 @@ class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
     def __init__(self, soft: np.ndarray, info: HyperParamType | None = None):
-        """Make a soft prediction object."""
         super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft
 
@@ -527,10 +496,7 @@ def write_as_npz(
     np.savez(data_path, **as_numpy, **column_names, **extra)
 
 
-def concat(
-    datatup_list: Sequence[T],
-    ignore_index: bool = False,
-) -> T:
+def concat(datatup_list: Sequence[T], *, ignore_index: bool = False) -> T:
     """Concatenate the data tuples in the given list.
 
     :param datatup_list: List of data tuples to concatenate.
@@ -610,7 +576,6 @@ class ResultsAggregator:
     """Aggregate results."""
 
     def __init__(self, initial: pd.DataFrame | None = None):
-        """Init results aggregator obj."""
         self._results = make_results(initial)
 
     @property
@@ -618,7 +583,7 @@ class ResultsAggregator:
         """Results object over which this class is aggregating."""
         return self._results
 
-    def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
+    def append_df(self, data_frame: pd.DataFrame, *, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object.
 
         :param data_frame: DataFrame to append.
@@ -631,7 +596,7 @@ class ResultsAggregator:
         # set sort=False so that the order of the columns is preserved
         self._results = Results(pd.concat(order, sort=False, axis="index"))
 
-    def append_from_csv(self, csv_file: Path, prepend: bool = False) -> bool:
+    def append_from_csv(self, csv_file: Path, *, prepend: bool = False) -> bool:
         """Append results from a CSV file.
 
         :param csv_file: Path to the CSV file.

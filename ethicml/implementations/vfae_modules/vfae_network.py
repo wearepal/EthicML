@@ -1,6 +1,4 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
-# pylint: disable=arguments-differ
-from __future__ import annotations
 from typing import Any, NamedTuple
 
 import torch
@@ -33,12 +31,13 @@ class VFAENetwork(nn.Module):
     def __init__(
         self,
         dataset: CSVDataset,
-        supervised: bool,
         input_size: int,
         latent_dims: int,
         z1_enc_size: list[int],
         z2_enc_size: list[int],
         z1_dec_size: list[int],
+        *,
+        supervised: bool,
     ):
         super().__init__()
         torch.manual_seed(888)

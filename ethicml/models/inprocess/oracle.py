@@ -1,8 +1,7 @@
 """Perfect predictors."""
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-from typing_extensions import override
+from typing_extensions import Self, override
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithmNoParams
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -29,7 +28,7 @@ class Oracle(InAlgorithmNoParams):
         return "Oracle"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> Oracle:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         return self
 
     @override
@@ -58,7 +57,7 @@ class DPOracle(InAlgorithmNoParams):
         return "DemPar. Oracle"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> DPOracle:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         self.seed = seed
         return self
 

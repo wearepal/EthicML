@@ -1,9 +1,8 @@
 """Wrapper for calling Kamishima model."""
-from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import NamedTuple
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -54,7 +53,7 @@ class Kamishima(InstalledModel):
             return self._predict(test, fit_info, tmp_path)
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> Kamishima:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         with TemporaryDirectory() as tmpdir:
             self._fit_info = self._fit(train, Path(tmpdir), model_dir=self._code_path)
         return self
@@ -88,7 +87,7 @@ class Kamishima(InstalledModel):
         # except RuntimeError:
         #     predictions = np.ones_like(test.y.to_numpy())
 
-        to_return = pd.Series(predictions)
+        to_return: pd.Series = pd.Series(predictions)
         to_return = to_return.astype(int)
 
         if (min_val := to_return.min()) != to_return.max():

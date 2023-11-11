@@ -1,8 +1,7 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
-from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -35,7 +34,7 @@ class LR(InAlgorithmDC):
         return f"Logistic Regression (C={self.C})"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> LR:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         random_state = np.random.RandomState(seed=seed)
         self.clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
@@ -76,7 +75,7 @@ class LRCV(InAlgorithmDC):
         return "LRCV"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> LRCV:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         random_state = np.random.RandomState(seed=seed)
         folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)
         self.clf = LogisticRegressionCV(

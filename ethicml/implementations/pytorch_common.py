@@ -1,5 +1,4 @@
 """Functions that are common to PyTorch models."""
-from __future__ import annotations
 import random
 from typing import Literal
 
@@ -165,9 +164,9 @@ def compute_projection_gradients(
     def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)
 
-    grad_p = tuple(p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a))
+    grad_p = tuple(p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a, strict=True))
 
-    for param, grad in zip(model.parameters(), grad_p):
+    for param, grad in zip(model.parameters(), grad_p, strict=True):
         param.grad = grad
 
 
@@ -180,7 +179,7 @@ class PandasDataSet(TensorDataset):
 
     def _df_to_tensor(self, df: pd.DataFrame | pd.Series) -> Tensor:
         if isinstance(df, pd.Series):
-            df = df.to_frame('dummy')
+            df = df.to_frame("dummy")
         return torch.from_numpy(df.to_numpy()).float()
 
 
@@ -298,12 +297,13 @@ class GeneralLearner:
 
         # define a predictive model
         self.model_type = model_type
-        if self.model_type == "deep_proba":
-            self.model: nn.Module = DeepProbaModel(in_shape=in_shape)
-        elif self.model_type == "deep_regression":
-            self.model = DeepModel(in_shape=in_shape, out_shape=self.out_shape)
-        else:
-            raise NotImplementedError
+        match self.model_type:
+            case "deep_proba":
+                self.model: nn.Module = DeepProbaModel(in_shape=in_shape)
+            case "deep_regression":
+                self.model = DeepModel(in_shape=in_shape, out_shape=self.out_shape)
+            case _:
+                raise NotImplementedError
 
         # optimizer
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.lr, momentum=0.9)

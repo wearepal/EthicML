@@ -1,9 +1,8 @@
 """Kamiran and Calders 2012."""
-from __future__ import annotations
 from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -74,7 +73,7 @@ class Reweighting(InAlgorithm):
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> Reweighting:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         self.clf = self._train(
             train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed
         )
@@ -114,7 +113,7 @@ class Reweighting(InAlgorithm):
             train.y.to_numpy().ravel(),
             sample_weight=weights,
         )
-        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')
+        weights = weights.value_counts().rename_axis("weight").reset_index(name="count")
         groups = (
             pd.concat([train.s, train.y], axis=1)
             .groupby([train.s.name, train.y.name])
@@ -136,7 +135,7 @@ class Reweighting(InAlgorithm):
 
 
 def compute_instance_weights(
-    train: DataTuple, balance_groups: bool = False, upweight: bool = False
+    train: DataTuple, *, balance_groups: bool = False, upweight: bool = False
 ) -> pd.DataFrame:
     """Compute weights for all samples.
 

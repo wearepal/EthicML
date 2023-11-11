@@ -5,8 +5,8 @@ from typing import Callable, Final, Mapping, NamedTuple
 import pandas as pd
 import pytest
 
-import ethicml as em
 from ethicml import DataTuple
+import ethicml as em
 from ethicml.data import (
     AcsEmployment,
     AcsIncome,
@@ -654,7 +654,7 @@ def test_data_shape(dt: DT) -> None:
 )
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
 def test_synth_data_shape(
-    scenario: SyntheticScenarios, target: SyntheticTargets, fair: bool, samples: int
+    scenario: SyntheticScenarios, target: SyntheticTargets, fair: bool, samples: int  # noqa: FBT001
 ) -> None:
     """Test loading data."""
     dataset = Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
@@ -986,7 +986,7 @@ def test_expand_s() -> None:
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
     pd.testing.assert_series_equal(
-        one_hot_encode_and_combine(raw_df, sens_attr_spec, False)[0], compact_df
+        one_hot_encode_and_combine(raw_df, sens_attr_spec, discard_non_one_hot=False)[0], compact_df
     )
     pd.testing.assert_frame_equal(_expand_labels(compact_df).astype("int64"), multilevel_df)
 

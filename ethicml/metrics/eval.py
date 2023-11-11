@@ -1,19 +1,14 @@
 """Runs given metrics on the given results."""
-from __future__ import annotations
-from typing import TYPE_CHECKING, Sequence
+from collections.abc import Set as AbstractSet
+from typing import Sequence
 
+from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (
     MetricNotApplicableError,
     PerSens,
     metric_per_sens,
 )
 from ethicml.utility.data_structures import EvalTuple, Prediction
-
-if TYPE_CHECKING:  # the following imports are only needed for type checking
-    from collections.abc import Set as AbstractSet
-
-    from ethicml.metrics.metric import Metric
-
 
 __all__ = ["run_metrics", "per_sens_metrics_check"]
 
@@ -24,6 +19,7 @@ def run_metrics(
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     aggregation: PerSens | AbstractSet[PerSens] = PerSens.DIFFS_RATIOS,
+    *,
     use_sens_name: bool = True,
 ) -> dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
@@ -45,7 +41,7 @@ def run_metrics(
         result[metric.name] = metric.score(predictions, actual)
 
     for metric in per_sens_metrics:
-        per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
+        per_sens = metric_per_sens(predictions, actual, metric, use_sens_name=use_sens_name)
         agg_funcs: AbstractSet[PerSens] = (
             {aggregation} if isinstance(aggregation, PerSens) else aggregation
         )

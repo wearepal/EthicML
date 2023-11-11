@@ -1,5 +1,4 @@
 """Base class for Algorithms."""
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
 import subprocess
@@ -17,7 +16,7 @@ class Algorithm(ABC):
         """Name of the algorithm."""
 
 
-class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
+class SubprocessAlgorithmMixin(ABC):  # noqa: B024
     """Mixin for running algorithms in a subprocess, to be used with :class:`Algorithm`."""
 
     @property

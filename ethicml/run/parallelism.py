@@ -1,6 +1,5 @@
 """Collection of functions that enable parallelism."""
-from __future__ import annotations
-from typing import TYPE_CHECKING, List, Protocol, Sequence, Tuple, TypeVar, cast, overload
+from typing import List, Protocol, Sequence, Tuple, TypeVar, cast, overload
 from typing_extensions import TypeAlias
 
 from joblib import Parallel, delayed
@@ -13,13 +12,11 @@ from ethicml.utility.data_structures import DataTuple, Prediction, SubgroupTuple
 
 __all__ = ["arrange_in_parallel", "run_in_parallel"]
 
-
-if TYPE_CHECKING:
-    InSeq: TypeAlias = Sequence[InAlgorithm]
-    PreSeq: TypeAlias = Sequence[PreAlgorithm]
-    InResult: TypeAlias = List[List[Prediction]]
-    PreResult: TypeAlias = List[List[Tuple[DataTuple, DataTuple]]]
-    DataSeq: TypeAlias = Sequence[TrainValPair]
+InSeq: TypeAlias = Sequence[InAlgorithm]
+PreSeq: TypeAlias = Sequence[PreAlgorithm]
+InResult: TypeAlias = List[List[Prediction]]
+PreResult: TypeAlias = List[List[Tuple[DataTuple, DataTuple]]]
+DataSeq: TypeAlias = Sequence[TrainValPair]
 
 
 @overload
@@ -49,7 +46,7 @@ def run_in_parallel(
     :returns: list of the results
     """
     if not algos or not data:
-        return cast(List[List[Prediction]], [[]])
+        return cast(List[List[Prediction]], [])
     # The following isinstance check is not at all reliable because `InAlgorithm` is a Protocol,
     # but that's completely fine because this check is only here for mypy anyway.
     if isinstance(algos[0], InAlgorithm):
@@ -94,7 +91,9 @@ def arrange_in_parallel(
     # ================================== create queue of tasks ====================================
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     results = runner(
-        _run(algo, data_item, seed) for algo in algos for (data_item, seed) in zip(data, seeds)
+        _run(algo, data_item, seed)
+        for algo in algos
+        for (data_item, seed) in zip(data, seeds, strict=True)
     )
     # return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
     # we have to reconstruct the nested list from the flattened list

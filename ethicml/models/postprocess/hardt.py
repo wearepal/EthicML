@@ -1,7 +1,6 @@
 """Post-processing method by Hardt et al."""
-from __future__ import annotations
 from dataclasses import dataclass
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 from numpy.random import RandomState
@@ -31,7 +30,7 @@ class Hardt(PostAlgorithm):
         return "Hardt"
 
     @override
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> Hardt:
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> Self:
         self.model_params = self._fit(train_predictions, train)
         return self
 

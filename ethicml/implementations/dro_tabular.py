@@ -1,5 +1,4 @@
 """Implementation of Fairness without Demographics."""
-from __future__ import annotations
 import json
 from pathlib import Path
 import sys
@@ -58,7 +57,7 @@ def train_model(
     print(f"====> Epoch: {epoch} Average loss: {train_loss / num_epochs:.4f}")
 
 
-def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
+def fit(train: DataTuple, args: "DroArgs", seed: int) -> DROClassifier:
     """Train a network and return predictions."""
     # Set up the data
     set_seed(seed)
@@ -80,7 +79,7 @@ def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
     return model
 
 
-def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPrediction:
+def predict(model: DROClassifier, test: TestTuple, args: "DroArgs") -> SoftPrediction:
     """Train a network and return predictions."""
     # Set up the data
     test_data = TestDataset(test)
@@ -97,7 +96,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
 
 
 def train_and_predict(
-    train: DataTuple, test: TestTuple, args: DroArgs, seed: int
+    train: DataTuple, test: TestTuple, args: "DroArgs", seed: int
 ) -> SoftPrediction:
     """Train a network and return predictions."""
     # Set up the data
@@ -133,8 +132,8 @@ def train_and_predict(
 
 def main() -> None:
     """Run the FWD model as a standalone program on tabular data."""
-    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
-    flags: DroArgs = json.loads(sys.argv[2])
+    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
+    flags: "DroArgs" = json.loads(sys.argv[2])
     data: DataTuple | TestTuple
     if in_algo_args["mode"] == "run":
         train, test = load_data_from_flags(in_algo_args)

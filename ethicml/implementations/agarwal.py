@@ -1,5 +1,4 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
-from __future__ import annotations
 import contextlib
 import json
 import os
@@ -33,7 +32,7 @@ if TYPE_CHECKING:
     from ethicml.models.inprocess.shared import LinearModel
 
 
-def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
+def fit(train: DataTuple, args: "AgarwalArgs", seed: int = 888) -> "ExponentiatedGradient":
     """Fit a model."""
     try:
         from fairlearn.reductions import (  # pyright: ignore
@@ -58,18 +57,19 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     else:
         fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
-    model: Union[LinearModel, GradientBoostingClassifier]
-    if classifier_type is ClassifierType.svm:
-        assert kernel_type is not None
-        model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
-    elif classifier_type is ClassifierType.lr:
-        random_state = np.random.RandomState(seed=seed)
-        model = LogisticRegression(
-            solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
-        )
-    elif classifier_type is ClassifierType.gbt:
-        random_state = np.random.RandomState(seed=seed)
-        model = GradientBoostingClassifier(random_state=random_state)
+    model: Union["LinearModel", GradientBoostingClassifier]
+    match classifier_type:
+        case ClassifierType.svm:
+            assert kernel_type is not None
+            model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
+        case ClassifierType.lr:
+            random_state = np.random.RandomState(seed=seed)
+            model = LogisticRegression(
+                solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
+            )
+        case ClassifierType.gbt:
+            random_state = np.random.RandomState(seed=seed)
+            model = GradientBoostingClassifier(random_state=random_state)
 
     data_x = train.x
     data_y = train.y
@@ -86,7 +86,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     return exponentiated_gradient
 
 
-def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> pd.DataFrame:
+def predict(exponentiated_gradient: "ExponentiatedGradient", test: TestTuple) -> pd.DataFrame:
     """Compute predictions on the given test data."""
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
@@ -97,7 +97,7 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
 
 
 def train_and_predict(
-    train: DataTuple, test: TestTuple, args: AgarwalArgs, seed: int
+    train: DataTuple, test: TestTuple, args: "AgarwalArgs", seed: int
 ) -> pd.DataFrame:
     """Train a logistic regression model and compute predictions on the given test data."""
     exponentiated_gradient = fit(train, args, seed)
@@ -117,8 +117,8 @@ def working_dir(root: Path) -> Generator[None, None, None]:
 
 def main() -> None:
     """Run the Agarwal model as a standalone program."""
-    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
-    flags: AgarwalArgs = json.loads(sys.argv[2])
+    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
+    flags: "AgarwalArgs" = json.loads(sys.argv[2])
     try:
         import cloudpickle  # pyright: ignore
 

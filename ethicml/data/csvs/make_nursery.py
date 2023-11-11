@@ -31,8 +31,8 @@ if __name__ == "__main__":
         df[column] = df[column].astype("category").cat.codes
 
     features1: List[Hashable] = [
-        'form',
-        'health',
+        "form",
+        "health",
         "finance",
         "class",
         "parents",
@@ -51,5 +51,5 @@ if __name__ == "__main__":
     df = df.sample(frac=1.0, random_state=888).reset_index(drop=True)
 
     # Save the CSV
-    compression_opts = dict(method='zip', archive_name='nursery.csv')
+    compression_opts = {"method": "zip", "archive_name": "nursery.csv"}
     df.to_csv("./nursery.csv.zip", index=False, compression=compression_opts)

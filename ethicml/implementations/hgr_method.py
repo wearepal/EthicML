@@ -1,5 +1,4 @@
 """Fair Dummies Implementation."""
-from __future__ import annotations
 import json
 from pathlib import Path
 import random
@@ -18,7 +17,7 @@ if TYPE_CHECKING:
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
-def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
+def fit(train: DataTuple, args: "HgrArgs", seed: int = 888) -> HgrClassLearner:
     """Fit a model."""
     try:
         import torch
@@ -52,7 +51,7 @@ def predict(model: HgrClassLearner, test: SubgroupTuple) -> np.ndarray:
 
 
 def train_and_predict(
-    train: DataTuple, test: SubgroupTuple, args: HgrArgs, seed: int
+    train: DataTuple, test: SubgroupTuple, args: "HgrArgs", seed: int
 ) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
@@ -61,8 +60,8 @@ def train_and_predict(
 
 def main() -> None:
     """Run the Agarwal model as a standalone program."""
-    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
-    flags: HgrArgs = json.loads(sys.argv[2])
+    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
+    flags: "HgrArgs" = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
         train = DataTuple.from_file(Path(in_algo_args["train"]))
@@ -73,7 +72,8 @@ def main() -> None:
     elif in_algo_args["mode"] == "fit":
         data = DataTuple.from_file(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
-        setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
+        # need to save the seed as well
+        model.ethicml_random_seed = in_algo_args["seed"]  # type: ignore
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
         test = SubgroupTuple.from_file(Path(in_algo_args["test"]))

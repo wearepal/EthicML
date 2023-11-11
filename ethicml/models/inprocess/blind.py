@@ -1,8 +1,7 @@
 """Simply returns a random (but legal) label."""
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -29,7 +28,7 @@ class Blind(InAlgorithmNoParams):
         return "Blind"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> Blind:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         self.vals = train.y.drop_duplicates()
         self.seed = seed
         return self

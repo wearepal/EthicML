@@ -1,5 +1,4 @@
 """Class to describe features of the UCI Credit dataset."""
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
@@ -69,18 +68,19 @@ class Credit(LegacyDataset):
             "PAY_AMT6",
         ]
 
-        if self.split is CreditSplits.SEX:
-            sens_attr_spec = "SEX"
-            s_prefix = ["SEX"]
-            class_label_spec = "default-payment-next-month"
-            class_label_prefix = ["default-payment-next-month"]
-        elif self.split is CreditSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case CreditSplits.SEX:
+                sens_attr_spec = "SEX"
+                s_prefix = ["SEX"]
+                class_label_spec = "default-payment-next-month"
+                class_label_prefix = ["default-payment-next-month"]
+            case CreditSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
 
         super().__init__(
             name=f"Credit {self.split.value}",

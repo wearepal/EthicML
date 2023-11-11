@@ -7,8 +7,8 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-import ethicml as em
 from ethicml import DataTuple, FairnessType, TrainValPair
+import ethicml as em
 from ethicml.models import (
     Beutel,
     Calders,

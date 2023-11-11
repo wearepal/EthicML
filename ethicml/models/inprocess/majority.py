@@ -1,8 +1,7 @@
 """Simply returns the majority label from the train set."""
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import pandas as pd
 
@@ -24,7 +23,7 @@ class Majority(InAlgorithmNoParams):
         return "Majority"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> Majority:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         self.maj = train.y.mode(dropna=True).to_numpy()
         return self
 

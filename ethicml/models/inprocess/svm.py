@@ -1,8 +1,7 @@
 """Wrapper for SKLearn implementation of SVM."""
-from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 import pandas as pd
@@ -39,7 +38,7 @@ class SVM(InAlgorithmDC):
         return f"SVM ({self.kernel})"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> SVM:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         self.clf = select_svm(self.C, self.kernel, seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self

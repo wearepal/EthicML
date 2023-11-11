@@ -1,10 +1,11 @@
 """Create plots of a dataset."""
-from __future__ import annotations
 import itertools
 from pathlib import Path
-from typing import Any, Callable, List, Literal, cast
+from typing import Any, Callable, Literal
 
-from matplotlib import figure, legend
+from matplotlib import legend
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -52,7 +53,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
-    plot = sns.scatterplot(
+    plot: Axes = sns.scatterplot(
         x=x1_name,
         y=x2_name,
         hue=data.y.name,
@@ -63,6 +64,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     )
 
     file_path.parent.mkdir(exist_ok=True)
+    assert isinstance(plot.figure, Figure)
     plot.figure.savefig(file_path)
     plt.clf()
 
@@ -93,8 +95,8 @@ def _multivariate_grid(
         def scatter(*args: Any, **kwargs: Any) -> None:
             args = (x, y)
             if c is not None:
-                kwargs['c'] = c
-            kwargs['alpha'] = scatter_alpha
+                kwargs["c"] = c
+            kwargs["alpha"] = scatter_alpha
             plt.scatter(*args, **kwargs)
 
         return scatter
@@ -114,7 +116,7 @@ def _multivariate_grid(
             color=color,
             kde=True,
             stat="density",
-            kde_kws=dict(cut=3),
+            kde_kws={"cut": 3},
         )
         sns.histplot(
             df_group,
@@ -122,7 +124,7 @@ def _multivariate_grid(
             ax=g.ax_marg_y,
             kde=True,
             stat="density",
-            kde_kws=dict(cut=3),
+            kde_kws={"cut": 3},
         )
     # Do also global Hist:
     # sns.histplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
@@ -133,7 +135,6 @@ def _multivariate_grid(
 def save_multijointplot(data: DataTuple, filepath: str) -> None:
     """Make joint plot."""
     file_path = Path(filepath)
-    data.x.columns
 
     amalgamated, x1_name, x2_name = _maybe_tsne(data)
 
@@ -177,14 +178,15 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     y_0_label = y_s0.index[0]
     y_1_label = y_s0.index[1]
 
-    plt.style.use("seaborn-pastel")
+    plt.style.use("seaborn-v0_8-pastel")
     # plt.xkcd()
 
+    plot: Axes
     fig, plot = plt.subplots()
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,  # type: ignore[index]
+        height=y_s0[y_0_label] * 100,
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -192,7 +194,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant2 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_0_label] * 100,  # type: ignore[index]
+        height=y_s1[y_0_label] * 100,
         width=s_1_val * 100,
         align="edge",
         edgecolor="black",
@@ -200,18 +202,18 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant3 = plot.bar(
         0,
-        height=y_s0[y_1_label] * 100,  # type: ignore[index]
+        height=y_s0[y_1_label] * 100,
         width=s_0_val * 100,
-        bottom=y_s0[y_0_label] * 100,  # type: ignore[index]
+        bottom=y_s0[y_0_label] * 100,
         align="edge",
         edgecolor="black",
         color="C2",
     )
     quadrant4 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_1_label] * 100,  # type: ignore[index]
+        height=y_s1[y_1_label] * 100,
         width=s_1_val * 100,
-        bottom=y_s1[y_0_label] * 100,  # type: ignore[index]
+        bottom=y_s1[y_0_label] * 100,
         align="edge",
         edgecolor="black",
         color="C3",
@@ -234,12 +236,12 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
 
     file_path.parent.mkdir(exist_ok=True)
-    fig.savefig(file_path)  # type: ignore
+    fig.savefig(file_path)
     fig.clf()
 
 
 def single_plot(
-    plot: plt.Axes,
+    plot: Axes,
     results: Results,
     xaxis: tuple[str, str],
     yaxis: tuple[str, str],
@@ -320,10 +322,11 @@ def plot_results(
     metric_y: str | Metric,
     metric_x: str | Metric,
     ptype: PlotType = "box",
+    *,
     save: bool = True,
     dpi: int = 300,
     transforms_separately: bool = True,
-) -> list[tuple[figure.Figure, plt.Axes]]:
+) -> list[tuple[Figure, Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
     :param results: A DataFrame that already contains the values of the metrics.
@@ -341,30 +344,20 @@ def plot_results(
     directory = Path() / "plots"
     directory.mkdir(exist_ok=True)
 
-    def _get_columns(metric: Metric) -> list[str]:
-        cols = [col for col in cast(List[str], results.columns) if metric.name in col]
-        if not cols:
-            raise ValueError(f'No matching columns found for Metric "{metric.name}".')
-        # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
-        # case, we *only* want ratios and differences; not the plain result
-        if len(cols) > 1:
-            cols = [col for col in cols if ("-" in col) or ("÷" in col)]
-        return cols
-
     if isinstance(metric_x, str):
         if metric_x not in results.columns:
             raise ValueError(f'No column named "{metric_x}".')
         cols_x = [metric_x]
     else:
         # if the metric is given as a Metric object, look for matching columns
-        cols_x = _get_columns(metric_x)
+        cols_x = _get_columns(metric_x, columns=results.columns)
 
     if isinstance(metric_y, str):
         if metric_y not in results.columns:
             raise ValueError(f'No column named "{metric_y}".')
         cols_y = [metric_y]
     else:
-        cols_y = _get_columns(metric_y)
+        cols_y = _get_columns(metric_y, columns=results.columns)
 
     # generate the Cartesian product of `cols_x` and `cols_y`; i.e. all possible combinations
     # this preserves the order of x and y
@@ -376,13 +369,13 @@ def plot_results(
     else:
         transforms = [None]
 
-    figure_list: list[tuple[figure.Figure, plt.Axes]] = []
+    figure_list: list[tuple[Figure, Axes]] = []
     for dataset in results.index.to_frame()["dataset"].unique():
         dataset_: str = str(dataset)
         for transform in transforms:
             for x_axis, y_axis in possible_pairs:
-                fig: figure.Figure
-                plot: plt.Axes
+                fig: Figure
+                plot: Axes
                 fig, plot = plt.subplots(dpi=dpi)
 
                 xtuple = (x_axis, x_axis.replace("_", " "))
@@ -398,9 +391,20 @@ def plot_results(
 
                 if save:
                     fig.savefig(
-                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",  # type: ignore
+                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",
                         bbox_inches="tight",
                     )
                 plt.close(fig)
                 figure_list += [(fig, plot)]
     return figure_list
+
+
+def _get_columns(metric: Metric, columns: pd.Index) -> list[str]:
+    cols: list[str] = [col for col in columns if metric.name in col]
+    if not cols:
+        raise ValueError(f'No matching columns found for Metric "{metric.name}".')
+    # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
+    # case, we *only* want ratios and differences; not the plain result
+    if len(cols) > 1:
+        cols = [col for col in cols if ("-" in col) or ("÷" in col)]
+    return cols

@@ -1,5 +1,4 @@
 """Data structure for all datasets that come with the framework."""
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import auto
@@ -78,13 +77,13 @@ class Dataset(ABC):
 
     @abstractmethod
     def load(
-        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+        self, order: FeatureOrder = FeatureOrder.disc_first, *, labels_as_features: bool = False
     ) -> DataTuple:
         """Load dataset from its CSV file.
 
-        :param labels_as_features: If ``True``, the s and y labels are included in the x features.
         :param order: Order of the columns in the dataframes. Can be ``disc_first`` or
             ``cont_first``. See :class:`FeatureOrder`.
+        :param labels_as_features: If ``True``, the s and y labels are included in the x features.
         :returns: ``DataTuple`` with dataframes of features, labels and sensitive attributes.
         """
 
@@ -209,7 +208,7 @@ class CSVDataset(Dataset, ABC):
 
     @override
     def load(
-        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+        self, order: FeatureOrder = FeatureOrder.disc_first, *, labels_as_features: bool = False
     ) -> DataTuple:
         dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self.get_num_samples())
         assert isinstance(dataframe, pd.DataFrame)
@@ -238,12 +237,16 @@ class CSVDataset(Dataset, ABC):
         label_specs = self.get_label_specs()
 
         # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = one_hot_encode_and_combine(s_df, label_specs.s, self.discard_non_one_hot)
+        s_data, s_mask = one_hot_encode_and_combine(
+            s_df, label_specs.s, discard_non_one_hot=self.discard_non_one_hot
+        )
         if s_mask is not None:
             x_data = x_data.loc[s_mask].reset_index(drop=True)
             s_data = s_data.loc[s_mask].reset_index(drop=True)
             y_df = y_df.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = one_hot_encode_and_combine(y_df, label_specs.y, self.discard_non_one_hot)
+        y_data, y_mask = one_hot_encode_and_combine(
+            y_df, label_specs.y, discard_non_one_hot=self.discard_non_one_hot
+        )
         if y_mask is not None:
             x_data = x_data.loc[y_mask].reset_index(drop=True)
             s_data = s_data.loc[y_mask].reset_index(drop=True)
@@ -307,7 +310,7 @@ def _generate_complementary_column(
 
 
 def one_hot_encode_and_combine(
-    attributes: pd.DataFrame, label_spec: LabelSpec, discard_non_one_hot: bool
+    attributes: pd.DataFrame, label_spec: LabelSpec, *, discard_non_one_hot: bool
 ) -> tuple[pd.Series, pd.Series | None]:
     """Construct a new label according to the given :class:`~ethicml.data.util.LabelSpec`.
 

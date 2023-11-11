@@ -1,5 +1,4 @@
 """Cross Validation for any in process (at the moment) Algorithm."""
-from __future__ import annotations
 from collections import defaultdict
 from itertools import product
 from statistics import mean
@@ -205,8 +204,10 @@ class CrossValidator:
         self.folds = folds
         self.max_parallel = max_parallel
 
-        keys, values = zip(*hyperparams.items())
-        self.experiments: list[dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
+        keys, values = zip(*hyperparams.items(), strict=True)
+        self.experiments: list[dict[str, Any]] = [
+            dict(zip(keys, v, strict=True)) for v in product(*values)
+        ]
 
     def run_async(self, train: DataTuple, measures: list[Metric] | None = None) -> CVResults:
         """Run the cross validation experiments asynchronously.
@@ -231,8 +232,8 @@ class CrossValidator:
         )
 
         # finally, iterate over all results, compute scores and store them
-        for preds_for_dataset, experiment in zip(all_results, self.experiments):
-            for i, (preds, (_, val)) in enumerate(zip(preds_for_dataset, data_folds)):
+        for preds_for_dataset, experiment in zip(all_results, self.experiments, strict=True):
+            for i, (preds, (_, val)) in enumerate(zip(preds_for_dataset, data_folds, strict=True)):
                 compute_scores_and_append(experiment, preds, val, i)
         return CVResults(compute_scores_and_append.results, self.model)
 

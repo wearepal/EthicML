@@ -1,15 +1,12 @@
 """Scale a dataset."""
-from __future__ import annotations
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 from typing_extensions import Self
 
+import numpy.typing as npt
 import pandas as pd
 
-if TYPE_CHECKING:
-    import numpy.typing as npt
-
-    from ethicml.data import Dataset
-    from ethicml.utility.data_structures import DataTuple
+from ethicml.data import Dataset
+from ethicml.utility.data_structures import DataTuple
 
 __all__ = ["ScalerType", "scale_continuous"]
 
@@ -38,6 +35,7 @@ def scale_continuous(
     dataset: Dataset,
     datatuple: DataTuple,
     scaler: ScalerType,
+    *,
     inverse: bool = False,
     fit: bool = True,
 ) -> tuple[DataTuple, ScalerType]:
@@ -58,7 +56,7 @@ def scale_continuous(
         `fit_transform` operation, else just `transform`. (Default: True)
     :returns: Tuple of (scaled) DataTuple, and the Scaler (which may have been fit to the data).
     """
-    new_feats = datatuple.x.copy().astype('float64')
+    new_feats = datatuple.x.copy().astype("float64")
     if inverse:
         new_feats[dataset.continuous_features] = scaler.inverse_transform(
             new_feats[dataset.continuous_features]

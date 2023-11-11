@@ -1,5 +1,4 @@
 """Class to describe features of the Lipton dataset."""
-from __future__ import annotations
 from dataclasses import dataclass
 
 from ..dataset import LegacyDataset

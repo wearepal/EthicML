@@ -1,5 +1,4 @@
 """Classes related to running algorithms in subprocesses."""
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from functools import cached_property
@@ -143,8 +142,8 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         :returns: List of strings that will be passed to ``subprocess.run``.
         """
         interface = [
-            json.dumps(in_algo_args, separators=(',', ':')),
-            json.dumps(self._get_flags(), separators=(',', ':')),
+            json.dumps(in_algo_args, separators=(",", ":")),
+            json.dumps(self._get_flags(), separators=(",", ":")),
         ]
         return self._get_path_to_script() + interface
 

@@ -1,5 +1,4 @@
 """Methods that are shared among the inprocess algorithms."""
-from __future__ import annotations
 from typing import Union
 
 from sklearn.linear_model import LogisticRegression
@@ -20,17 +19,14 @@ def settings_for_svm_lr(
     if classifier is ClassifierType.gbt:
         return 1.0, None
     if C is None:
-        if classifier is ClassifierType.lr:
-            C = LogisticRegression().C  # type: ignore[attr-defined]
-        elif classifier is ClassifierType.svm:
-            C = SVC().C  # type: ignore[attr-defined]
-        else:
-            raise NotImplementedError(f'Unsupported classifier "{classifier}".')
+        match classifier:
+            case ClassifierType.lr:
+                C = LogisticRegression().C  # type: ignore[attr-defined]
+            case ClassifierType.svm:
+                C = SVC().C  # type: ignore[attr-defined]
+            case _:
+                raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
-        kernel = (
-            KernelType[SVC().kernel]  # type: ignore[attr-defined]
-            if classifier is ClassifierType.svm
-            else None
-        )
+        kernel = KernelType[SVC().kernel] if classifier is ClassifierType.svm else None  # type: ignore[attr-defined]
     return C, kernel

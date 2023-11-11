@@ -1,8 +1,7 @@
 """Wrapper for SKLearn implementation of MLP."""
-from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar, Tuple
-from typing_extensions import override
+from typing_extensions import Self, override
 
 import numpy as np
 from sklearn.neural_network import MLPClassifier
@@ -37,7 +36,7 @@ class MLP(InAlgorithmDC):
         return "MLP"
 
     @override
-    def fit(self, train: DataTuple, seed: int = 888) -> MLP:
+    def fit(self, train: DataTuple, seed: int = 888) -> Self:
         self.clf = select_mlp(
             self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size
         )
@@ -69,7 +68,7 @@ def select_mlp(
     random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(
         hidden_layer_sizes=hidden_layer_sizes,
-        solver='adam',
+        solver="adam",
         random_state=random_state,
         learning_rate_init=lr,
         batch_size=batch_size,

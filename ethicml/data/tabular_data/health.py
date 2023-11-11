@@ -1,5 +1,4 @@
 """Class to describe features of the Heritage Health dataset."""
-from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
@@ -171,18 +170,19 @@ class Health(LegacyDataset):
             "labcount_months",
         ]
 
-        if self.split is HealthSplits.SEX:
-            sens_attr_spec = "sexMALE"
-            s_prefix = ["sex"]
-            class_label_spec = "Charlson>0"
-            class_label_prefix = ["Charlson>0"]
-        elif self.split is HealthSplits.CUSTOM:
-            sens_attr_spec = ""
-            s_prefix = []
-            class_label_spec = ""
-            class_label_prefix = []
-        else:
-            raise NotImplementedError
+        match self.split:
+            case HealthSplits.SEX:
+                sens_attr_spec = "sexMALE"
+                s_prefix = ["sex"]
+                class_label_spec = "Charlson>0"
+                class_label_prefix = ["Charlson>0"]
+            case HealthSplits.CUSTOM:
+                sens_attr_spec = ""
+                s_prefix = []
+                class_label_spec = ""
+                class_label_prefix = []
+            case _:
+                raise NotImplementedError
         super().__init__(
             name="Health",
             num_samples=171_067,
