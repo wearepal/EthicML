@@ -1,7 +1,8 @@
 """Testing for plotting functionality."""
 from typing import List, Tuple
 
-from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 import pytest
 
 from ethicml import DataTuple, KernelType, Results, TrainTestPair, train_test_split
@@ -81,7 +82,7 @@ def test_plot_evals() -> None:
     assert results["seed"][3] == results["seed"][4] == results["seed"][5] == 2410
     assert results["seed"][6] == results["seed"][7] == results["seed"][8] == 4820
 
-    figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]  # type: ignore[name-defined]
+    figs_and_plots: List[Tuple[Figure, Axes]]
 
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())
