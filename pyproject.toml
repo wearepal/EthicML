@@ -173,7 +173,7 @@ disallow_incomplete_defs = true
 show_error_codes = true
 # warn_unused_ignores = true
 mypy_path = "typings"
-implicit_reexport = false
+# implicit_reexport = false
 warn_redundant_casts = true
 enable_error_code = ["possibly-undefined", "redundant-expr", "truthy-bool", "truthy-iterable"]
 
@@ -182,13 +182,11 @@ enable_error_code = ["possibly-undefined", "redundant-expr", "truthy-bool", "tru
 [[tool.mypy.overrides]]
 module = [
     "aif360.*",
-    "black.*",
     "cloudpickle",
     "fairlearn.*",
     "folktables.*",
     "imageio",
     "seaborn",
-    "setuptools.*",
     "scipy.*",
     "sklearn.*",
 ]

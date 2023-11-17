@@ -358,7 +358,7 @@ class GradReverse(Function):
     """Gradient reversal layer."""
 
     @staticmethod
-    def forward(ctx: Any, x: Tensor, lambda_: float) -> Any:  # type: ignore[override]
+    def forward(ctx: Any, x: Tensor, lambda_: float) -> Any:  # pyright: ignore
         """Forward pass."""
         ctx.lambda_ = lambda_
         return x.view_as(x)
