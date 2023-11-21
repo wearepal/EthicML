@@ -107,9 +107,7 @@ def upsample(
 
     percentages: dict[tuple[int, int], float] = {}
 
-    vals: list[int] = []
-    for val in data.values():
-        vals.append(val.x.shape[0])
+    vals: list[int] = [val.x.shape[0] for val in data.values()]
 
     for key, val in data.items():
         if strategy is UpsampleStrategy.naive:
