@@ -1,4 +1,5 @@
 """Data structures that are used throughout the code."""
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, replace
 from enum import Enum, auto
@@ -22,8 +23,8 @@ from typing import (
 )
 from typing_extensions import Self, TypeAlias
 
-from numpy import typing as npt
 import numpy as np
+from numpy import typing as npt
 import pandas as pd
 from ranzen.misc import StrEnum
 
