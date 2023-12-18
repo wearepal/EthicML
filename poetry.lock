@@ -503,6 +503,20 @@ files = [
 ]
 
 [[package]]
+name = "dep-logic"
+version = "0.0.4"
+description = "Python dependency specifications supporting logical operations"
+optional = true
+python-versions = ">=3.8"
+files = [
+    {file = "dep_logic-0.0.4-py3-none-any.whl", hash = "sha256:65ab4122d5aaf4ec188dafc4cfdce55064929cf9e83d1aedcd57d6f586833b34"},
+    {file = "dep_logic-0.0.4.tar.gz", hash = "sha256:1830e784e0d58fc93511e77da164887629641b65b38876b274db974ec5f3889f"},
+]
+
+[package.dependencies]
+packaging = ">=22"
+
+[[package]]
 name = "distlib"
 version = "0.3.4"
 description = "Distribution utilities"
@@ -1570,19 +1584,20 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.10.4"
+version = "2.11.1"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.10.4-py3-none-any.whl", hash = "sha256:b7caf7d94435440b1d5e19789c4bd651f994ada254fee71c7274629d408a3764"},
-    {file = "pdm-2.10.4.tar.gz", hash = "sha256:6dfd9d4cb59043edecb2d0b47d208e55d89d333ba7197deb05cca2dfbc7a4bfb"},
+    {file = "pdm-2.11.1-py3-none-any.whl", hash = "sha256:6e18eab6f92ca7a31c68ea078d09d0a64b5f2aebf4f0e60ae81b1c5ca84a4189"},
+    {file = "pdm-2.11.1.tar.gz", hash = "sha256:b10bc4e5394856f1639ddc9bc754d9c26323ec5b828a135c6ed35f935b054b83"},
 ]
 
 [package.dependencies]
 blinker = "*"
 cachecontrol = {version = ">=0.13.0", extras = ["filecache"]}
 certifi = "*"
+dep-logic = ">=0.0.2,<1.0"
 findpython = ">=0.4.0,<1.0.0a0"
 installer = ">=0.7,<0.8"
 packaging = ">=20.9,<22.0 || >22.0"
