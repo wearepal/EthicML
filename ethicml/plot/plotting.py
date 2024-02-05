@@ -2,7 +2,7 @@
 
 import itertools
 from pathlib import Path
-from typing import Any, Callable, Literal
+from typing import Any, Callable, Literal, cast
 
 from matplotlib import legend
 from matplotlib.axes import Axes
@@ -57,10 +57,10 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     plot: Axes = sns.scatterplot(
         x=x1_name,
         y=x2_name,
-        hue=data.y.name,
+        hue=cast(str, data.y.name),
         palette="Set2",
         data=amalgamated,
-        style=data.s.name,
+        style=cast(str, data.s.name),
         legend="full",
     )
 
