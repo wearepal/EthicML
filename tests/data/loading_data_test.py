@@ -656,8 +656,8 @@ def test_data_shape(dt: DT) -> None:
 def test_synth_data_shape(
     scenario: SyntheticScenarios,
     target: SyntheticTargets,
-    fair: bool,
-    samples: int,  # noqa: FBT001
+    fair: bool,  # noqa: FBT001
+    samples: int,
 ) -> None:
     """Test loading data."""
     dataset = Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
