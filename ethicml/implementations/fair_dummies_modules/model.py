@@ -1,4 +1,5 @@
 """FairDummies Models."""
+
 import random
 from typing import Callable
 from typing_extensions import Self

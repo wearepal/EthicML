@@ -1,4 +1,5 @@
 """Density Estimations."""
+
 from math import pi, sqrt
 
 import torch

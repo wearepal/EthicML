@@ -1,4 +1,5 @@
 """Evaluator for a metric per sensitive attribute class."""
+
 from enum import Enum
 from typing import Callable, ClassVar, Mapping
 

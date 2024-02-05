@@ -1,4 +1,5 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
+
 from itertools import groupby
 
 import torch

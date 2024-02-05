@@ -654,7 +654,10 @@ def test_data_shape(dt: DT) -> None:
 )
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
 def test_synth_data_shape(
-    scenario: SyntheticScenarios, target: SyntheticTargets, fair: bool, samples: int  # noqa: FBT001
+    scenario: SyntheticScenarios,
+    target: SyntheticTargets,
+    fair: bool,  # noqa: FBT001
+    samples: int,
 ) -> None:
     """Test loading data."""
     dataset = Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)

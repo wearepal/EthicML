@@ -1,4 +1,5 @@
 """Make the law admissions dataset."""
+
 import pandas as pd
 
 

@@ -1,4 +1,5 @@
 """Class to describe features of the Communities and Crime dataset."""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type

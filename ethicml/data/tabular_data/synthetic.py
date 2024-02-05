@@ -1,4 +1,5 @@
 """Class to describe features of the Synthetic dataset."""
+
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path

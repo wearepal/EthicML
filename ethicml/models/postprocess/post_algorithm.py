@@ -1,4 +1,5 @@
 """Abstract Base Class of all post-processing algorithms in the framework."""
+
 from abc import ABC, abstractmethod
 from typing_extensions import Self
 

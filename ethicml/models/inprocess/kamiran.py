@@ -1,4 +1,5 @@
 """Kamiran and Calders 2012."""
+
 from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Any, Dict, Optional

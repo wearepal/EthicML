@@ -1,4 +1,5 @@
 """Class to describe features of the Toy dataset."""
+
 from dataclasses import dataclass
 from typing import ClassVar
 from typing_extensions import override

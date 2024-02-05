@@ -1,4 +1,5 @@
 """Wrapper for SKLearn implementation of MLP."""
+
 from dataclasses import dataclass, field
 from typing import ClassVar, Tuple
 from typing_extensions import Self, override

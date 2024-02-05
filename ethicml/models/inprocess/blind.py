@@ -1,4 +1,5 @@
 """Simply returns a random (but legal) label."""
+
 from dataclasses import dataclass
 from typing import ClassVar
 from typing_extensions import Self, override

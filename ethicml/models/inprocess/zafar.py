@@ -1,4 +1,5 @@
 """Algorithms by Zafar et al. for Demographic Parity."""
+
 from abc import abstractmethod
 import json
 from pathlib import Path

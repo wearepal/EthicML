@@ -1,4 +1,5 @@
 """Class to describe features of the Adult dataset."""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type

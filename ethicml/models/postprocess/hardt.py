@@ -1,4 +1,5 @@
 """Post-processing method by Hardt et al."""
+
 from dataclasses import dataclass
 from typing_extensions import Self, override
 

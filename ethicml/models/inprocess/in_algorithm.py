@@ -1,4 +1,5 @@
 """Abstract Base Class of all algorithms in the framework."""
+
 from abc import ABC, abstractmethod
 from dataclasses import asdict
 from typing import TYPE_CHECKING, ClassVar, final

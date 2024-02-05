@@ -58,15 +58,14 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'  # might as well use 3.11 as it's faster
-    - name: Install black
+        python-version: '3.10'
+    - name: Install ruff
       run: |
-        poetry env use 3.11
-        poetry install --only format --no-interaction --no-root
-    - name: Format with black
+        poetry env use 3.10
+        poetry install --only lint --no-interaction --no-root
+    - name: Format with ruff
       run: |
-        poetry run black --check ethicml/
-        poetry run black --check tests/
+        poetry run ruff format --diff .
 
   check_with_pydoclint:
 
@@ -99,7 +98,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use 3.10
-          poetry install --no-interaction --no-root --without dev,test,typecheck,lint,format,doclint
+          poetry install --no-interaction --no-root --without dev,test,typecheck,lint,doclint
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -119,7 +118,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use 3.10
-          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu,docs --without lint,format,doclint
+          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu,docs --without lint,doclint
       - name: Test import
         run: |
           poetry run python -c "import ethicml"
@@ -154,7 +153,7 @@ jobs:
         if: ${{ github.event_name == 'merge_group' }}
         run: |
           poetry env use 3.10
-          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu --without lint,format,doclint
+          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu --without lint,doclint
 
       #----------------------------------------------
       #  -----           Run MyPy             -----

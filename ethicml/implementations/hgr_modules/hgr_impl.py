@@ -1,4 +1,5 @@
 """HGR."""
+
 # Code follows the implemention provided in
 # https://github.com/criteo-research/continuous-fairness
 # The function for measuring HGR is in the facl package, can be downloaded from

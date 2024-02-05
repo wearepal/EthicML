@@ -1,4 +1,5 @@
 """Abstract Base Class of all metrics in the framework."""
+
 from abc import ABC, abstractmethod
 from typing import ClassVar, final
 from typing_extensions import override

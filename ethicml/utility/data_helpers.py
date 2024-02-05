@@ -1,4 +1,5 @@
 """Helper functions for working with DataFrames (and Series)."""
+
 from typing import overload
 
 import pandas as pd

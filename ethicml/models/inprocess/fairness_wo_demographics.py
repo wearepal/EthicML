@@ -1,4 +1,5 @@
 """Fairness without Demographics."""
+
 from dataclasses import asdict, dataclass, field
 from typing import List, TypedDict
 from typing_extensions import override

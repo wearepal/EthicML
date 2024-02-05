@@ -1,4 +1,5 @@
 """Base class for Algorithms."""
+
 from abc import ABC, abstractmethod
 from pathlib import Path
 import subprocess

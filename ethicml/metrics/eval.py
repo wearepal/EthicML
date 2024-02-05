@@ -1,4 +1,5 @@
 """Runs given metrics on the given results."""
+
 from collections.abc import Set as AbstractSet
 from typing import Sequence
 

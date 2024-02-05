@@ -3,6 +3,7 @@
 https://github.com/IBM/AIF360/blob/b5f4591c7c7374b9c88706827080a931209e7a24/aif360/metrics/classification_metric.py
 in turn based on the paper https://arxiv.org/abs/1807.00787
 """
+
 from dataclasses import dataclass
 from typing import ClassVar
 from typing_extensions import override

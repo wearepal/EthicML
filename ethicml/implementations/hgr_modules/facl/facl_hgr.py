@@ -1,4 +1,5 @@
 """Independence of 2 variables."""
+
 from typing import Type
 
 import numpy as np

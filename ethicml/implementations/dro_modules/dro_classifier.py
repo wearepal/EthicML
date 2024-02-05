@@ -1,4 +1,5 @@
 """Fairness without Demographics Classifier."""
+
 from typing_extensions import override
 
 from ranzen.torch import CrossEntropyLoss

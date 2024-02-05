@@ -1,4 +1,5 @@
 """Useful functions used in implementations."""
+
 from pathlib import Path
 from typing import TYPE_CHECKING
 

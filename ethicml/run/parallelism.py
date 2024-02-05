@@ -1,4 +1,5 @@
 """Collection of functions that enable parallelism."""
+
 from typing import List, Protocol, Sequence, Tuple, TypeVar, cast, overload
 from typing_extensions import TypeAlias
 
@@ -108,7 +109,7 @@ def _run(algo: Algorithm[_RT], train_test_pair: TrainValPair, seed: int) -> _RT:
         result: _RT = algo.run(train, test, seed)
     except RuntimeError:
         # TODO: make this more correct (it's wrong for PreProcess methods)
-        result = Prediction(hard=pd.Series([np.NaN] * len(test)))  # type: ignore
+        result = Prediction(hard=pd.Series([np.nan] * len(test)))  # type: ignore
     if isinstance(result, Prediction):
         result.info["model_seed"] = seed
     return result

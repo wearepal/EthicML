@@ -1,4 +1,5 @@
 """For assessing NPV."""
+
 from dataclasses import dataclass
 from typing import ClassVar
 from typing_extensions import override

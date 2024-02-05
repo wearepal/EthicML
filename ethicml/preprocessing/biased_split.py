@@ -1,4 +1,5 @@
 """Generate biased subsets."""
+
 from typing import Sequence
 
 import numpy as np

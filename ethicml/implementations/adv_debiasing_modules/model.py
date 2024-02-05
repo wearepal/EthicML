@@ -3,6 +3,7 @@
 Original implementation is modified to handle regression and multi-class
 classification problems
 """
+
 from typing_extensions import Self, override
 
 import numpy as np
