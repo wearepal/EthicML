@@ -1,4 +1,5 @@
 """Zemel's Learned Fair Representations."""
+
 from dataclasses import dataclass
 from typing import Optional, TypedDict
 from typing_extensions import override

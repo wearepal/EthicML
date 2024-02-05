@@ -1,4 +1,5 @@
 """Implementation of Agarwal model."""
+
 from dataclasses import dataclass
 from typing import Optional, TypedDict
 from typing_extensions import override

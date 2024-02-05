@@ -1,4 +1,5 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
+
 from typing import Any, NamedTuple
 
 import torch

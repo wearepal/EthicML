@@ -1,4 +1,5 @@
 """Implementation of Beutel's adversarially learned fair representations."""
+
 import json
 from pathlib import Path
 import random

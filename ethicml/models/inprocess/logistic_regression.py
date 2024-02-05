@@ -1,4 +1,5 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
+
 from dataclasses import dataclass, field
 from typing import ClassVar
 from typing_extensions import Self, override

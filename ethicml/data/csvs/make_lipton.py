@@ -1,4 +1,5 @@
 """Generate Lipton's Synthetic Data."""
+
 from pathlib import Path
 
 import numpy as np

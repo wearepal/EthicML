@@ -68,10 +68,7 @@ pandas-stubs = ">=1.4.2.220626"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "8d5f608"}
 
 [tool.poetry.group.lint.dependencies]
-ruff = ">=0.0.261"
-
-[tool.poetry.group.format.dependencies]
-black = "^23.1"
+ruff = ">=0.2"
 
 [tool.poetry.group.doclint.dependencies]
 pydoclint = "^0.3.6"
@@ -104,48 +101,6 @@ torchvision = { version = "*", source = "torchcpu", markers = "sys_platform == '
 name = "torchcpu"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
-
-[tool.black]
-line-length = 100
-target-version = ['py310']
-include = '''
-(
-  ethicml/(.*).pyi?$
-  | tests/(.*).pyi?$
-)
-'''
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.venv
-    | .*/\.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-    | .github
-    | docs
-    | docsource
-    | examples
-    | plots
-    | results
-    | \.editorconfig
-    | \.gitignore
-    | \.pytest_cache
-    | \.coverage.*
-    | .pre-commit-config.yaml
-    | .pylintrc
-    | CODEOWNERS
-    | LICENSE
-    | mypy.ini
-    | README.md
-  )/
-)
-'''
 
 [tool.isort]
 known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch"]
@@ -186,7 +141,6 @@ module = [
     "fairlearn.*",
     "folktables.*",
     "imageio",
-    "seaborn",
     "scipy.*",
     "sklearn.*",
 ]
@@ -217,6 +171,9 @@ reportUnknownLambdaType = "none"
 
 [tool.ruff]
 line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
 select = [
     "A", # flake8-builtins
     # "ANN", # flake8-annotations
@@ -268,9 +225,8 @@ ignore = [
     "TID252", # relative imports
     "W191", # tab indentation (conflicts with formatter)
 ]
-target-version = "py310"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = [
     "F403",
     "PLC0414", # reexporting
@@ -279,10 +235,10 @@ target-version = "py310"
     "PT018",
 ]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "pep257"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-third-party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "teext", "torch"]
 extra-standard-library = ["typing_extensions"]
 no-lines-before = ["future", "standard-library"]
@@ -290,16 +246,16 @@ force-sort-within-sections = true
 split-on-trailing-comma = false
 classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "TPR", "TNR", "CV", "NMI", "BCR", "PPV", "NPV", "AS", "F1", "HGR"]
 
-[tool.ruff.flake8-annotations]
+[tool.ruff.lint.flake8-annotations]
 mypy-init-return = true
 
-[tool.ruff.flake8-type-checking]
+[tool.ruff.lint.flake8-type-checking]
 exempt-modules = ["typing", "typing_extensions"]
 
-[tool.ruff.pep8-naming]
+[tool.ruff.lint.pep8-naming]
 ignore-names = ["C"]
 
-[tool.ruff.pylint]
+[tool.ruff.lint.pylint]
 max-statements = 60  # default: 50
 max-branches = 13  # default: 12
 

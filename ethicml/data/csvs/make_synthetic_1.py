@@ -1,4 +1,5 @@
 """Generate Synthetic data."""
+
 from pathlib import Path
 
 import numpy as np

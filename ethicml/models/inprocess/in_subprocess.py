@@ -1,4 +1,5 @@
 """Classes related to running algorithms in subprocesses."""
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from functools import cached_property

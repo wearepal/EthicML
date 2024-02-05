@@ -1,4 +1,5 @@
 """Functions that are common to PyTorch models."""
+
 import random
 from typing import Literal
 

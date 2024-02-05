@@ -1,4 +1,5 @@
 """Kamiran&Calders 2012, massaging."""
+
 from dataclasses import dataclass
 from typing import Optional
 from typing_extensions import Self, override

@@ -1,4 +1,5 @@
 """Base Class for decision / activation functions."""
+
 from abc import ABC, abstractmethod
 
 import numpy

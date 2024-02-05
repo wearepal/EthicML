@@ -1,4 +1,5 @@
 """Abstract Base Class of all algorithms in the framework."""
+
 from abc import ABC, abstractmethod
 from typing import TypeVar
 from typing_extensions import Self

@@ -1,4 +1,5 @@
 """Common variables / constants that make things run smoother."""
+
 from importlib import util
 from pathlib import Path
 

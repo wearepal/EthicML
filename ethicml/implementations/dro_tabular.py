@@ -1,4 +1,5 @@
 """Implementation of Fairness without Demographics."""
+
 import json
 from pathlib import Path
 import sys

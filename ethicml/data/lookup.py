@@ -1,4 +1,5 @@
 """Lookup tables / switch statements for project level objects."""
+
 from typing import Callable
 
 from .dataset import Dataset

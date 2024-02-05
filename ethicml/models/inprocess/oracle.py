@@ -1,4 +1,5 @@
 """Perfect predictors."""
+
 from dataclasses import dataclass
 from typing import ClassVar
 from typing_extensions import Self, override

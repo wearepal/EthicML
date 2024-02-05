@@ -1,4 +1,5 @@
 """Wrapper for SKLearn implementation of SVM."""
+
 from dataclasses import dataclass, field
 from typing import ClassVar
 from typing_extensions import Self, override

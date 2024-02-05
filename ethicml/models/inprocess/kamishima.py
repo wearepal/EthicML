@@ -1,4 +1,5 @@
 """Wrapper for calling Kamishima model."""
+
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import NamedTuple

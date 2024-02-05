@@ -1,4 +1,5 @@
 """Demographic Parity Label flipping approach."""
+
 from dataclasses import dataclass
 from typing_extensions import Self, override
 

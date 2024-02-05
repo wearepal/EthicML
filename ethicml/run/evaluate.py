@@ -1,4 +1,5 @@
 """Runs given metrics on given algorithms for given datasets."""
+
 from pathlib import Path
 from typing import Literal, NamedTuple, Sequence
 

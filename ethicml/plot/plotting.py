@@ -1,4 +1,5 @@
 """Create plots of a dataset."""
+
 import itertools
 from pathlib import Path
 from typing import Any, Callable, Literal

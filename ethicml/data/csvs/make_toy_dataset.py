@@ -1,4 +1,5 @@
 """Script to generate the toy dataset."""
+
 from pathlib import Path
 import random
 

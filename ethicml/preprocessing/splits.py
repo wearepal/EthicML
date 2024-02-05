@@ -1,4 +1,5 @@
 """Split into train and test data."""
+
 from abc import ABC, abstractmethod
 import itertools
 from typing import Iterator, Literal

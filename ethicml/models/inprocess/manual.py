@@ -1,4 +1,5 @@
 """Manually specified (i.e. not learned) models."""
+
 from dataclasses import dataclass
 from typing_extensions import Self, override
 

@@ -1,4 +1,5 @@
 """Accuracy that is balanced with respect to the class labels."""
+
 from dataclasses import dataclass
 from typing import ClassVar
 from typing_extensions import override

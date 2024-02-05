@@ -1,4 +1,5 @@
 """Implementation of VFAE."""
+
 import json
 from pathlib import Path
 import sys
