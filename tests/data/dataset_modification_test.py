@@ -76,7 +76,7 @@ def test_scaling_separate_test(
 
 def test_from_dummies() -> None:
     """Test that the from_dummies func produces the inverse of pd.get_dummies for an em.Dataset."""
-    df = pd.DataFrame({"a": ["a", "b", "c"], "b": ["q", "w", "e"]})
+    df = pd.DataFrame({'a': ["a", "b", "c"], 'b': ["q", "w", "e"]})
     dummied = pd.get_dummies(df)
-    repacked = from_dummies(dummied, {"a": ["a_a", "a_b", "a_c"], "b": ["b_q", "b_w", "b_e"]})
+    repacked = from_dummies(dummied, {'a': ["a_a", "a_b", "a_c"], 'b': ["b_q", "b_w", "b_e"]})
     pd.testing.assert_frame_equal(df, repacked)
