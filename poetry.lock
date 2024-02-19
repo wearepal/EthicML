@@ -2145,13 +2145,13 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "ranzen"
-version = "2.4.0"
+version = "2.4.2"
 description = "A toolkit facilitating machine-learning experimentation."
 optional = false
 python-versions = ">=3.10,<3.13"
 files = [
-    {file = "ranzen-2.4.0-py3-none-any.whl", hash = "sha256:a4fcace55569437b76f4024e4459bd658158159f204699e03d80052fb45e7afc"},
-    {file = "ranzen-2.4.0.tar.gz", hash = "sha256:c27fb12d423fe7b93e208f552cd1996636f2fe53d31e07092e737e0f6fb5ad3a"},
+    {file = "ranzen-2.4.2-py3-none-any.whl", hash = "sha256:ec16544b3f996f9d7d83ac4427b21653769935784541698ef689583f1a936366"},
+    {file = "ranzen-2.4.2.tar.gz", hash = "sha256:295a00c3e97a7e6ec5de63b2a0fe6879ef142d516d942eb52471ed95590da67a"},
 ]
 
 [package.dependencies]
