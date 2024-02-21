@@ -2,7 +2,7 @@
 
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, cast
 from typing_extensions import Self, override
 
 import numpy as np
@@ -115,12 +115,9 @@ class Reweighting(InAlgorithm):
             sample_weight=weights,
         )
         weights = weights.value_counts().rename_axis("weight").reset_index(name="count")
-        groups = (
-            pd.concat([train.s, train.y], axis=1)
-            .groupby([train.s.name, train.y.name])
-            .size()
-            .reset_index(name="count")
-        )
+        groups = pd.concat([train.s, train.y], axis=1).groupby([train.s.name, train.y.name]).size()
+        groups = cast(pd.Series, groups)  # Mypy complains when I use an `assert isinstance()` here.
+        groups = groups.reset_index(name="count")
         self.group_weights = pd.merge(weights, groups, on="count").T.to_dict()
         return model
 
