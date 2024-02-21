@@ -115,12 +115,9 @@ class Reweighting(InAlgorithm):
             sample_weight=weights,
         )
         weights = weights.value_counts().rename_axis("weight").reset_index(name="count")
-        groups = (
-            pd.concat([train.s, train.y], axis=1)
-            .groupby([train.s.name, train.y.name])
-            .size()
-            .reset_index(name="count")
-        )
+        groups = pd.concat([train.s, train.y], axis=1).groupby([train.s.name, train.y.name]).size()
+        assert isinstance(groups, pd.Series)
+        groups = groups.reset_index(name="count")
         self.group_weights = pd.merge(weights, groups, on="count").T.to_dict()
         return model
 

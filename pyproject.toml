@@ -132,6 +132,7 @@ mypy_path = "typings"
 # implicit_reexport = false
 warn_redundant_casts = true
 enable_error_code = ["possibly-undefined", "redundant-expr", "truthy-bool", "truthy-iterable"]
+local_partial_types = true
 
 # ========== imports that don't have types ===========
 
