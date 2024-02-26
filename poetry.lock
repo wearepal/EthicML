@@ -462,13 +462,13 @@ files = [
 
 [[package]]
 name = "dep-logic"
-version = "0.0.4"
+version = "0.2.0"
 description = "Python dependency specifications supporting logical operations"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "dep_logic-0.0.4-py3-none-any.whl", hash = "sha256:65ab4122d5aaf4ec188dafc4cfdce55064929cf9e83d1aedcd57d6f586833b34"},
-    {file = "dep_logic-0.0.4.tar.gz", hash = "sha256:1830e784e0d58fc93511e77da164887629641b65b38876b274db974ec5f3889f"},
+    {file = "dep_logic-0.2.0-py3-none-any.whl", hash = "sha256:af439c2acaf7522dd321a71f30e0c4fd59b7553eb99967af07d53320902cde39"},
+    {file = "dep_logic-0.2.0.tar.gz", hash = "sha256:cff502b515aff2d413d19d6afc70174fc67da19e821be4a9b68460ccee2514c9"},
 ]
 
 [package.dependencies]
@@ -1571,20 +1571,20 @@ files = [
 
 [[package]]
 name = "pdm"
-version = "2.12.3"
+version = "2.12.4"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.12.3-py3-none-any.whl", hash = "sha256:27eddf71434906e39db3f448d35ea5ee1f4d0f557de39fc932205f7dfc82f902"},
-    {file = "pdm-2.12.3.tar.gz", hash = "sha256:53cdab727c1469fdc196efd8d7ff8404a3ca91ee43c0a5714736f2020d0a5ddf"},
+    {file = "pdm-2.12.4-py3-none-any.whl", hash = "sha256:56949eeacbe6100f193f2ede6e380edc956d309f68384593c5a4feefdf98ce8b"},
+    {file = "pdm-2.12.4.tar.gz", hash = "sha256:d04877362f95cf9ffc1d2c38b851f693706e4928840e48986ae576dad5741496"},
 ]
 
 [package.dependencies]
 blinker = "*"
 cachecontrol = {version = ">=0.13.0", extras = ["filecache"]}
 certifi = "*"
-dep-logic = ">=0.0.2,<1.0"
+dep-logic = ">=0.2.0,<1.0"
 findpython = ">=0.4.0,<1.0.0a0"
 installer = ">=0.7,<0.8"
 packaging = ">=20.9,<22.0 || >22.0"
