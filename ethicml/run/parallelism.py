@@ -23,15 +23,13 @@ DataSeq: TypeAlias = Sequence[TrainValPair]
 @overload
 def run_in_parallel(
     algos: InSeq, *, data: DataSeq, seeds: list[int], num_jobs: int | None = None
-) -> InResult:
-    ...
+) -> InResult: ...
 
 
 @overload
 def run_in_parallel(
     algos: PreSeq, *, data: DataSeq, seeds: list[int], num_jobs: int | None = None
-) -> PreResult:
-    ...
+) -> PreResult: ...
 
 
 def run_in_parallel(

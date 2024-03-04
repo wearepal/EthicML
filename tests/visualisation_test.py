@@ -1,4 +1,5 @@
 """Testing for plotting functionality."""
+
 from typing import List, Tuple
 
 from matplotlib.axes import Axes

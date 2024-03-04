@@ -1,4 +1,5 @@
 """EthicML tests."""
+
 from typing import NamedTuple
 
 import numpy as np

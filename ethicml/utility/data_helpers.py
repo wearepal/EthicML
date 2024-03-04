@@ -13,13 +13,11 @@ def shuffle_df(df: pd.DataFrame, random_state: int) -> pd.DataFrame:
 
 
 @overload
-def undo_one_hot(df: pd.DataFrame, new_column_name: None = None) -> pd.Series:
-    ...
+def undo_one_hot(df: pd.DataFrame, new_column_name: None = None) -> pd.Series: ...
 
 
 @overload
-def undo_one_hot(df: pd.DataFrame, new_column_name: str) -> pd.DataFrame:
-    ...
+def undo_one_hot(df: pd.DataFrame, new_column_name: str) -> pd.DataFrame: ...
 
 
 def undo_one_hot(df: pd.DataFrame, new_column_name: str | None = None) -> pd.Series | pd.DataFrame:

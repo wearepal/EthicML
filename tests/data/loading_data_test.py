@@ -1,4 +1,5 @@
 """Test the loading data capability."""
+
 from pathlib import Path
 from typing import Callable, Final, Mapping, NamedTuple
 

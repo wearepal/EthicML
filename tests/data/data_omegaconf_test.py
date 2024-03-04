@@ -1,4 +1,5 @@
 """Test compatibility of the dataset objects with OmegaConf."""
+
 from enum import Enum
 from typing import Type, Union
 
