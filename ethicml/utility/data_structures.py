@@ -7,7 +7,7 @@ from enum import Enum, auto
 import json
 from pathlib import Path
 from typing import Final, Literal, NamedTuple, NewType, TypeAlias, TypeVar, final
-from typing_extensions import Self
+from typing_extensions import Self, TypeAliasType
 
 import numpy as np
 from numpy import typing as npt
@@ -40,7 +40,7 @@ __all__ = [
     "map_over_results_index",
 ]
 
-AxisType: TypeAlias = Literal["columns", "index"]
+AxisType = TypeAliasType("AxisType", Literal["columns", "index"])
 
 
 class PandasIndex(Enum):
@@ -371,8 +371,8 @@ TestTuple: TypeAlias = SubgroupTuple | DataTuple
 EvalTuple: TypeAlias = LabelTuple | DataTuple
 """Union of :class:`LabelTuple` and :class:`DataTuple`."""
 
-HyperParamValue: TypeAlias = bool | int | float | str
-HyperParamType: TypeAlias = dict[str, HyperParamValue]
+HyperParamValue = TypeAliasType("HyperParamValue", bool | int | float | str)
+HyperParamType = TypeAliasType("HyperParamType", dict[str, HyperParamValue])
 
 T = TypeVar("T", SubgroupTuple, DataTuple)
 
