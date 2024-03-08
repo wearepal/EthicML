@@ -6,8 +6,8 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Literal, TypeAlias, TypedDict, TypeVar, final
-from typing_extensions import Self
+from typing import Any, Literal, TypedDict, TypeVar, final
+from typing_extensions import Self, TypeAliasType
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
@@ -49,7 +49,7 @@ class PreAlgoTformArgs(TypedDict):
     model: str
 
 
-PreAlgoArgs: TypeAlias = PreAlgoFitArgs | PreAlgoTformArgs | PreAlgoRunArgs
+PreAlgoArgs = TypeAliasType("PreAlgoArgs", PreAlgoFitArgs | PreAlgoTformArgs | PreAlgoRunArgs)
 
 
 @dataclass
