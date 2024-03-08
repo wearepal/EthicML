@@ -2,6 +2,7 @@
 
 This file is automatically imported by pytest (no need to import it) and defines shared fixtures.
 """
+
 from pathlib import Path
 import shutil
 import tempfile

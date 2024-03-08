@@ -1,4 +1,5 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
+
 import json
 from pathlib import Path
 import sys

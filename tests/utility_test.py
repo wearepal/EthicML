@@ -1,4 +1,5 @@
 """Test utility functions."""
+
 import pytest
 
 from ethicml.data import available_tabular, get_dataset_obj_by_name

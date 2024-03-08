@@ -1,4 +1,5 @@
 """Test whether metrics classes are compatible with OmegaConf and thus hydra."""
+
 from typing import Type
 
 from omegaconf import OmegaConf

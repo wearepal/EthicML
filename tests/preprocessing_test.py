@@ -1,4 +1,5 @@
 """Test preprocessing capabilities."""
+
 import math
 from typing import Tuple
 

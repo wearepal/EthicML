@@ -1,4 +1,5 @@
 """EthicML Tests."""
+
 from pathlib import Path
 from typing import Any, ClassVar, Dict, Final, Generator, List, Mapping, NamedTuple
 from typing_extensions import override

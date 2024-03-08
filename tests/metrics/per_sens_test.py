@@ -1,4 +1,5 @@
 """Test the 'per sensitive attribute' evaluations."""
+
 from typing import Callable, Dict, FrozenSet, NamedTuple, Tuple
 from typing_extensions import assert_type
 

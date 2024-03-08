@@ -1,4 +1,5 @@
 """Test that an algorithm can run against some data."""
+
 from dataclasses import dataclass
 import os
 from pathlib import Path

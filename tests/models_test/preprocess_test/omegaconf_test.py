@@ -1,4 +1,5 @@
 """Test compatibility with OmegaConf."""
+
 from typing import Type
 
 from omegaconf import OmegaConf

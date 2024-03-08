@@ -1,4 +1,5 @@
 """Test Hydra compatability."""
+
 from typing import Type
 
 from omegaconf import OmegaConf

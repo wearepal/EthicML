@@ -1,4 +1,5 @@
 """Metric Tests."""
+
 from typing import NamedTuple
 
 import numpy as np
