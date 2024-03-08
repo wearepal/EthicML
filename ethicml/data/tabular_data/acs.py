@@ -4,11 +4,12 @@ Uses FolkTables: https://github.com/zykls/folktables
 Paper: https://arxiv.org/abs/2108.04884
 """
 
+from collections.abc import Generator
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Literal, get_args
-from typing_extensions import TypeAlias, override
+from typing import Literal, TypeAlias, get_args
+from typing_extensions import override
 
 import numpy as np
 import pandas as pd

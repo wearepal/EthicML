@@ -1,27 +1,13 @@
 """Data structures that are used throughout the code."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from dataclasses import dataclass, replace
 from enum import Enum, auto
 import json
 from pathlib import Path
-from typing import (
-    Callable,
-    Dict,
-    Final,
-    Iterable,
-    Iterator,
-    Literal,
-    Mapping,
-    NamedTuple,
-    NewType,
-    Optional,
-    Sequence,
-    TypeVar,
-    Union,
-    final,
-)
-from typing_extensions import Self, TypeAlias
+from typing import Final, Literal, NamedTuple, NewType, TypeAlias, TypeVar, final
+from typing_extensions import Self
 
 import numpy as np
 from numpy import typing as npt
@@ -111,7 +97,7 @@ class SubgroupTuple(SubsetMixin):
     data: pd.DataFrame
     s_column: str
     s_in_x: bool
-    name: Optional[str]
+    name: str | None
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -195,7 +181,7 @@ class DataTuple(SubsetMixin):
     s_column: str
     y_column: str
     s_in_x: bool
-    name: Optional[str]
+    name: str | None
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -316,7 +302,7 @@ class LabelTuple(SubsetMixin):
     data: pd.DataFrame
     s_column: str
     y_column: str
-    name: Optional[str]
+    name: str | None
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -379,14 +365,14 @@ class LabelTuple(SubsetMixin):
         return replace(self, data=data, name=self.name if name is None else name)
 
 
-TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
+TestTuple: TypeAlias = SubgroupTuple | DataTuple
 """Union of :class:`SubgroupTuple` and :class:`DataTuple`."""
 
-EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
+EvalTuple: TypeAlias = LabelTuple | DataTuple
 """Union of :class:`LabelTuple` and :class:`DataTuple`."""
 
-HyperParamValue: TypeAlias = Union[bool, int, float, str]
-HyperParamType: TypeAlias = Dict[str, HyperParamValue]
+HyperParamValue: TypeAlias = bool | int | float | str
+HyperParamType: TypeAlias = dict[str, HyperParamValue]
 
 T = TypeVar("T", SubgroupTuple, DataTuple)
 

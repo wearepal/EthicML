@@ -40,7 +40,7 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import flatten_dict
@@ -61,7 +61,7 @@ class Admissions(LegacyDataset):
 
     split: AdmissionsSplits = AdmissionsSplits.GENDER
 
-    Splits: ClassVar[Type[AdmissionsSplits]] = AdmissionsSplits
+    Splits: ClassVar[type[AdmissionsSplits]] = AdmissionsSplits
     """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:

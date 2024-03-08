@@ -1,11 +1,12 @@
 """Data structure for all datasets that come with the framework."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from enum import auto
 from pathlib import Path
 import typing
-from typing import ClassVar, Sequence, TypedDict, final
+from typing import ClassVar, TypedDict, final
 from typing_extensions import override
 
 import pandas as pd

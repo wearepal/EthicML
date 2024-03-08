@@ -2,7 +2,7 @@
 
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, cast
+from typing import Any, cast
 from typing_extensions import Self, override
 
 import numpy as np
@@ -44,11 +44,11 @@ class Reweighting(InAlgorithm):
     """
 
     classifier: ClassifierType = ClassifierType.lr
-    C: Optional[float] = None
-    kernel: Optional[KernelType] = None
+    C: float | None = None
+    kernel: KernelType | None = None
 
     def __post_init__(self) -> None:
-        self.group_weights: Optional[Dict[Hashable, Any]] = None
+        self.group_weights: dict[Hashable, Any] | None = None
         self.chosen_c, self.chosen_kernel = settings_for_svm_lr(
             self.classifier, self.C, self.kernel
         )

@@ -202,7 +202,7 @@ select = [
     "PTH", # flake8-use-pathlib
     "SIM", # flake8-simplify
     # "TCH", # flake8-type-checking
-    # "UP", # pyupgrade
+    "UP", # pyupgrade
     "W",
 ]
 ignore = [
@@ -228,6 +228,7 @@ ignore = [
     "PLW2901", # overwriting loop variables
     "PLC0105", # mark variance in typevar name
     "TID252", # relative imports
+    "UP038", # use X | Y in isinstance
     "W191", # tab indentation (conflicts with formatter)
 ]
 

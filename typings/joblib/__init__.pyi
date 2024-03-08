@@ -1,29 +1,18 @@
+from collections.abc import Callable, Iterable
 from pathlib import Path
 from types import TracebackType
-from typing import (
-    Any,
-    Callable,
-    Generic,
-    Iterable,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    TypeVar,
-    Union,
-    overload,
-)
-from typing_extensions import ParamSpec, Self, TypeAlias
+from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
+from typing_extensions import ParamSpec, Self
 
 _CompressLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 def dump(
     value: Any,
     filename: Path,
-    compress: Union[
-        _CompressLevel, bool, Tuple[_CompressLevel, Literal["zlib", "gzip", "bz2", "lzma", "xz"]]
-    ] = ...,
-) -> List[str]: ...
+    compress: _CompressLevel
+    | bool
+    | tuple[_CompressLevel, Literal["zlib", "gzip", "bz2", "lzma", "xz"]] = ...,
+) -> list[str]: ...
 def load(filename: Path) -> Any: ...
 
 _T = TypeVar("_T")
@@ -31,15 +20,15 @@ _T = TypeVar("_T")
 class Parallel:
     def __init__(
         self,
-        n_jobs: Optional[int] = ...,
-        backend: Optional[Literal["loky", "multiprocessing", "threading"]] = ...,
+        n_jobs: int | None = ...,
+        backend: Literal["loky", "multiprocessing", "threading"] | None = ...,
         verbose: int = ...,
-        timeout: Optional[float] = ...,
+        timeout: float | None = ...,
         *,
-        prefer: Optional[Literal["processes", "threads"]] = ...,
-        require: Optional[Literal["sharedmem"]] = ...,
+        prefer: Literal["processes", "threads"] | None = ...,
+        require: Literal["sharedmem"] | None = ...,
     ): ...
-    def __call__(self, iterable: Iterable[_DelayedResult[_T]]) -> List[_T]: ...
+    def __call__(self, iterable: Iterable[_DelayedResult[_T]]) -> list[_T]: ...
     def print_progress(self) -> None: ...
     def __enter__(self) -> Self: ...
     @overload

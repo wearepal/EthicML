@@ -1,7 +1,7 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
 
 from dataclasses import dataclass, field
-from typing import List, TypedDict
+from typing import TypedDict
 from typing_extensions import override
 
 from ethicml.models.preprocess.pre_subprocess import PreAlgorithmSubprocess
@@ -35,9 +35,9 @@ class VFAE(PreAlgorithmSubprocess):
     batch_size: int = 32
     fairness: FairnessType = FairnessType.dp
     latent_dims: int = 50
-    z1_enc_size: List[int] = field(default_factory=lambda: [100])
-    z2_enc_size: List[int] = field(default_factory=lambda: [100])
-    z1_dec_size: List[int] = field(default_factory=lambda: [100])
+    z1_enc_size: list[int] = field(default_factory=lambda: [100])
+    z2_enc_size: list[int] = field(default_factory=lambda: [100])
+    z1_dec_size: list[int] = field(default_factory=lambda: [100])
 
     @override
     def _get_flags(self) -> VfaeArgs:

@@ -10,7 +10,7 @@ from ethicml.utility import ClassifierType, KernelType
 __all__ = ["LinearModel", "settings_for_svm_lr"]
 
 
-LinearModel = Union[SVC, LinearSVC, LogisticRegression]
+LinearModel = Union[SVC, LinearSVC, LogisticRegression]  # noqa: UP007
 
 
 def settings_for_svm_lr(

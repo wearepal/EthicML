@@ -1,10 +1,10 @@
 """Cross Validation for any in process (at the moment) Algorithm."""
 
 from collections import defaultdict
-from collections.abc import Callable
+from collections.abc import Callable, Mapping, Sequence
 from itertools import product
 from statistics import mean
-from typing import Any, Mapping, NamedTuple, Sequence
+from typing import Any, NamedTuple
 
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV

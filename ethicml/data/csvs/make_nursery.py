@@ -2,7 +2,7 @@
 
 # The Heritage Health dataset. It needs some (mild) preprocessing before we can plug and play.
 
-from typing import Hashable, List
+from collections.abc import Hashable
 
 import pandas as pd
 
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     for column in features:
         df[column] = df[column].astype("category").cat.codes
 
-    features1: List[Hashable] = [
+    features1: list[Hashable] = [
         "form",
         "health",
         "finance",

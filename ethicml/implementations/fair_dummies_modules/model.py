@@ -1,7 +1,7 @@
 """FairDummies Models."""
 
+from collections.abc import Callable
 import random
-from typing import Callable
 from typing_extensions import Self
 
 import numpy as np

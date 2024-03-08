@@ -1,8 +1,9 @@
 """Split into train and test data."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Iterator
 import itertools
-from typing import Iterator, Literal
+from typing import Literal
 from typing_extensions import override
 
 import numpy as np

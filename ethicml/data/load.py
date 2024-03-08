@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional
 
 import pandas as pd
 
@@ -28,10 +27,10 @@ def load_data(dataset: Dataset) -> DataTuple:
 class ConfigurableDataset(LegacyDataset):
     """A configurable dataset class."""
 
-    filepath_: Optional[Path] = None
-    s_column: Optional[str] = None
-    y_column: Optional[str] = None
-    additional_to_drop: Optional[List[str]] = None
+    filepath_: Path | None = None
+    s_column: str | None = None
+    y_column: str | None = None
+    additional_to_drop: list[str] | None = None
 
     def __post_init__(self) -> None:
         assert (filepath := self.filepath_) is not None

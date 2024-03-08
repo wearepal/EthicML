@@ -1,9 +1,10 @@
 """Test the saving data capability."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, ClassVar, Final, List, Mapping, final
+from typing import Any, ClassVar, Final, final
 
 import numpy as np
 import pandas as pd
@@ -40,7 +41,7 @@ def test_simple_saving() -> None:
         def hyperparameters(self) -> HyperParamType:
             return {}
 
-        def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:  # type: ignore[misc]
+        def _script_command(self, in_algo_args: InAlgoArgs) -> list[str]:  # type: ignore[misc]
             """Check if the dataframes loaded from the files are the same as the original ones."""
             assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
             loaded = DataTuple.from_file(Path(in_algo_args["train"]))
@@ -51,7 +52,7 @@ def test_simple_saving() -> None:
             np.savez(in_algo_args["predictions"], hard=np.load(in_algo_args["train"])["y"])
             return ["-c", "pass"]
 
-        def _get_path_to_script(self) -> List[str]:
+        def _get_path_to_script(self) -> list[str]:
             return []
 
         def _get_flags(self) -> Mapping[str, Any]:

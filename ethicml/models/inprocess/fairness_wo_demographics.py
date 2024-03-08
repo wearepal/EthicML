@@ -1,7 +1,7 @@
 """Fairness without Demographics."""
 
 from dataclasses import asdict, dataclass, field
-from typing import List, TypedDict
+from typing import TypedDict
 from typing_extensions import override
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
@@ -32,7 +32,7 @@ class DRO(InAlgorithmSubprocess):
     eta: float = 0.5
     epochs: int = 10
     batch_size: int = 32
-    network_size: List[int] = field(default_factory=lambda: [50])
+    network_size: list[int] = field(default_factory=lambda: [50])
 
     @override
     def _get_flags(self) -> DroArgs:

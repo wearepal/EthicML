@@ -3,7 +3,6 @@
 from dataclasses import dataclass
 from enum import auto
 import itertools
-from typing import Optional
 from typing_extensions import Self, override
 
 import pandas as pd
@@ -36,7 +35,7 @@ class Upsampler(PreAlgorithm):
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
 
     def __post_init__(self) -> None:
-        self._out_size: Optional[int] = None
+        self._out_size: int | None = None
 
     @property
     @override

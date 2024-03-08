@@ -1,7 +1,6 @@
 """Kamiran&Calders 2012, massaging."""
 
 from dataclasses import dataclass
-from typing import Optional
 from typing_extensions import Self, override
 
 import pandas as pd
@@ -22,7 +21,7 @@ class Calders(PreAlgorithm):
     disadvantaged_group: int = 0
 
     def __post_init__(self) -> None:
-        self._out_size: Optional[int] = None
+        self._out_size: int | None = None
 
     @property
     @override

@@ -1,7 +1,8 @@
 """File For feature binning."""
 
+from collections.abc import Sequence
 from itertools import groupby
-from typing import List, Sequence, cast
+from typing import cast
 
 import pandas as pd
 
@@ -21,7 +22,7 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     """
     groups: Sequence[list[str]] = [
         list(group)
-        for _, group in groupby(cast(List[str], data.x.columns), lambda x: x.split("_")[0])
+        for _, group in groupby(cast(list[str], data.x.columns), lambda x: x.split("_")[0])
     ]
 
     copy: pd.DataFrame = data.x.copy()

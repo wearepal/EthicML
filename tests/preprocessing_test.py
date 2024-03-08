@@ -1,7 +1,6 @@
 """Test preprocessing capabilities."""
 
 import math
-from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -16,7 +15,7 @@ from ethicml.data import Adult, Toy, load_data
 def test_train_test_split() -> None:
     """Test train test split."""
     data: DataTuple = load_data(Toy())
-    train_test: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train, test = train_test
     assert train is not None
     assert test is not None
@@ -129,7 +128,7 @@ def test_prop_train_test_split() -> None:
 def test_random_seed() -> None:
     """Test random seed."""
     data: DataTuple = load_data(Toy())
-    train_test_0: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
+    train_test_0: tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train_0, test_0 = train_test_0
     assert train_0 is not None
     assert test_0 is not None
@@ -140,7 +139,7 @@ def test_random_seed() -> None:
     assert train_0.x.shape[0] == train_0.s.shape[0]
     assert train_0.s.shape[0] == train_0.y.shape[0]
 
-    train_test_1: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=1)
+    train_test_1: tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=1)
     train_1, test_1 = train_test_1
     assert train_1 is not None
     assert test_1 is not None
@@ -151,7 +150,7 @@ def test_random_seed() -> None:
     assert train_1.x.shape[0] == train_1.s.shape[0]
     assert train_1.s.shape[0] == train_1.y.shape[0]
 
-    train_test_2: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=2)
+    train_test_2: tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=2)
     train_2, test_2 = train_test_2
     assert train_2 is not None
     assert test_2 is not None
@@ -162,7 +161,7 @@ def test_random_seed() -> None:
     assert train_2.x.shape[0] == train_2.s.shape[0]
     assert train_2.s.shape[0] == train_2.y.shape[0]
 
-    train_test_3: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=3)
+    train_test_3: tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=3)
     train_3, test_3 = train_test_3
     assert train_3 is not None
     assert test_3 is not None
