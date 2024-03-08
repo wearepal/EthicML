@@ -59,7 +59,7 @@ def fit(train: DataTuple, args: "AgarwalArgs", seed: int = 888) -> "Exponentiate
     else:
         fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
-    model: "LinearModel" | GradientBoostingClassifier
+    model: "LinearModel | GradientBoostingClassifier"
     match classifier_type:
         case ClassifierType.svm:
             assert kernel_type is not None
