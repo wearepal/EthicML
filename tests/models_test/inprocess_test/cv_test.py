@@ -1,7 +1,7 @@
 """Tests for cross validation."""
 
-from collections.abc import Callable
-from typing import Dict, List, NamedTuple, Sequence, Union
+from collections.abc import Callable, Sequence
+from typing import NamedTuple
 
 import numpy as np
 import pytest
@@ -16,7 +16,7 @@ class CvParam(NamedTuple):
     """Specification of a unit test for cross validation."""
 
     model: Callable[..., InAlgorithm]
-    hyperparams: Dict[str, Union[Sequence[float], List[str], Sequence[KernelType]]]
+    hyperparams: dict[str, Sequence[float] | list[str] | Sequence[KernelType]]
     num_pos: int
 
 
@@ -34,7 +34,7 @@ CV_PARAMS = [
 def test_cv(
     toy_train_test: TrainTestPair,
     model: Callable[..., InAlgorithm],
-    hyperparams: Dict[str, Union[Sequence[float], List[str]]],
+    hyperparams: dict[str, Sequence[float] | list[str]],
     num_pos: int,
 ) -> None:
     """Test cv svm."""
@@ -55,7 +55,7 @@ def test_cv(
 def test_parallel_cv(
     toy_train_test: TrainTestPair,
     model: Callable[..., InAlgorithm],
-    hyperparams: Dict[str, Union[Sequence[float], List[str]]],
+    hyperparams: dict[str, Sequence[float] | list[str]],
     num_pos: int,
 ) -> None:
     """Test parallel cv."""

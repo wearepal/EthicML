@@ -1,7 +1,8 @@
 """EthicML Tests."""
 
+from collections.abc import Generator, Mapping
 from pathlib import Path
-from typing import Any, ClassVar, Dict, Final, Generator, List, Mapping, NamedTuple
+from typing import Any, ClassVar, Final, NamedTuple
 from typing_extensions import override
 
 import numpy as np
@@ -189,7 +190,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     """Test fair cv lr."""
     train, _ = toy_train_test
 
-    hyperparams: Dict[str, List[float]] = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
+    hyperparams: dict[str, list[float]] = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
@@ -250,7 +251,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair) -> None:
         def name(self) -> str:
             return "local installed LR"
 
-        def _get_path_to_script(self) -> List[str]:
+        def _get_path_to_script(self) -> list[str]:
             return [str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())]
 
         def _get_flags(self) -> Mapping[str, Any]:
@@ -274,7 +275,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair) -> None:
 @pytest.mark.xdist_group("results_files")
 def test_threaded_agarwal() -> None:
     """Test threaded agarwal."""
-    models: List[InAlgorithmSubprocess] = [
+    models: list[InAlgorithmSubprocess] = [
         Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
     ]
 

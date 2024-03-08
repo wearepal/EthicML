@@ -1,10 +1,11 @@
 """Implementation of Beutel's adversarially learned fair representations."""
 
+from collections.abc import Sequence
 import json
 from pathlib import Path
 import random
 import sys
-from typing import TYPE_CHECKING, Any, Sequence
+from typing import TYPE_CHECKING, Any
 
 from joblib import dump, load
 import numpy as np

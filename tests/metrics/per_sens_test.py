@@ -1,6 +1,7 @@
 """Test the 'per sensitive attribute' evaluations."""
 
-from typing import Callable, Dict, FrozenSet, NamedTuple, Tuple
+from collections.abc import Callable
+from typing import NamedTuple
 from typing_extensions import assert_type
 
 import numpy as np
@@ -31,7 +32,7 @@ class PerSensMetricTest(NamedTuple):
     dataset: Dataset
     classifier: InAlgorithm
     metric: Metric
-    expected_values: Dict[str, float]
+    expected_values: dict[str, float]
 
 
 def test_issue_431() -> None:
@@ -44,7 +45,7 @@ def test_issue_431() -> None:
     s = pd.Series(np.random.randn(100), name="s")
     y = pd.Series(np.random.randint(0, 5, 100), name="y")
     data = DataTuple.from_df(x=x, s=s, y=y)
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = LR()
     predictions: Prediction = model.run(train, test)
@@ -168,11 +169,11 @@ PER_SENS = [
     ("dataset", "classifier", "metric", "expected_values"), PER_SENS, ids=get_id
 )
 def test_metric_per_sens_attr(
-    dataset: Dataset, classifier: InAlgorithm, metric: Metric, expected_values: Dict[str, float]
+    dataset: Dataset, classifier: InAlgorithm, metric: Metric, expected_values: dict[str, float]
 ) -> None:
     """Test accuracy per sens attr."""
     data: DataTuple = load_data(dataset)
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = classifier
     predictions: Prediction = model.run(train, test)
@@ -197,5 +198,5 @@ def test_metric_per_sens_attr(
 def test_persens_enum() -> None:
     """Check that PerSens was constructed correctly."""
     assert set(PerSens) == PerSens.ALL  # type: ignore
-    assert_type(PerSens.DIFFS_RATIOS, FrozenSet[PerSens])  # type: ignore
-    assert_type(PerSens.DIFFS.func, Callable[[Dict[str, float]], Dict[str, float]])
+    assert_type(PerSens.DIFFS_RATIOS, frozenset[PerSens])  # type: ignore
+    assert_type(PerSens.DIFFS.func, Callable[[dict[str, float]], dict[str, float]])

@@ -1,7 +1,7 @@
 """Wrapper for SKLearn implementation of MLP."""
 
 from dataclasses import dataclass, field
-from typing import ClassVar, Tuple
+from typing import ClassVar
 from typing_extensions import Self, override
 
 import numpy as np
@@ -25,7 +25,7 @@ class MLP(InAlgorithmDC):
     """
 
     is_fairness_algo: ClassVar[bool] = False
-    hidden_layer_sizes: Tuple[int, ...] = field(
+    hidden_layer_sizes: tuple[int, ...] = field(
         default_factory=lambda: MLPClassifier().hidden_layer_sizes  # type: ignore[attr-defined]
     )
     batch_size: int = 32

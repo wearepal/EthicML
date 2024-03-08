@@ -1,7 +1,5 @@
 """Test that we can get some metrics on predictions."""
 
-from typing import Tuple
-
 import pytest
 from pytest import approx
 
@@ -150,7 +148,7 @@ def test_get_info(toy_train_val: TrainValPair) -> None:
 def test_tpr_diff_non_binary_race() -> None:
     """Test tpr diff non binary race."""
     data: DataTuple = load_data(Adult(split=Adult.Splits.RACE))
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
@@ -188,7 +186,7 @@ def test_tpr_diff_non_binary_race() -> None:
 def test_tpr_ratio_non_binary_race() -> None:
     """Test tpr ratio non binary race."""
     data: DataTuple = load_data(Adult(split=Adult.Splits.RACE))
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
@@ -226,7 +224,7 @@ def test_tpr_ratio_non_binary_race() -> None:
 def test_nb_acc() -> None:
     """Test nb acc."""
     data: DataTuple = load_data(NonBinaryToy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
@@ -237,7 +235,7 @@ def test_nb_acc() -> None:
 def test_nb_tpr() -> None:
     """Test nb tpr."""
     data: DataTuple = load_data(NonBinaryToy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
@@ -292,7 +290,7 @@ def test_nb_tpr() -> None:
 def test_nb_tnr() -> None:
     """Test nb tnr."""
     data: DataTuple = load_data(NonBinaryToy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)

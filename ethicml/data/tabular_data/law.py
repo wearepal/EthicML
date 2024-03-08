@@ -21,9 +21,10 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
    }
 """
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Mapping, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import LabelGroup, flatten_dict, spec_from_binary_cols
@@ -46,7 +47,7 @@ class Law(LegacyDataset):
 
     split: LawSplits = LawSplits.SEX
 
-    Splits: ClassVar[Type[LawSplits]] = LawSplits
+    Splits: ClassVar[type[LawSplits]] = LawSplits
     """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:

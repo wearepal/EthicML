@@ -1,7 +1,6 @@
 """Common plotting functions / datastructures."""
 
-from typing import Any, Literal, NamedTuple
-from typing_extensions import TypeAlias
+from typing import Any, Literal, NamedTuple, TypeAlias
 
 from matplotlib import legend
 from matplotlib.axes import Axes

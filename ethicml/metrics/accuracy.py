@@ -1,8 +1,9 @@
 """Accuracy and related metrics."""
 
 from abc import ABC
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, ClassVar, Tuple
+from typing import ClassVar
 from typing_extensions import override
 
 import pandas as pd
@@ -19,7 +20,7 @@ class SklearnMetric(MetricStaticName, ABC):
     """Wrapper around an sklearn metric."""
 
     # we have to store the callable in a 1-element tuple because otherwise mypy gets confused
-    sklearn_metric: ClassVar[Tuple[Callable[[pd.Series, pd.Series], float]]]
+    sklearn_metric: ClassVar[tuple[Callable[[pd.Series, pd.Series], float]]]
 
     @override
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:

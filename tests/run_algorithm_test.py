@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 import os
 from pathlib import Path
-from typing import List, Literal
+from typing import Literal
 from typing_extensions import Self
 
 import numpy as np
@@ -72,11 +72,11 @@ def test_empty_evaluate() -> None:
 def test_run_alg_repeats_error(repeats: int) -> None:
     """Add a test to check that the right number of reults are produced with repeats."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
-    datasets: List[emda.Dataset] = [dataset]
-    preprocess_models: List[models.PreAlgorithm] = []
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Reweighting()]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
+    datasets: list[emda.Dataset] = [dataset]
+    preprocess_models: list[models.PreAlgorithm] = []
+    inprocess_models: list[models.InAlgorithm] = [models.LR(), models.Reweighting()]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
@@ -98,11 +98,11 @@ def test_run_alg_repeats_error(repeats: int) -> None:
 def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]) -> None:
     """Check the repeat_on arg."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
-    datasets: List[emda.Dataset] = [dataset]
-    preprocess_models: List[models.PreAlgorithm] = []
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Reweighting()]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
+    datasets: list[emda.Dataset] = [dataset]
+    preprocess_models: list[models.PreAlgorithm] = []
+    inprocess_models: list[models.InAlgorithm] = [models.LR(), models.Reweighting()]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
@@ -133,11 +133,11 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]) -> None
 def test_run_alg_suite_scaler() -> None:
     """Test run alg suite."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
-    datasets: List[emda.Dataset] = [dataset, emda.Toy()]
-    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
+    datasets: list[emda.Dataset] = [dataset, emda.Toy()]
+    preprocess_models: list[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: list[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
@@ -170,11 +170,11 @@ def test_run_alg_suite_scaler() -> None:
 def test_run_alg_suite() -> None:
     """Test run alg suite."""
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
-    datasets: List[emda.Dataset] = [dataset, emda.Toy()]
-    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
+    datasets: list[emda.Dataset] = [dataset, emda.Toy()]
+    preprocess_models: list[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: list[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
@@ -212,11 +212,11 @@ def test_run_alg_suite() -> None:
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_wrong_metrics() -> None:
     """Test run alg suite wrong metrics."""
-    datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
-    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
-    inprocess_models: List[models.InAlgorithm] = [models.SVM(kernel=KernelType.linear), models.LR()]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR(), metrics.CV()]
+    datasets: list[emda.Dataset] = [emda.Toy(), emda.Adult()]
+    preprocess_models: list[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: list[models.InAlgorithm] = [models.SVM(kernel=KernelType.linear), models.LR()]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy(), metrics.TPR(), metrics.CV()]
     with pytest.raises(metrics.MetricNotApplicableError):
         evaluate_models(
             datasets=datasets,
@@ -252,11 +252,11 @@ def test_run_alg_suite_err_handling() -> None:
         def name(self) -> str:
             return "Problem"
 
-    datasets: List[emda.Dataset] = [emda.Toy()]
-    preprocess_models: List[models.PreAlgorithm] = []
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), ThrowErr()]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy()]
+    datasets: list[emda.Dataset] = [emda.Toy()]
+    preprocess_models: list[models.PreAlgorithm] = []
+    inprocess_models: list[models.InAlgorithm] = [models.LR(), ThrowErr()]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy()]
     results = evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
@@ -275,14 +275,14 @@ def test_run_alg_suite_err_handling() -> None:
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_no_pipeline() -> None:
     """Run alg suite while avoiding the 'fair pipeline'."""
-    datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
-    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
-    inprocess_models: List[models.InAlgorithm] = [
+    datasets: list[emda.Dataset] = [emda.Toy(), emda.Adult()]
+    preprocess_models: list[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: list[models.InAlgorithm] = [
         models.Reweighting(classifier=ClassifierType.lr),
         models.LR(),
     ]
-    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
-    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
+    metrics_: list[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: list[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
 
     results = evaluate_models(
         datasets,

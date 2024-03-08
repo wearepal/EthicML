@@ -1,12 +1,13 @@
 """Classes related to running algorithms in subprocesses."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Mapping
 from dataclasses import dataclass
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Literal, Mapping, TypedDict, TypeVar, Union, final
-from typing_extensions import Self, TypeAlias
+from typing import Any, Literal, TypeAlias, TypedDict, TypeVar, final
+from typing_extensions import Self
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
@@ -48,7 +49,7 @@ class PreAlgoTformArgs(TypedDict):
     model: str
 
 
-PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
+PreAlgoArgs: TypeAlias = PreAlgoFitArgs | PreAlgoTformArgs | PreAlgoRunArgs
 
 
 @dataclass

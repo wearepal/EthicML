@@ -1,13 +1,14 @@
 """Classes related to running algorithms in subprocesses."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from functools import cached_property
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory, gettempdir
-from typing import Any, Literal, Mapping, TypedDict, Union, final
-from typing_extensions import Self, TypeAlias
+from typing import Any, Literal, TypeAlias, TypedDict, final
+from typing_extensions import Self
 import uuid
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
@@ -46,7 +47,7 @@ class InAlgoPredArgs(TypedDict):
     model: str
 
 
-InAlgoArgs: TypeAlias = Union[InAlgoFitArgs, InAlgoPredArgs, InAlgoRunArgs]
+InAlgoArgs: TypeAlias = InAlgoFitArgs | InAlgoPredArgs | InAlgoRunArgs
 
 
 @dataclass

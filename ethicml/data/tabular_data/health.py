@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import flatten_dict
@@ -23,7 +23,7 @@ class Health(LegacyDataset):
 
     split: HealthSplits = HealthSplits.SEX
 
-    Splits: ClassVar[Type[HealthSplits]] = HealthSplits
+    Splits: ClassVar[type[HealthSplits]] = HealthSplits
     """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:

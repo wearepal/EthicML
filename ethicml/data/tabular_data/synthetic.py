@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar, Type
+from typing import ClassVar
 from typing_extensions import override
 
 from ethicml.data.dataset import CSVDatasetDC, LabelSpecsPair
@@ -46,8 +46,8 @@ class Synthetic(CSVDatasetDC):
         - This models data where both the input and target are directly biased.
     """
 
-    Scenarios: ClassVar[Type[SyntheticScenarios]] = SyntheticScenarios
-    Targets: ClassVar[Type[SyntheticTargets]] = SyntheticTargets
+    Scenarios: ClassVar[type[SyntheticScenarios]] = SyntheticScenarios
+    Targets: ClassVar[type[SyntheticTargets]] = SyntheticTargets
 
     scenario: SyntheticScenarios = SyntheticScenarios.S1
     target: SyntheticTargets = SyntheticTargets.Y3

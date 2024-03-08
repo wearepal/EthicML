@@ -1,7 +1,5 @@
 """Testing for plotting functionality."""
 
-from typing import List, Tuple
-
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 import pytest
@@ -60,7 +58,7 @@ def test_multijoint_plot(toy_train_test: TrainTestPair) -> None:
 def test_label_plot() -> None:
     """Test label plot."""
     data: DataTuple = load_data(Adult())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
 
     save_label_plot(train, "./plots/labels.png")
@@ -83,7 +81,7 @@ def test_plot_evals() -> None:
     assert results["seed"][3] == results["seed"][4] == results["seed"][5] == 2410
     assert results["seed"][6] == results["seed"][7] == results["seed"][8] == 4820
 
-    figs_and_plots: List[Tuple[Figure, Axes]]
+    figs_and_plots: list[tuple[Figure, Axes]]
 
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())

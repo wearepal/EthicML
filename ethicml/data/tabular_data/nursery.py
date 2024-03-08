@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict
@@ -28,7 +28,7 @@ class Nursery(LegacyDataset):
     :param binarize_race: If True, race will be white vs rest. (Default: False)
     """
 
-    Splits: ClassVar[Type[NurserySplits]] = NurserySplits
+    Splits: ClassVar[type[NurserySplits]] = NurserySplits
 
     split: NurserySplits = Splits.FINANCE
 

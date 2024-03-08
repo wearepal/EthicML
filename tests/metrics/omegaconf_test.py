@@ -1,7 +1,5 @@
 """Test whether metrics classes are compatible with OmegaConf and thus hydra."""
 
-from typing import Type
-
 from omegaconf import OmegaConf
 import pytest
 
@@ -34,7 +32,7 @@ from ethicml import metrics
         metrics.Theil,
     ],
 )
-def test_omegaconf(metric_class: Type[metrics.Metric]) -> None:
+def test_omegaconf(metric_class: type[metrics.Metric]) -> None:
     """Test metric classes with OmegaConf."""
     # This will fail if the supplied `data_class` has types other than bool, int, float, enum, str.
     # OmegaConf is what hydra uses internally.

@@ -1,8 +1,8 @@
 """Useful methods that are used in some of the data objects."""
 
+from collections.abc import Mapping, Sequence
 from itertools import groupby
-from typing import Dict, List, Mapping, NamedTuple, Sequence
-from typing_extensions import TypeAlias
+from typing import NamedTuple, TypeAlias
 
 import pandas as pd
 
@@ -21,7 +21,7 @@ __all__ = [
     "single_col_spec",
 ]
 
-DiscFeatureGroups: TypeAlias = Dict[str, List[str]]
+DiscFeatureGroups: TypeAlias = dict[str, list[str]]
 """A grouping of discrete features such that the result is one-hot encoded."""
 
 

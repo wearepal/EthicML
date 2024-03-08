@@ -1,7 +1,7 @@
 """Collection of functions that enable parallelism."""
 
-from typing import List, Protocol, Sequence, Tuple, TypeVar, cast, overload
-from typing_extensions import TypeAlias
+from collections.abc import Sequence
+from typing import Protocol, TypeAlias, TypeVar, cast, overload
 
 from joblib import Parallel, delayed
 import numpy as np
@@ -15,8 +15,8 @@ __all__ = ["arrange_in_parallel", "run_in_parallel"]
 
 InSeq: TypeAlias = Sequence[InAlgorithm]
 PreSeq: TypeAlias = Sequence[PreAlgorithm]
-InResult: TypeAlias = List[List[Prediction]]
-PreResult: TypeAlias = List[List[Tuple[DataTuple, DataTuple]]]
+InResult: TypeAlias = list[list[Prediction]]
+PreResult: TypeAlias = list[list[tuple[DataTuple, DataTuple]]]
 DataSeq: TypeAlias = Sequence[TrainValPair]
 
 
@@ -45,7 +45,7 @@ def run_in_parallel(
     :returns: list of the results
     """
     if not algos or not data:
-        return cast(List[List[Prediction]], [])
+        return cast(list[list[Prediction]], [])
     # The following isinstance check is not at all reliable because `InAlgorithm` is a Protocol,
     # but that's completely fine because this check is only here for mypy anyway.
     if isinstance(algos[0], InAlgorithm):
@@ -58,7 +58,7 @@ def run_in_parallel(
         return arrange_in_parallel(algos=generic_algos, data=data, seeds=seeds, num_jobs=num_jobs)
 
 
-_RT = TypeVar("_RT", Prediction, Tuple[DataTuple, DataTuple], covariant=True)  # the return type
+_RT = TypeVar("_RT", Prediction, tuple[DataTuple, DataTuple], covariant=True)  # the return type
 
 
 class Algorithm(Protocol[_RT]):

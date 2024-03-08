@@ -1,7 +1,6 @@
 """Test compatibility of the dataset objects with OmegaConf."""
 
 from enum import Enum
-from typing import Type, Union
 
 from omegaconf import OmegaConf, ValidationError
 import pytest
@@ -25,8 +24,8 @@ import ethicml.data as emda
     ],
 )
 def test_datasets_with_split(
-    data_class: Type[emda.Dataset],
-    value: Union[str, Enum],
+    data_class: type[emda.Dataset],
+    value: str | Enum,
     should_pass: bool,  # noqa: FBT001
 ) -> None:
     """Test datasets with split."""
@@ -43,7 +42,7 @@ def test_datasets_with_split(
 
 
 @pytest.mark.parametrize("data_class", [emda.Synthetic, emda.Toy, emda.NonBinaryToy, emda.Lipton])
-def test_datasets_without_split(data_class: Type[emda.Dataset]) -> None:
+def test_datasets_without_split(data_class: type[emda.Dataset]) -> None:
     """Test datasets without split."""
     # This will fail if the supplied `data_class` has types other than bool, int, float, enum, str.
     # OmegaConf is what hydra uses internally.

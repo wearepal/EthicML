@@ -1,7 +1,8 @@
 """Test the loading data capability."""
 
+from collections.abc import Callable, Mapping
 from pathlib import Path
-from typing import Callable, Final, Mapping, NamedTuple
+from typing import Final, NamedTuple
 
 import pandas as pd
 import pytest

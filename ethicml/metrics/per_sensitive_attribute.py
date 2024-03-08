@@ -1,7 +1,8 @@
 """Evaluator for a metric per sensitive attribute class."""
 
+from collections.abc import Callable, Mapping
 from enum import Enum
-from typing import Callable, ClassVar, Mapping
+from typing import ClassVar
 
 import pandas as pd
 

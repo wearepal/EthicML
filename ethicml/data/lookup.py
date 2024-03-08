@@ -1,6 +1,6 @@
 """Lookup tables / switch statements for project level objects."""
 
-from typing import Callable
+from collections.abc import Callable
 
 from .dataset import Dataset
 from .tabular_data.adult import Adult

@@ -3,10 +3,10 @@
 This file is automatically imported by pytest (no need to import it) and defines shared fixtures.
 """
 
+from collections.abc import Generator
 from pathlib import Path
 import shutil
 import tempfile
-from typing import Generator, List, Union
 
 import pandas as pd
 import pytest
@@ -86,7 +86,7 @@ def temp_dir() -> Generator[Path, None, None]:
         yield Path(tmpdir)
 
 
-def get_id(value: object) -> Union[str, object]:
+def get_id(value: object) -> str | object:
     """Get ID."""
     return getattr(value, "name", value)
 
@@ -114,7 +114,7 @@ def pytest_configure(config: pytest.Config) -> None:
     config.addinivalue_line("markers", "slow: mark test as slow to run")
 
 
-def pytest_collection_modifyitems(config: pytest.Config, items: List[pytest.Item]) -> None:
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
     """By default, skip tests marked with @pytest.mark.slow."""
     if config.getoption("--runslow"):
         # --runslow given in cli: do not skip slow tests

@@ -1,7 +1,7 @@
 """Runs given metrics on the given results."""
 
+from collections.abc import Sequence
 from collections.abc import Set as AbstractSet
-from typing import Sequence
 
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (

@@ -1,8 +1,9 @@
 """Create plots of a dataset."""
 
+from collections.abc import Callable
 import itertools
 from pathlib import Path
-from typing import Any, Callable, Literal, cast
+from typing import Any, Literal, cast
 
 from matplotlib import legend
 from matplotlib.axes import Axes

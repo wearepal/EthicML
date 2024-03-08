@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import filter_features_by_prefixes, flatten_dict
@@ -23,7 +23,7 @@ class Crime(LegacyDataset):
 
     split: CrimeSplits = CrimeSplits.RACE_BINARY
 
-    Splits: ClassVar[Type[CrimeSplits]] = CrimeSplits
+    Splits: ClassVar[type[CrimeSplits]] = CrimeSplits
     """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:

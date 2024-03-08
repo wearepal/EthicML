@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import flatten_dict
@@ -23,7 +23,7 @@ class Credit(LegacyDataset):
 
     split: CreditSplits = CreditSplits.SEX
 
-    Splits: ClassVar[Type[CreditSplits]] = CreditSplits
+    Splits: ClassVar[type[CreditSplits]] = CreditSplits
     """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:

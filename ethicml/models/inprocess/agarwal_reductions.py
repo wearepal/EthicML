@@ -1,7 +1,7 @@
 """Implementation of Agarwal model."""
 
 from dataclasses import dataclass
-from typing import Optional, TypedDict
+from typing import TypedDict
 from typing_extensions import override
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
@@ -46,8 +46,8 @@ class Agarwal(InAlgorithmSubprocess):
     classifier: ClassifierType = ClassifierType.lr
     eps: float = 0.1
     iters: int = 50
-    C: Optional[float] = None
-    kernel: Optional[KernelType] = None
+    C: float | None = None
+    kernel: KernelType | None = None
 
     def __post_init__(self) -> None:
         assert self.fairness in (FairnessType.dp, FairnessType.eq_odds)

@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Final, Type
+from typing import ClassVar, Final
 from typing_extensions import override
 
 from ..dataset import LabelSpecsPair, StaticCSVDataset
@@ -39,7 +39,7 @@ class Adult(StaticCSVDataset):
     :param binarize_race: If True, race will be white vs rest. (Default: False)
     """
 
-    Splits: ClassVar[Type[AdultSplits]] = AdultSplits
+    Splits: ClassVar[type[AdultSplits]] = AdultSplits
     num_samples: ClassVar[int] = 45_222
     csv_file: ClassVar[str] = "adult.csv.zip"
 

@@ -1,7 +1,7 @@
 """Zemel's Learned Fair Representations."""
 
 from dataclasses import dataclass
-from typing import Optional, TypedDict
+from typing import TypedDict
 from typing_extensions import override
 
 from .pre_subprocess import PreAlgorithmSubprocess
@@ -36,7 +36,7 @@ class Zemel(PreAlgorithmSubprocess):
     epsilon: float = 1e-5
 
     def __post_init__(self) -> None:
-        self._in_size: Optional[int] = None
+        self._in_size: int | None = None
 
     @override
     def _get_flags(self) -> ZemelArgs:

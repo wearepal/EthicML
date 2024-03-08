@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar
 
 from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict, spec_from_binary_cols
@@ -29,7 +29,7 @@ class Sqf(LegacyDataset):
 
     split: SqfSplits = SqfSplits.SEX
 
-    Splits: ClassVar[Type[SqfSplits]] = SqfSplits
+    Splits: ClassVar[type[SqfSplits]] = SqfSplits
     """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
