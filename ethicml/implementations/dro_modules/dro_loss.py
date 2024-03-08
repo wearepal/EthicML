@@ -10,8 +10,7 @@ __all__ = ["DROLoss"]
 
 
 class LossFactory(Protocol):
-    def __call__(self, *, reduction: str = "mean") -> _Loss:
-        ...
+    def __call__(self, *, reduction: str = "mean") -> _Loss: ...
 
 
 class DROLoss(nn.Module):
