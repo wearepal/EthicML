@@ -7,8 +7,8 @@ from functools import cached_property
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory, gettempdir
-from typing import Any, Literal, TypeAlias, TypedDict, final
-from typing_extensions import Self
+from typing import Any, Literal, TypedDict, final
+from typing_extensions import Self, TypeAliasType
 import uuid
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
@@ -47,7 +47,7 @@ class InAlgoPredArgs(TypedDict):
     model: str
 
 
-InAlgoArgs: TypeAlias = InAlgoFitArgs | InAlgoPredArgs | InAlgoRunArgs
+InAlgoArgs = TypeAliasType("InAlgoArgs", InAlgoFitArgs | InAlgoPredArgs | InAlgoRunArgs)
 
 
 @dataclass

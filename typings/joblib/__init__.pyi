@@ -1,10 +1,10 @@
 from collections.abc import Callable, Iterable
 from pathlib import Path
 from types import TracebackType
-from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
-from typing_extensions import ParamSpec, Self
+from typing import Any, Generic, Literal, TypeVar, overload
+from typing_extensions import ParamSpec, Self, TypeAliasType
 
-_CompressLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+_CompressLevel = TypeAliasType("_CompressLevel", Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 def dump(
     value: Any,
