@@ -3,7 +3,8 @@
 They are kept separate because they're very slow.
 """
 
-from typing import Dict, Generator, List, Type
+from collections.abc import Callable
+from typing import Dict, Generator, List
 
 import numpy as np
 import pytest
@@ -61,7 +62,7 @@ def test_zafar(toy_train_test: TrainTestPair) -> None:  # noqa: PLR0915
 
     hyperparams: Dict[str, List[float]] = {"gamma": [1, 1e-1, 1e-2]}
 
-    model_class: Type[InAlgorithm] = ZafarAccuracy
+    model_class: Callable[..., InAlgorithm] = ZafarAccuracy
     zafar_cv = CrossValidator(model_class, hyperparams, folds=3)
 
     assert zafar_cv is not None

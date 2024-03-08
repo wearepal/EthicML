@@ -1,6 +1,7 @@
 """Tests for cross validation."""
 
-from typing import Dict, List, NamedTuple, Sequence, Type, Union
+from collections.abc import Callable
+from typing import Dict, List, NamedTuple, Sequence, Union
 
 import numpy as np
 import pytest
@@ -14,7 +15,7 @@ from ethicml.run import CrossValidator, CVResults
 class CvParam(NamedTuple):
     """Specification of a unit test for cross validation."""
 
-    model: Type[InAlgorithm]
+    model: Callable[..., InAlgorithm]
     hyperparams: Dict[str, Union[Sequence[float], List[str], Sequence[KernelType]]]
     num_pos: int
 
@@ -32,7 +33,7 @@ CV_PARAMS = [
 @pytest.mark.parametrize(("model", "hyperparams", "num_pos"), CV_PARAMS)
 def test_cv(
     toy_train_test: TrainTestPair,
-    model: Type[InAlgorithm],
+    model: Callable[..., InAlgorithm],
     hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
 ) -> None:
@@ -53,7 +54,7 @@ def test_cv(
 @pytest.mark.parametrize(("model", "hyperparams", "num_pos"), CV_PARAMS)
 def test_parallel_cv(
     toy_train_test: TrainTestPair,
-    model: Type[InAlgorithm],
+    model: Callable[..., InAlgorithm],
     hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
 ) -> None:
