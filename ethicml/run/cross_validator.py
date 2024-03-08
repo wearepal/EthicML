@@ -1,9 +1,10 @@
 """Cross Validation for any in process (at the moment) Algorithm."""
 
 from collections import defaultdict
+from collections.abc import Callable
 from itertools import product
 from statistics import mean
-from typing import Any, Mapping, NamedTuple, Sequence, Type
+from typing import Any, Mapping, NamedTuple, Sequence
 
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV
@@ -55,7 +56,7 @@ class CVResults:
 
     """
 
-    def __init__(self, results: list[ResultTuple], model: type[InAlgorithm]):
+    def __init__(self, results: list[ResultTuple], model: Callable[..., InAlgorithm]):
         self.raw_storage = results
         self.model = model
         self.mean_storage = self._organize_and_compute_means()
@@ -195,7 +196,7 @@ class CrossValidator:
 
     def __init__(
         self,
-        model: Type[InAlgorithm],
+        model: Callable[..., InAlgorithm],
         hyperparams: Mapping[str, Sequence[Any]],
         folds: int = 3,
         max_parallel: int = 0,

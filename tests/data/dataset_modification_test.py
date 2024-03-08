@@ -1,6 +1,7 @@
 """Test modifiactions to a dataset."""
 
-from typing import Type, Union
+from collections.abc import Callable
+from typing import Union
 
 import pandas as pd
 import pytest
@@ -14,7 +15,8 @@ from ethicml.data.util import from_dummies
 @pytest.mark.parametrize("dataset_name", available_tabular())
 @pytest.mark.parametrize("scaler_type", [StandardScaler, MinMaxScaler])
 def test_scaling(
-    dataset_name: str, scaler_type: Union[Type[StandardScaler], Type[MinMaxScaler]]
+    dataset_name: str,
+    scaler_type: Union[Callable[[], StandardScaler], Callable[[], StandardScaler]],
 ) -> None:
     """Test that scaling works."""
     scaler = scaler_type()
@@ -42,7 +44,8 @@ def test_scaling(
 @pytest.mark.parametrize("dataset_name", available_tabular())
 @pytest.mark.parametrize("scaler_type", [StandardScaler, MinMaxScaler])
 def test_scaling_separate_test(
-    dataset_name: str, scaler_type: Union[Type[StandardScaler], Type[MinMaxScaler]]
+    dataset_name: str,
+    scaler_type: Union[Callable[[], StandardScaler], Callable[[], StandardScaler]],
 ) -> None:
     """Test that scaling works."""
     scaler = scaler_type()
