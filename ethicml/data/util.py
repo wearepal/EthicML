@@ -1,7 +1,7 @@
 """Useful methods that are used in some of the data objects."""
 
 from collections.abc import Mapping, Sequence
-from itertools import groupby
+from itertools import chain, groupby
 from typing import NamedTuple, TypeAlias
 
 import pandas as pd
@@ -98,7 +98,7 @@ def flatten_dict(dictionary: Mapping[str, list[str]] | None) -> list[str]:
     """Flatten a dictionary of lists by joining all lists to one big list."""
     if dictionary is None:
         return []
-    return [x for inner_list in dictionary.values() for x in inner_list]
+    return list(chain.from_iterable(dictionary.values()))
 
 
 def reduce_feature_group(

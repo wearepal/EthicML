@@ -1,6 +1,6 @@
 """Methods that are shared among the inprocess algorithms."""
 
-from typing import Union
+from typing_extensions import TypeAliasType
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC, LinearSVC
@@ -9,8 +9,7 @@ from ethicml.utility import ClassifierType, KernelType
 
 __all__ = ["LinearModel", "settings_for_svm_lr"]
 
-
-LinearModel = Union[SVC, LinearSVC, LogisticRegression]  # noqa: UP007
+LinearModel = TypeAliasType("LinearModel", SVC | LinearSVC | LogisticRegression)
 
 
 def settings_for_svm_lr(

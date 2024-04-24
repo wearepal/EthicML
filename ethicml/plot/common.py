@@ -1,13 +1,14 @@
 """Common plotting functions / datastructures."""
 
-from typing import Any, Literal, NamedTuple, TypeAlias
+from typing import Any, Literal, NamedTuple
+from typing_extensions import TypeAliasType
 
 from matplotlib import legend
 from matplotlib.axes import Axes
 import pandas as pd
 
-LegendType: TypeAlias = Literal["inside", "outside"]
-PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]
+LegendType = TypeAliasType("LegendType", Literal["inside", "outside"])
+PlotType = TypeAliasType("PlotType", Literal["box", "cross", "scatter", "line"])
 
 
 class DataEntry(NamedTuple):
