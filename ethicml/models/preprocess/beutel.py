@@ -55,9 +55,9 @@ class Beutel(PreAlgorithmSubprocess):
         # TODO: replace this with dataclasses.asdict()
         return {
             "fairness": self.fairness,
-            "enc_size": list(self.enc_size),
-            "adv_size": list(self.adv_size),
-            "pred_size": list(self.pred_size),
+            "enc_size": self.enc_size,
+            "adv_size": self.adv_size,
+            "pred_size": self.pred_size,
             "enc_activation": self.enc_activation,
             "adv_activation": self.adv_activation,
             "batch_size": self.batch_size,
