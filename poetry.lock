@@ -3085,13 +3085,13 @@ files = [
 
 [[package]]
 name = "types-seaborn"
-version = "0.13.2.20240311"
+version = "0.13.2.20240417"
 description = "Typing stubs for seaborn"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "types-seaborn-0.13.2.20240311.tar.gz", hash = "sha256:75b6d94214b8e94591c58e09581f65f46a673c0ee2dab162a76205c46c95057c"},
-    {file = "types_seaborn-0.13.2.20240311-py3-none-any.whl", hash = "sha256:96879a786dafa026aa376854d498dd20c345bd8764de8a2a1590b7b423c0a69d"},
+    {file = "types-seaborn-0.13.2.20240417.tar.gz", hash = "sha256:130989a40d92a1256292c9693b62a7420f1747b25e0d74b6c156764a56ed10ec"},
+    {file = "types_seaborn-0.13.2.20240417-py3-none-any.whl", hash = "sha256:5a0e9acfde4d4814fa4d926e11c2b874a19f754987665afe5423a4fb322f46eb"},
 ]
 
 [package.dependencies]
