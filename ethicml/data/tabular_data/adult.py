@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Final
+from typing import ClassVar, Final, TypeAlias
 from typing_extensions import override
 
 from ..dataset import LabelSpecsPair, StaticCSVDataset
@@ -28,8 +28,12 @@ class AdultSplits(Enum):
     RACE_SEX = "Race-Sex"
 
 
+class _Adult:
+    Splits: TypeAlias = AdultSplits
+
+
 @dataclass
-class Adult(StaticCSVDataset):
+class Adult(_Adult, StaticCSVDataset):
     """UCI Adult dataset.
 
     :param discrete_only: If True, continuous features are dropped. (Default: False)
@@ -39,11 +43,10 @@ class Adult(StaticCSVDataset):
     :param binarize_race: If True, race will be white vs rest. (Default: False)
     """
 
-    Splits: ClassVar[type[AdultSplits]] = AdultSplits
     num_samples: ClassVar[int] = 45_222
     csv_file: ClassVar[str] = "adult.csv.zip"
 
-    split: AdultSplits = Splits.SEX
+    split: AdultSplits = _Adult.Splits.SEX
     binarize_nationality: bool = False
     binarize_race: bool = False
 

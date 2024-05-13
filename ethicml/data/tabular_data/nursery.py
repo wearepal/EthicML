@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict
@@ -17,8 +17,12 @@ class NurserySplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Nursery:
+    Splits: TypeAlias = NurserySplits
+
+
 @dataclass
-class Nursery(LegacyDataset):
+class Nursery(_Nursery, LegacyDataset):
     """UCI Adult dataset.
 
     :param discrete_only: If True, continuous features are dropped. (Default: False)
@@ -28,9 +32,7 @@ class Nursery(LegacyDataset):
     :param binarize_race: If True, race will be white vs rest. (Default: False)
     """
 
-    Splits: ClassVar[type[NurserySplits]] = NurserySplits
-
-    split: NurserySplits = Splits.FINANCE
+    split: NurserySplits = _Nursery.Splits.FINANCE
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict, spec_from_binary_cols
@@ -19,8 +19,13 @@ class SqfSplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Sqf:
+    Splits: TypeAlias = SqfSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
+
+
 @dataclass
-class Sqf(LegacyDataset):
+class Sqf(_Sqf, LegacyDataset):
     """Stop, question and frisk dataset.
 
     This data is from the 2016,
@@ -28,9 +33,6 @@ class Sqf(LegacyDataset):
     """
 
     split: SqfSplits = SqfSplits.SEX
-
-    Splits: ClassVar[type[SqfSplits]] = SqfSplits
-    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

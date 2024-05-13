@@ -40,7 +40,7 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import flatten_dict
@@ -55,14 +55,16 @@ class AdmissionsSplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Admissions:
+    Splits: TypeAlias = AdmissionsSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
+
+
 @dataclass
-class Admissions(LegacyDataset):
+class Admissions(_Admissions, LegacyDataset):
     """UFRGS Admissions dataset."""
 
     split: AdmissionsSplits = AdmissionsSplits.GENDER
-
-    Splits: ClassVar[type[AdmissionsSplits]] = AdmissionsSplits
-    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}

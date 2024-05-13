@@ -24,7 +24,7 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
 from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import LabelGroup, flatten_dict, spec_from_binary_cols
@@ -41,14 +41,16 @@ class LawSplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Law:
+    Splits: TypeAlias = LawSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
+
+
 @dataclass
-class Law(LegacyDataset):
+class Law(_Law, LegacyDataset):
     """LSAC Law School dataset."""
 
-    split: LawSplits = LawSplits.SEX
-
-    Splits: ClassVar[type[LawSplits]] = LawSplits
-    """Shorthand for the Enum that defines the splits associated with this class."""
+    split: LawSplits = _Law.Splits.SEX
 
     def __post_init__(self) -> None:
         disc_feature_groups = {
