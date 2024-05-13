@@ -1701,13 +1701,13 @@ install = ["zstandard (>=0.21.0)"]
 
 [[package]]
 name = "pdm"
-version = "2.15.1"
+version = "2.15.2"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.15.1-py3-none-any.whl", hash = "sha256:4a6cb2061796ac03760b2d3a546c3b9029ba6fa37e494fc0c9503b26e3fa93a5"},
-    {file = "pdm-2.15.1.tar.gz", hash = "sha256:1c9cd049c1016633a23ef92ec1fc782da8ae0743142ef33faf7d48872f874b39"},
+    {file = "pdm-2.15.2-py3-none-any.whl", hash = "sha256:04cf106fbf2cf4564eda70b40ffb33acf4637e1cee55d6cec8f8c21fe1f70b65"},
+    {file = "pdm-2.15.2.tar.gz", hash = "sha256:c08e87078c29c00e7ad9681dc6a23419dc5617dcbe6cc205024ef4b4e7e28475"},
 ]
 
 [package.dependencies]
