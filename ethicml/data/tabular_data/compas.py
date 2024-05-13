@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict, spec_from_binary_cols
@@ -19,14 +19,16 @@ class CompasSplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Compas:
+    Splits: TypeAlias = CompasSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
+
+
 @dataclass
-class Compas(LegacyDataset):
+class Compas(_Compas, LegacyDataset):
     """Compas (or ProPublica) dataset."""
 
     split: CompasSplits = CompasSplits.SEX
-
-    Splits: ClassVar[type[CompasSplits]] = CompasSplits
-    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

@@ -28,8 +28,6 @@ from ethicml.data import (
     Nursery,
     Sqf,
     Synthetic,
-    SyntheticScenarios,
-    SyntheticTargets,
     Toy,
     create_data_obj,
     flatten_dict,
@@ -656,8 +654,8 @@ def test_data_shape(dt: DT) -> None:
 )
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
 def test_synth_data_shape(
-    scenario: SyntheticScenarios,
-    target: SyntheticTargets,
+    scenario: Synthetic.Scenarios,
+    target: Synthetic.Targets,
     fair: bool,  # noqa: FBT001
     samples: int,
 ) -> None:

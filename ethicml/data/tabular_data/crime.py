@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import filter_features_by_prefixes, flatten_dict
@@ -17,14 +17,16 @@ class CrimeSplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Crime:
+    Splits: TypeAlias = CrimeSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
+
+
 @dataclass
-class Crime(LegacyDataset):
+class Crime(_Crime, LegacyDataset):
     """UCI Communities and Crime dataset."""
 
     split: CrimeSplits = CrimeSplits.RACE_BINARY
-
-    Splits: ClassVar[type[CrimeSplits]] = CrimeSplits
-    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

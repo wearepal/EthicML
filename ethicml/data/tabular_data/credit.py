@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar
+from typing import TypeAlias
 
 from ..dataset import LegacyDataset
 from ..util import flatten_dict
@@ -17,14 +17,16 @@ class CreditSplits(Enum):
     CUSTOM = "Custom"
 
 
+class _Credit:
+    Splits: TypeAlias = CreditSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
+
+
 @dataclass
-class Credit(LegacyDataset):
+class Credit(_Credit, LegacyDataset):
     """UCI Credit Card dataset."""
 
-    split: CreditSplits = CreditSplits.SEX
-
-    Splits: ClassVar[type[CreditSplits]] = CreditSplits
-    """Shorthand for the Enum that defines the splits associated with this class."""
+    split: CreditSplits = _Credit.Splits.SEX
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

@@ -3,13 +3,13 @@
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar
+from typing import TypeAlias
 from typing_extensions import override
 
 from ethicml.data.dataset import CSVDatasetDC, LabelSpecsPair
 from ethicml.data.util import DiscFeatureGroups, single_col_spec
 
-__all__ = ["SyntheticScenarios", "SyntheticTargets", "Synthetic"]
+__all__ = ["Synthetic"]
 
 
 class SyntheticScenarios(Enum):
@@ -29,8 +29,13 @@ class SyntheticTargets(Enum):
     Y3 = 3
 
 
+class _Synthetic:
+    Scenarios: TypeAlias = SyntheticScenarios
+    Targets: TypeAlias = SyntheticTargets
+
+
 @dataclass
-class Synthetic(CSVDatasetDC):
+class Synthetic(_Synthetic, CSVDatasetDC):
     r"""Dataset with synthetic data.
 
     ⊥ = is independent of
@@ -45,9 +50,6 @@ class Synthetic(CSVDatasetDC):
     Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
         - This models data where both the input and target are directly biased.
     """
-
-    Scenarios: ClassVar[type[SyntheticScenarios]] = SyntheticScenarios
-    Targets: ClassVar[type[SyntheticTargets]] = SyntheticTargets
 
     scenario: SyntheticScenarios = SyntheticScenarios.S1
     target: SyntheticTargets = SyntheticTargets.Y3
