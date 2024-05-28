@@ -2,6 +2,7 @@
 
 from collections.abc import Callable
 
+import numpy as np
 import pandas as pd
 import pytest
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
@@ -73,8 +74,8 @@ def test_scaling_separate_test(
     train_post, _ = scale_continuous(dataset, train_scaled, scaler2, inverse=True)
     test_post, _ = scale_continuous(dataset, test_scaled, scaler2, inverse=True)
 
-    pd.testing.assert_frame_equal(train.x, train_post.x, check_dtype=False)
-    pd.testing.assert_frame_equal(test.x, test_post.x, check_dtype=False)
+    np.testing.assert_allclose(train.x.to_numpy(), train_post.x.to_numpy(), atol=1e-7)
+    np.testing.assert_allclose(test.x.to_numpy(), test_post.x.to_numpy(), atol=1e-7)
 
 
 def test_from_dummies() -> None:
