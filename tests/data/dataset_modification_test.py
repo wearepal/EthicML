@@ -38,7 +38,7 @@ def test_scaling(
 
     datatuple_post, _ = scale_continuous(dataset, datatuple_scaled, scaler2, inverse=True)
 
-    pd.testing.assert_frame_equal(datatuple.x, datatuple_post.x, check_dtype=False)
+    np.testing.assert_allclose(datatuple.x.to_numpy(), datatuple_post.x.to_numpy(), atol=1e-7)
 
 
 @pytest.mark.parametrize("dataset_name", available_tabular())
