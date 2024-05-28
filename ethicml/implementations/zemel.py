@@ -196,8 +196,8 @@ def main() -> None:
     Based on code from https://github.com/zjelveh/learning-fair-representations
     Which in turn, we've got from AIF360
     """
-    pre_algo_args: "PreAlgoArgs" = json.loads(sys.argv[1])
-    flags: "ZemelArgs" = json.loads(sys.argv[2])
+    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
+    flags: ZemelArgs = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         train, test = load_data_from_flags(pre_algo_args)
         save_transformations(

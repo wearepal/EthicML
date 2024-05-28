@@ -59,8 +59,8 @@ def train_and_predict(
 
 def main() -> None:
     """Run the Agarwal model as a standalone program."""
-    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
-    flags: "FairDummiesArgs" = json.loads(sys.argv[2])
+    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
+    flags: FairDummiesArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
         train = DataTuple.from_file(Path(in_algo_args["train"]))

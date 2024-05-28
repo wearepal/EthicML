@@ -133,8 +133,8 @@ def train_and_predict(
 
 def main() -> None:
     """Run the FWD model as a standalone program on tabular data."""
-    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
-    flags: "DroArgs" = json.loads(sys.argv[2])
+    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
+    flags: DroArgs = json.loads(sys.argv[2])
     data: DataTuple | TestTuple
     if in_algo_args["mode"] == "run":
         train, test = load_data_from_flags(in_algo_args)
