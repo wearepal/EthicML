@@ -377,8 +377,8 @@ def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
 
 def main() -> None:
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
-    pre_algo_args: "PreAlgoArgs" = json.loads(sys.argv[1])
-    flags: "BeutelArgs" = json.loads(sys.argv[2])
+    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
+    flags: BeutelArgs = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         train, test = load_data_from_flags(pre_algo_args)
         save_transformations(

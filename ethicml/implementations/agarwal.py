@@ -59,7 +59,7 @@ def fit(train: DataTuple, args: "AgarwalArgs", seed: int = 888) -> "Exponentiate
     else:
         fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
-    model: "LinearModel | GradientBoostingClassifier"
+    model: LinearModel | GradientBoostingClassifier
     match classifier_type:
         case ClassifierType.svm:
             assert kernel_type is not None
@@ -119,8 +119,8 @@ def working_dir(root: Path) -> Generator[None, None, None]:
 
 def main() -> None:
     """Run the Agarwal model as a standalone program."""
-    in_algo_args: "InAlgoArgs" = json.loads(sys.argv[1])
-    flags: "AgarwalArgs" = json.loads(sys.argv[2])
+    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
+    flags: AgarwalArgs = json.loads(sys.argv[2])
     try:
         import cloudpickle  # pyright: ignore
 

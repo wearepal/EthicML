@@ -136,8 +136,8 @@ def train_model(
 
 def main() -> None:
     """Run model."""
-    pre_algo_args: "PreAlgoArgs" = json.loads(sys.argv[1])
-    flags: "VfaeArgs" = json.loads(sys.argv[2])
+    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
+    flags: VfaeArgs = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         set_seed(pre_algo_args["seed"])
         train, test = load_data_from_flags(pre_algo_args)
