@@ -1695,13 +1695,13 @@ files = [
 
 [[package]]
 name = "pbs-installer"
-version = "2024.4.1"
+version = "2024.4.24"
 description = "Installer for Python Build Standalone"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pbs_installer-2024.4.1-py3-none-any.whl", hash = "sha256:762e1b5b95a48389051205c48fcd4635e946b48ab3252d2c79a8a77dc87e91ff"},
-    {file = "pbs_installer-2024.4.1.tar.gz", hash = "sha256:1f2aca82511fb9e1973b14708d7386780a8c56d111b680ae5786b3f430fa918a"},
+    {file = "pbs_installer-2024.4.24-py3-none-any.whl", hash = "sha256:f8291f0231003d279d0de8fde88fa87b7c6d7fabc2671235113cf67513ff74f5"},
+    {file = "pbs_installer-2024.4.24.tar.gz", hash = "sha256:19224733068b0ffa39b53afbb61544bee8ecb9503e7222ba034f07b9913e2c1c"},
 ]
 
 [package.extras]
@@ -1711,13 +1711,13 @@ install = ["zstandard (>=0.21.0)"]
 
 [[package]]
 name = "pdm"
-version = "2.15.4"
+version = "2.16.1"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.15.4-py3-none-any.whl", hash = "sha256:4582ea62d3b184146d1aa81bca4b34ae6b8979bc02aa38f44b75fd4bfdae4738"},
-    {file = "pdm-2.15.4.tar.gz", hash = "sha256:58e225850567dcadce42418db4638996df2b1378cd0830cd48afda1b455d9c72"},
+    {file = "pdm-2.16.1-py3-none-any.whl", hash = "sha256:f3473ff12433bcc42cc1e7540c2c84d028290619542c61431fe722e54536c3e3"},
+    {file = "pdm-2.16.1.tar.gz", hash = "sha256:b8680028b3aff3af8e15b483467da36bb9f02fcd402cf939da8ab6375d955131"},
 ]
 
 [package.dependencies]
@@ -1730,7 +1730,7 @@ httpx = {version = ">0.20,<1", extras = ["socks"]}
 installer = ">=0.7,<0.8"
 msgpack = ">=1.0"
 packaging = ">=20.9,<22.0 || >22.0"
-pbs-installer = "*"
+pbs-installer = ">=2024.4.18"
 platformdirs = "*"
 pyproject-hooks = "*"
 python-dotenv = ">=0.15"
