@@ -463,13 +463,13 @@ files = [
 
 [[package]]
 name = "dep-logic"
-version = "0.2.0"
+version = "0.4.4"
 description = "Python dependency specifications supporting logical operations"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "dep_logic-0.2.0-py3-none-any.whl", hash = "sha256:af439c2acaf7522dd321a71f30e0c4fd59b7553eb99967af07d53320902cde39"},
-    {file = "dep_logic-0.2.0.tar.gz", hash = "sha256:cff502b515aff2d413d19d6afc70174fc67da19e821be4a9b68460ccee2514c9"},
+    {file = "dep_logic-0.4.4-py3-none-any.whl", hash = "sha256:3f47301f9a8230443d3df7d7f9bdc33d35d8591a14112d36f221b0e33810d3ae"},
+    {file = "dep_logic-0.4.4.tar.gz", hash = "sha256:e716afdda9351107c54ef4f6fd3fd29568f53529afb333b4958183b9d306e44a"},
 ]
 
 [package.dependencies]
@@ -1711,18 +1711,18 @@ install = ["zstandard (>=0.21.0)"]
 
 [[package]]
 name = "pdm"
-version = "2.16.1"
+version = "2.17.1"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.16.1-py3-none-any.whl", hash = "sha256:f3473ff12433bcc42cc1e7540c2c84d028290619542c61431fe722e54536c3e3"},
-    {file = "pdm-2.16.1.tar.gz", hash = "sha256:b8680028b3aff3af8e15b483467da36bb9f02fcd402cf939da8ab6375d955131"},
+    {file = "pdm-2.17.1-py3-none-any.whl", hash = "sha256:2ef7bb1424217f267b81e40f9c5326af27a519e9535e3272aa3b454ad5ab096c"},
+    {file = "pdm-2.17.1.tar.gz", hash = "sha256:9e1a28ecca83f3627aa700b1e3d52cd3f82f10fc908ac6499119baf7a3d4ea6c"},
 ]
 
 [package.dependencies]
 blinker = "*"
-dep-logic = ">=0.2.0,<1.0"
+dep-logic = ">=0.4.3"
 filelock = ">=3.13"
 findpython = ">=0.6.0,<1.0.0a0"
 hishel = ">=0.0.24,<0.1.0"
@@ -1740,14 +1740,16 @@ shellingham = ">=1.3.2"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 tomlkit = ">=0.11.1,<1"
 truststore = {version = "*", markers = "python_version >= \"3.10\""}
-unearth = ">=0.15.0"
+unearth = ">=0.16.0"
 virtualenv = ">=20"
 
 [package.extras]
 all = ["pdm[keyring,template]"]
+all-locked = ["arrow (==1.2.3)", "binaryornot (==0.4.4)", "certifi (==2024.2.2)", "cffi (==1.15.1)", "chardet (==5.2.0)", "charset-normalizer (==3.3.2)", "click (==8.1.7)", "colorama (==0.4.6)", "cookiecutter (==2.1.1)", "copier (==8.0.0)", "cryptography (==41.0.1)", "decorator (==5.1.1)", "dunamai (==1.17.0)", "funcy (==2.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "jaraco-classes (==3.2.3)", "jeepney (==0.8.0)", "jinja2 (==3.1.3)", "jinja2-ansible-filters (==1.3.2)", "jinja2-time (==0.2.0)", "keyring (==24.1.1)", "markupsafe (==2.1.5)", "more-itertools (==9.1.0)", "packaging (==24.0)", "pathspec (==0.12.1)", "plumbum (==1.8.2)", "prompt-toolkit (==3.0.38)", "pycparser (==2.21)", "pydantic (==1.10.9)", "pygments (==2.17.2)", "python-dateutil (==2.9.0.post0)", "python-slugify (==8.0.1)", "pywin32 (==306)", "pywin32-ctypes (==0.2.1)", "pyyaml (==6.0.1)", "pyyaml-include (==1.3)", "questionary (==1.10.0)", "requests (==2.31.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "text-unidecode (==1.3)", "typing-extensions (==4.10.0)", "urllib3 (==2.2.1)", "wcwidth (==0.2.6)", "zipp (==3.18.1)"]
 cookiecutter = ["cookiecutter"]
 copier = ["copier (>=8.0.0)"]
 keyring = ["keyring"]
+locked = ["anyio (==4.3.0)", "blinker (==1.7.0)", "certifi (==2024.2.2)", "dep-logic (==0.4.3)", "distlib (==0.3.8)", "exceptiongroup (==1.2.0)", "filelock (==3.13.3)", "findpython (==0.6.0)", "h11 (==0.14.0)", "hishel (==0.0.25)", "httpcore (==1.0.5)", "httpx (==0.27.0)", "httpx[socks] (==0.27.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "installer (==0.7.0)", "markdown-it-py (==3.0.0)", "mdurl (==0.1.2)", "msgpack (==1.0.8)", "packaging (==24.0)", "pbs-installer (==2024.4.24)", "platformdirs (==4.2.0)", "pygments (==2.17.2)", "pyproject-hooks (==1.0.0)", "python-dotenv (==1.0.1)", "resolvelib (==1.0.1)", "rich (==13.7.1)", "shellingham (==1.5.4)", "sniffio (==1.3.1)", "socksio (==1.0.0)", "tomli (==2.0.1)", "tomlkit (==0.12.4)", "truststore (==0.8.0)", "typing-extensions (==4.10.0)", "unearth (==0.16.0)", "virtualenv (==20.25.1)", "zipp (==3.18.1)"]
 pytest = ["pytest", "pytest-mock"]
 template = ["pdm[cookiecutter,copier]"]
 
@@ -3152,13 +3154,13 @@ files = [
 
 [[package]]
 name = "unearth"
-version = "0.15.1"
+version = "0.16.1"
 description = "A utility to fetch and download python packages"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "unearth-0.15.1-py3-none-any.whl", hash = "sha256:e76dc2e3ce64fe0888fca4e0f60607e7be42cd033e1b8e6a6e49d8cf3c20c874"},
-    {file = "unearth-0.15.1.tar.gz", hash = "sha256:863deb3339c0d65a5be0d0ad2c67d46d5f574a798e74ef0552bf11d298a30abb"},
+    {file = "unearth-0.16.1-py3-none-any.whl", hash = "sha256:5a598ac1a3f185144fadc9de47f1043bff805c36118ffc40f81ef98ff22e8e37"},
+    {file = "unearth-0.16.1.tar.gz", hash = "sha256:988a43418fa0b78aeb628a15f6a3b02152c1787f63fe6d254c7f4e2ccf8db0a7"},
 ]
 
 [package.dependencies]
