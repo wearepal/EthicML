@@ -917,20 +917,6 @@ files = [
 ]
 
 [[package]]
-name = "intel-openmp"
-version = "2021.4.0"
-description = "Intel OpenMP* Runtime Library"
-optional = false
-python-versions = "*"
-files = [
-    {file = "intel_openmp-2021.4.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:41c01e266a7fdb631a7609191709322da2bbf24b252ba763f125dd651bcc7675"},
-    {file = "intel_openmp-2021.4.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:3b921236a38384e2016f0f3d65af6732cf2c12918087128a9163225451e776f2"},
-    {file = "intel_openmp-2021.4.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:e2240ab8d01472fed04f3544a878cda5da16c26232b7ea1b59132dbfb48b186e"},
-    {file = "intel_openmp-2021.4.0-py2.py3-none-win32.whl", hash = "sha256:6e863d8fd3d7e8ef389d52cf97a50fe2afe1a19247e8c0d168ce021546f96fc9"},
-    {file = "intel_openmp-2021.4.0-py2.py3-none-win_amd64.whl", hash = "sha256:eef4c8bcc8acefd7f5cd3b9384dbf73d59e2c99fc56545712ded913f43c4a94f"},
-]
-
-[[package]]
 name = "ipython-pygments"
 version = "0.1.0"
 description = "Syntax highlighting for ipython"
@@ -1183,29 +1169,24 @@ files = [
     {file = "matplotlib-3.9.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:dd2a59ff4b83d33bca3b5ec58203cc65985367812cb8c257f3e101632be86d92"},
     {file = "matplotlib-3.9.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0fc001516ffcf1a221beb51198b194d9230199d6842c540108e4ce109ac05cc0"},
     {file = "matplotlib-3.9.1-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:83c6a792f1465d174c86d06f3ae85a8fe36e6f5964633ae8106312ec0921fdf5"},
-    {file = "matplotlib-3.9.1-cp310-cp310-win_amd64.whl", hash = "sha256:421851f4f57350bcf0811edd754a708d2275533e84f52f6760b740766c6747a7"},
     {file = "matplotlib-3.9.1-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:b3fce58971b465e01b5c538f9d44915640c20ec5ff31346e963c9e1cd66fa812"},
     {file = "matplotlib-3.9.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:a973c53ad0668c53e0ed76b27d2eeeae8799836fd0d0caaa4ecc66bf4e6676c0"},
     {file = "matplotlib-3.9.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:82cd5acf8f3ef43f7532c2f230249720f5dc5dd40ecafaf1c60ac8200d46d7eb"},
     {file = "matplotlib-3.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ab38a4f3772523179b2f772103d8030215b318fef6360cb40558f585bf3d017f"},
     {file = "matplotlib-3.9.1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:2315837485ca6188a4b632c5199900e28d33b481eb083663f6a44cfc8987ded3"},
-    {file = "matplotlib-3.9.1-cp311-cp311-win_amd64.whl", hash = "sha256:a0c977c5c382f6696caf0bd277ef4f936da7e2aa202ff66cad5f0ac1428ee15b"},
     {file = "matplotlib-3.9.1-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:565d572efea2b94f264dd86ef27919515aa6d629252a169b42ce5f570db7f37b"},
     {file = "matplotlib-3.9.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:6d397fd8ccc64af2ec0af1f0efc3bacd745ebfb9d507f3f552e8adb689ed730a"},
     {file = "matplotlib-3.9.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:26040c8f5121cd1ad712abffcd4b5222a8aec3a0fe40bc8542c94331deb8780d"},
     {file = "matplotlib-3.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d12cb1837cffaac087ad6b44399d5e22b78c729de3cdae4629e252067b705e2b"},
     {file = "matplotlib-3.9.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:0e835c6988edc3d2d08794f73c323cc62483e13df0194719ecb0723b564e0b5c"},
-    {file = "matplotlib-3.9.1-cp312-cp312-win_amd64.whl", hash = "sha256:44a21d922f78ce40435cb35b43dd7d573cf2a30138d5c4b709d19f00e3907fd7"},
     {file = "matplotlib-3.9.1-cp39-cp39-macosx_10_12_x86_64.whl", hash = "sha256:0c584210c755ae921283d21d01f03a49ef46d1afa184134dd0f95b0202ee6f03"},
     {file = "matplotlib-3.9.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:11fed08f34fa682c2b792942f8902e7aefeed400da71f9e5816bea40a7ce28fe"},
     {file = "matplotlib-3.9.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0000354e32efcfd86bda75729716b92f5c2edd5b947200be9881f0a671565c33"},
     {file = "matplotlib-3.9.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4db17fea0ae3aceb8e9ac69c7e3051bae0b3d083bfec932240f9bf5d0197a049"},
     {file = "matplotlib-3.9.1-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:208cbce658b72bf6a8e675058fbbf59f67814057ae78165d8a2f87c45b48d0ff"},
-    {file = "matplotlib-3.9.1-cp39-cp39-win_amd64.whl", hash = "sha256:dc23f48ab630474264276be156d0d7710ac6c5a09648ccdf49fef9200d8cbe80"},
     {file = "matplotlib-3.9.1-pp39-pypy39_pp73-macosx_10_15_x86_64.whl", hash = "sha256:3fda72d4d472e2ccd1be0e9ccb6bf0d2eaf635e7f8f51d737ed7e465ac020cb3"},
     {file = "matplotlib-3.9.1-pp39-pypy39_pp73-macosx_11_0_arm64.whl", hash = "sha256:84b3ba8429935a444f1fdc80ed930babbe06725bcf09fbeb5c8757a2cd74af04"},
     {file = "matplotlib-3.9.1-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b918770bf3e07845408716e5bbda17eadfc3fcbd9307dc67f37d6cf834bb3d98"},
-    {file = "matplotlib-3.9.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:f1f2e5d29e9435c97ad4c36fb6668e89aee13d48c75893e25cef064675038ac9"},
     {file = "matplotlib-3.9.1.tar.gz", hash = "sha256:de06b19b8db95dd33d0dc17c926c7c9ebed9f572074b6fac4f65068a6814d010"},
 ]
 
@@ -1233,24 +1214,6 @@ files = [
     {file = "mistune-3.0.2-py3-none-any.whl", hash = "sha256:71481854c30fdbc938963d3605b72501f5c10a9320ecd412c121c163a1c7d205"},
     {file = "mistune-3.0.2.tar.gz", hash = "sha256:fc7f93ded930c92394ef2cb6f04a8aabab4117a91449e72dcc8dfa646a508be8"},
 ]
-
-[[package]]
-name = "mkl"
-version = "2021.4.0"
-description = "Intel® oneAPI Math Kernel Library"
-optional = false
-python-versions = "*"
-files = [
-    {file = "mkl-2021.4.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:67460f5cd7e30e405b54d70d1ed3ca78118370b65f7327d495e9c8847705e2fb"},
-    {file = "mkl-2021.4.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:636d07d90e68ccc9630c654d47ce9fdeb036bb46e2b193b3a9ac8cfea683cce5"},
-    {file = "mkl-2021.4.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:398dbf2b0d12acaf54117a5210e8f191827f373d362d796091d161f610c1ebfb"},
-    {file = "mkl-2021.4.0-py2.py3-none-win32.whl", hash = "sha256:439c640b269a5668134e3dcbcea4350459c4a8bc46469669b2d67e07e3d330e8"},
-    {file = "mkl-2021.4.0-py2.py3-none-win_amd64.whl", hash = "sha256:ceef3cafce4c009dd25f65d7ad0d833a0fbadc3d8903991ec92351fe5de1e718"},
-]
-
-[package.dependencies]
-intel-openmp = "==2021.*"
-tbb = "==2021.*"
 
 [[package]]
 name = "mpmath"
@@ -2899,19 +2862,6 @@ mpmath = ">=1.1.0,<1.4"
 dev = ["hypothesis (>=6.70.0)", "pytest (>=7.1.0)"]
 
 [[package]]
-name = "tbb"
-version = "2021.12.0"
-description = "Intel® oneAPI Threading Building Blocks (oneTBB)"
-optional = false
-python-versions = "*"
-files = [
-    {file = "tbb-2021.12.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:f2cc9a7f8ababaa506cbff796ce97c3bf91062ba521e15054394f773375d81d8"},
-    {file = "tbb-2021.12.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:a925e9a7c77d3a46ae31c34b0bb7f801c4118e857d137b68f68a8e458fcf2bd7"},
-    {file = "tbb-2021.12.0-py3-none-win32.whl", hash = "sha256:b1725b30c174048edc8be70bd43bb95473f396ce895d91151a474d0fa9f450a8"},
-    {file = "tbb-2021.12.0-py3-none-win_amd64.whl", hash = "sha256:fc2772d850229f2f3df85f1109c4844c495a2db7433d38200959ee9265b34789"},
-]
-
-[[package]]
 name = "teext"
 version = "0.1.9"
 description = "Typing extensions extensions"
@@ -2990,35 +2940,34 @@ files = [
 
 [[package]]
 name = "torch"
-version = "2.3.1+cpu"
+version = "2.4.0+cpu"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "torch-2.3.1+cpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:d679e21d871982b9234444331a26350902cfd2d5ca44ce6f49896af8b3a3087d"},
-    {file = "torch-2.3.1+cpu-cp310-cp310-win_amd64.whl", hash = "sha256:500bf790afc2fd374a15d06213242e517afccc50a46ea5955d321a9a68003335"},
-    {file = "torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:a272defe305dbd944aa28a91cc3db0f0149495b3ebec2e39723a7224fa05dc57"},
-    {file = "torch-2.3.1+cpu-cp311-cp311-win_amd64.whl", hash = "sha256:d2965eb54d3c8818e2280a54bd53e8246a6bb34e4b10bd19c59f35b611dd9f05"},
-    {file = "torch-2.3.1+cpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:2141a6cb7021adf2f92a0fd372cfeac524ba460bd39ce3a641d30a561e41f69a"},
-    {file = "torch-2.3.1+cpu-cp312-cp312-win_amd64.whl", hash = "sha256:6acdca2530462611095c44fd95af75ecd5b9646eac813452fe0adf31a9bc310a"},
-    {file = "torch-2.3.1+cpu-cp38-cp38-linux_x86_64.whl", hash = "sha256:cab92d5101e6db686c5525e04d87cedbcf3a556073d71d07fbe7d1ce09630ffb"},
-    {file = "torch-2.3.1+cpu-cp38-cp38-win_amd64.whl", hash = "sha256:dbc784569a367fd425158cf4ae82057dd3011185ba5fc68440432ba0562cb5b2"},
-    {file = "torch-2.3.1+cpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:a3cb8e61ba311cee1bb7463cbdcf3ebdfd071e2091e74c5785e3687eb02819f9"},
-    {file = "torch-2.3.1+cpu-cp39-cp39-win_amd64.whl", hash = "sha256:df68668056e62c0332e03f43d9da5d4278b39df1ba58d30ec20d34242070955d"},
+    {file = "torch-2.4.0+cpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:0e59377b27823dda6d26528febb7ca06fc5b77816eaa58b4420cc8785e33d4ce"},
+    {file = "torch-2.4.0+cpu-cp310-cp310-win_amd64.whl", hash = "sha256:53c3f75fa4ef0726e494ebef003b17d8a61c3c9fa4630b465610b462bf06c3de"},
+    {file = "torch-2.4.0+cpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:14a7a8b595347dddca594f9e448b93ce68ce4f871acbd32cf04bda7c03664c0c"},
+    {file = "torch-2.4.0+cpu-cp311-cp311-win_amd64.whl", hash = "sha256:3b3cb9a6c17b5a4cea42bb37a243bfbad7659cef6d9b4ee29cb793bdf20f482c"},
+    {file = "torch-2.4.0+cpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:78dbf5f2789933a7ea2dabeead4daa44679b1e0d8eb35ddb7071c8ab7b181eb3"},
+    {file = "torch-2.4.0+cpu-cp312-cp312-win_amd64.whl", hash = "sha256:f59c53a1c3247efb3700f9f78bdd289712177037a85b5519b9ecdef7c77c1fee"},
+    {file = "torch-2.4.0+cpu-cp38-cp38-linux_x86_64.whl", hash = "sha256:08753c3d776ae49dc9ddbae02e26720a513a4dc7997e41d95392bca71623a0cd"},
+    {file = "torch-2.4.0+cpu-cp38-cp38-win_amd64.whl", hash = "sha256:9f376f5a14eb04a44974c3a9dfd857a68090acb435b98e62bbf523baeefac85e"},
+    {file = "torch-2.4.0+cpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:040abaee8affa1bb0f3ca14ca693ba81d0d90d88df5b8a839af96933a7fa2d29"},
+    {file = "torch-2.4.0+cpu-cp39-cp39-win_amd64.whl", hash = "sha256:441fbf517c46fee6782a4289ffe49f701d0a52e3533ab5397ce395da165d921d"},
 ]
 
 [package.dependencies]
 filelock = "*"
 fsspec = "*"
 jinja2 = "*"
-mkl = {version = ">=2021.1.1,<=2021.4.0", markers = "platform_system == \"Windows\""}
 networkx = "*"
 sympy = "*"
 typing-extensions = ">=4.8.0"
 
 [package.extras]
 opt-einsum = ["opt-einsum (>=3.3)"]
-optree = ["optree (>=0.9.1)"]
+optree = ["optree (>=0.11.0)"]
 
 [package.source]
 type = "legacy"
@@ -3027,29 +2976,30 @@ reference = "torchcpu"
 
 [[package]]
 name = "torchvision"
-version = "0.18.1+cpu"
+version = "0.19.0+cpu"
 description = "image and video datasets and models for torch deep learning"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "torchvision-0.18.1+cpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:2ae9d4e4e11bc43c7ee6c7c7e87b1e6adf5503ad0710e59cd86bc7b1a342d75a"},
-    {file = "torchvision-0.18.1+cpu-cp310-cp310-win_amd64.whl", hash = "sha256:eb7375cc96c53d2ffd98be5906f2e4cd7e304c88fd3406d334d5b7ae91511665"},
-    {file = "torchvision-0.18.1+cpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:2c4d6b5c054e5b31d9b23da5c8d70f271307515c2a9f3a234823213bb5997b13"},
-    {file = "torchvision-0.18.1+cpu-cp311-cp311-win_amd64.whl", hash = "sha256:a002db2ef1137f5eff2b03843ad5cd1514ee09b9eaa5765f19cd03bced036f35"},
-    {file = "torchvision-0.18.1+cpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:e234971d465e8ce481a2718375d9f0797b4381c2d79bb1a546a5f28e26620629"},
-    {file = "torchvision-0.18.1+cpu-cp312-cp312-win_amd64.whl", hash = "sha256:39b9e63cb11ca3dba2ef0a05e000d7d196f66e7be641a5fc48d4ed6c93d898e7"},
-    {file = "torchvision-0.18.1+cpu-cp38-cp38-linux_x86_64.whl", hash = "sha256:0712fb8c5261488afbb859b8107f97309c9d80cb2fe595293b8ec453537dd042"},
-    {file = "torchvision-0.18.1+cpu-cp38-cp38-win_amd64.whl", hash = "sha256:96bfae7087dbdaee6b486814e1ec9689f69a83451ef495f14cdf2024af00819b"},
-    {file = "torchvision-0.18.1+cpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:56563d0cae75ec2d7052417a481777a070038f85f9cd1421a90039aaa9feb2b7"},
-    {file = "torchvision-0.18.1+cpu-cp39-cp39-win_amd64.whl", hash = "sha256:3dd65867b5efc7741fb90d390139f192089ce59f9fce399c275e809cb85de6de"},
+    {file = "torchvision-0.19.0+cpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:7b2b46d3c757fa1fe7d08d48bdae6c9d97d82ace707474a79219c10991fee6ff"},
+    {file = "torchvision-0.19.0+cpu-cp310-cp310-win_amd64.whl", hash = "sha256:28c66b16216ad60f9dfed70beb31f95fa55cbe9ba9e49e47519f2086c50b1fba"},
+    {file = "torchvision-0.19.0+cpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:1992f65ce9b39c10b49f61d3da43cec2f73b3a43e29d64badaee5153831e2d99"},
+    {file = "torchvision-0.19.0+cpu-cp311-cp311-win_amd64.whl", hash = "sha256:e9ea02b88fc115ab5a5258212425fd5bd65d6251c4d70245b5a14afc0094076a"},
+    {file = "torchvision-0.19.0+cpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:8ff4747cc9b4b889286ef51050e0f5f7ea659b9b024079f3860384337b73d192"},
+    {file = "torchvision-0.19.0+cpu-cp312-cp312-win_amd64.whl", hash = "sha256:c8f7eef20c603462a6ebb028b699945ab07f22c3cfa1ec688c61c66ec7f7dd8f"},
+    {file = "torchvision-0.19.0+cpu-cp38-cp38-linux_x86_64.whl", hash = "sha256:9b903e76d48a8ef0f18f4e5c57002b6889481ea85a4cbe544b8668d4ba386a5d"},
+    {file = "torchvision-0.19.0+cpu-cp38-cp38-win_amd64.whl", hash = "sha256:23f9cb7078d242a30dfdf121e64c97f95f86d38c096eea4a943854da642dd775"},
+    {file = "torchvision-0.19.0+cpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:5da60e7a5e20e9fb80673c0cc07a91986cfd3e2ac5f0b6c50dcfc8298ed5d043"},
+    {file = "torchvision-0.19.0+cpu-cp39-cp39-win_amd64.whl", hash = "sha256:1a05577a9a12ea3794ec50bff2ec38823bd1831dd3b75464d0226f322d37ab1d"},
 ]
 
 [package.dependencies]
 numpy = "*"
 pillow = ">=5.3.0,<8.3.dev0 || >=8.4.dev0"
-torch = "2.3.1"
+torch = "2.4.0"
 
 [package.extras]
+gdown = ["gdown (>=4.7.3)"]
 scipy = ["scipy"]
 
 [package.source]
