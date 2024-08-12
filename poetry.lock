@@ -1674,18 +1674,18 @@ install = ["zstandard (>=0.21.0)"]
 
 [[package]]
 name = "pdm"
-version = "2.17.1"
+version = "2.17.3"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.17.1-py3-none-any.whl", hash = "sha256:2ef7bb1424217f267b81e40f9c5326af27a519e9535e3272aa3b454ad5ab096c"},
-    {file = "pdm-2.17.1.tar.gz", hash = "sha256:9e1a28ecca83f3627aa700b1e3d52cd3f82f10fc908ac6499119baf7a3d4ea6c"},
+    {file = "pdm-2.17.3-py3-none-any.whl", hash = "sha256:3cc0fab468d68ce9c52ce1f2f2270ecb5396b23f17be4ac048ca901be88b15f1"},
+    {file = "pdm-2.17.3.tar.gz", hash = "sha256:f49220f225ec71258cbf7148b14a76caeac612745bedab67f9062398ea56a7a5"},
 ]
 
 [package.dependencies]
 blinker = "*"
-dep-logic = ">=0.4.3"
+dep-logic = ">=0.4.4"
 filelock = ">=3.13"
 findpython = ">=0.6.0,<1.0.0a0"
 hishel = ">=0.0.24,<0.1.0"
@@ -1712,7 +1712,7 @@ all-locked = ["arrow (==1.2.3)", "binaryornot (==0.4.4)", "certifi (==2024.2.2)"
 cookiecutter = ["cookiecutter"]
 copier = ["copier (>=8.0.0)"]
 keyring = ["keyring"]
-locked = ["anyio (==4.3.0)", "blinker (==1.7.0)", "certifi (==2024.2.2)", "dep-logic (==0.4.3)", "distlib (==0.3.8)", "exceptiongroup (==1.2.0)", "filelock (==3.13.3)", "findpython (==0.6.0)", "h11 (==0.14.0)", "hishel (==0.0.25)", "httpcore (==1.0.5)", "httpx (==0.27.0)", "httpx[socks] (==0.27.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "installer (==0.7.0)", "markdown-it-py (==3.0.0)", "mdurl (==0.1.2)", "msgpack (==1.0.8)", "packaging (==24.0)", "pbs-installer (==2024.4.24)", "platformdirs (==4.2.0)", "pygments (==2.17.2)", "pyproject-hooks (==1.0.0)", "python-dotenv (==1.0.1)", "resolvelib (==1.0.1)", "rich (==13.7.1)", "shellingham (==1.5.4)", "sniffio (==1.3.1)", "socksio (==1.0.0)", "tomli (==2.0.1)", "tomlkit (==0.12.4)", "truststore (==0.8.0)", "typing-extensions (==4.10.0)", "unearth (==0.16.0)", "virtualenv (==20.25.1)", "zipp (==3.18.1)"]
+locked = ["anyio (==4.3.0)", "blinker (==1.7.0)", "certifi (==2024.2.2)", "dep-logic (==0.4.4)", "distlib (==0.3.8)", "exceptiongroup (==1.2.0)", "filelock (==3.13.3)", "findpython (==0.6.0)", "h11 (==0.14.0)", "hishel (==0.0.25)", "httpcore (==1.0.5)", "httpx (==0.27.0)", "httpx[socks] (==0.27.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "installer (==0.7.0)", "markdown-it-py (==3.0.0)", "mdurl (==0.1.2)", "msgpack (==1.0.8)", "packaging (==24.0)", "pbs-installer (==2024.4.24)", "platformdirs (==4.2.0)", "pygments (==2.17.2)", "pyproject-hooks (==1.0.0)", "python-dotenv (==1.0.1)", "resolvelib (==1.0.1)", "rich (==13.7.1)", "shellingham (==1.5.4)", "sniffio (==1.3.1)", "socksio (==1.0.0)", "tomli (==2.0.1)", "tomlkit (==0.12.4)", "truststore (==0.8.0)", "typing-extensions (==4.10.0)", "unearth (==0.16.0)", "virtualenv (==20.25.1)", "zipp (==3.18.1)"]
 pytest = ["pytest", "pytest-mock"]
 template = ["pdm[cookiecutter,copier]"]
 
