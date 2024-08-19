@@ -1676,13 +1676,13 @@ install = ["zstandard (>=0.21.0)"]
 
 [[package]]
 name = "pdm"
-version = "2.17.3"
+version = "2.18.1"
 description = "A modern Python package and dependency manager supporting the latest PEP standards"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pdm-2.17.3-py3-none-any.whl", hash = "sha256:3cc0fab468d68ce9c52ce1f2f2270ecb5396b23f17be4ac048ca901be88b15f1"},
-    {file = "pdm-2.17.3.tar.gz", hash = "sha256:f49220f225ec71258cbf7148b14a76caeac612745bedab67f9062398ea56a7a5"},
+    {file = "pdm-2.18.1-py3-none-any.whl", hash = "sha256:6a86b9a6fbe071dc26f266006ac8d688e8d16e5115ee115135713af95a860c0a"},
+    {file = "pdm-2.18.1.tar.gz", hash = "sha256:acef692477a7190731ee7c1f626e97516eeb7473e4eeeeede4fef2bf0fb743ee"},
 ]
 
 [package.dependencies]
@@ -1705,16 +1705,16 @@ shellingham = ">=1.3.2"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 tomlkit = ">=0.11.1,<1"
 truststore = {version = "*", markers = "python_version >= \"3.10\""}
-unearth = ">=0.16.0"
+unearth = ">=0.17.0"
 virtualenv = ">=20"
 
 [package.extras]
 all = ["pdm[keyring,template]"]
-all-locked = ["arrow (==1.2.3)", "binaryornot (==0.4.4)", "certifi (==2024.2.2)", "cffi (==1.15.1)", "chardet (==5.2.0)", "charset-normalizer (==3.3.2)", "click (==8.1.7)", "colorama (==0.4.6)", "cookiecutter (==2.1.1)", "copier (==8.0.0)", "cryptography (==41.0.1)", "decorator (==5.1.1)", "dunamai (==1.17.0)", "funcy (==2.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "jaraco-classes (==3.2.3)", "jeepney (==0.8.0)", "jinja2 (==3.1.3)", "jinja2-ansible-filters (==1.3.2)", "jinja2-time (==0.2.0)", "keyring (==24.1.1)", "markupsafe (==2.1.5)", "more-itertools (==9.1.0)", "packaging (==24.0)", "pathspec (==0.12.1)", "plumbum (==1.8.2)", "prompt-toolkit (==3.0.38)", "pycparser (==2.21)", "pydantic (==1.10.9)", "pygments (==2.17.2)", "python-dateutil (==2.9.0.post0)", "python-slugify (==8.0.1)", "pywin32 (==306)", "pywin32-ctypes (==0.2.1)", "pyyaml (==6.0.1)", "pyyaml-include (==1.3)", "questionary (==1.10.0)", "requests (==2.31.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "text-unidecode (==1.3)", "typing-extensions (==4.10.0)", "urllib3 (==2.2.1)", "wcwidth (==0.2.6)", "zipp (==3.18.1)"]
+all-locked = ["arrow (==1.2.3)", "backports-tarfile (==1.2.0)", "binaryornot (==0.4.4)", "certifi (==2024.2.2)", "cffi (==1.15.1)", "chardet (==5.2.0)", "charset-normalizer (==3.3.2)", "click (==8.1.7)", "colorama (==0.4.6)", "cookiecutter (==2.1.1)", "copier (==8.0.0)", "cryptography (==41.0.1)", "decorator (==5.1.1)", "dunamai (==1.17.0)", "funcy (==2.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "jaraco-classes (==3.2.3)", "jaraco-context (==5.3.0)", "jaraco-functools (==4.0.2)", "jeepney (==0.8.0)", "jinja2 (==3.1.3)", "jinja2-ansible-filters (==1.3.2)", "jinja2-time (==0.2.0)", "keyring (==25.3.0)", "markupsafe (==2.1.5)", "more-itertools (==9.1.0)", "packaging (==24.0)", "pathspec (==0.12.1)", "plumbum (==1.8.2)", "prompt-toolkit (==3.0.38)", "pycparser (==2.21)", "pydantic (==1.10.9)", "pygments (==2.17.2)", "python-dateutil (==2.9.0.post0)", "python-slugify (==8.0.1)", "pywin32 (==306)", "pywin32-ctypes (==0.2.1)", "pyyaml (==6.0.1)", "pyyaml-include (==1.3)", "questionary (==1.10.0)", "requests (==2.31.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "text-unidecode (==1.3)", "typing-extensions (==4.10.0)", "urllib3 (==2.2.1)", "wcwidth (==0.2.6)", "zipp (==3.18.1)"]
 cookiecutter = ["cookiecutter"]
 copier = ["copier (>=8.0.0)"]
 keyring = ["keyring"]
-locked = ["anyio (==4.3.0)", "blinker (==1.7.0)", "certifi (==2024.2.2)", "dep-logic (==0.4.4)", "distlib (==0.3.8)", "exceptiongroup (==1.2.0)", "filelock (==3.13.3)", "findpython (==0.6.0)", "h11 (==0.14.0)", "hishel (==0.0.25)", "httpcore (==1.0.5)", "httpx (==0.27.0)", "httpx[socks] (==0.27.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "installer (==0.7.0)", "markdown-it-py (==3.0.0)", "mdurl (==0.1.2)", "msgpack (==1.0.8)", "packaging (==24.0)", "pbs-installer (==2024.4.24)", "platformdirs (==4.2.0)", "pygments (==2.17.2)", "pyproject-hooks (==1.0.0)", "python-dotenv (==1.0.1)", "resolvelib (==1.0.1)", "rich (==13.7.1)", "shellingham (==1.5.4)", "sniffio (==1.3.1)", "socksio (==1.0.0)", "tomli (==2.0.1)", "tomlkit (==0.12.4)", "truststore (==0.8.0)", "typing-extensions (==4.10.0)", "unearth (==0.16.0)", "virtualenv (==20.25.1)", "zipp (==3.18.1)"]
+locked = ["anyio (==4.3.0)", "blinker (==1.7.0)", "certifi (==2024.2.2)", "dep-logic (==0.4.4)", "distlib (==0.3.8)", "exceptiongroup (==1.2.0)", "filelock (==3.13.3)", "findpython (==0.6.0)", "h11 (==0.14.0)", "hishel (==0.0.25)", "httpcore (==1.0.5)", "httpx (==0.27.0)", "httpx[socks] (==0.27.0)", "idna (==3.6)", "importlib-metadata (==7.1.0)", "importlib-resources (==6.4.0)", "installer (==0.7.0)", "markdown-it-py (==3.0.0)", "mdurl (==0.1.2)", "msgpack (==1.0.8)", "packaging (==24.0)", "pbs-installer (==2024.4.24)", "platformdirs (==4.2.0)", "pygments (==2.17.2)", "pyproject-hooks (==1.0.0)", "python-dotenv (==1.0.1)", "resolvelib (==1.0.1)", "rich (==13.7.1)", "shellingham (==1.5.4)", "sniffio (==1.3.1)", "socksio (==1.0.0)", "tomli (==2.0.1)", "tomlkit (==0.13.2)", "truststore (==0.8.0)", "typing-extensions (==4.10.0)", "unearth (==0.17.0)", "virtualenv (==20.25.1)", "zipp (==3.18.1)"]
 pytest = ["pytest", "pytest-mock"]
 template = ["pdm[cookiecutter,copier]"]
 
@@ -3106,13 +3106,13 @@ files = [
 
 [[package]]
 name = "unearth"
-version = "0.16.1"
+version = "0.17.0"
 description = "A utility to fetch and download python packages"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "unearth-0.16.1-py3-none-any.whl", hash = "sha256:5a598ac1a3f185144fadc9de47f1043bff805c36118ffc40f81ef98ff22e8e37"},
-    {file = "unearth-0.16.1.tar.gz", hash = "sha256:988a43418fa0b78aeb628a15f6a3b02152c1787f63fe6d254c7f4e2ccf8db0a7"},
+    {file = "unearth-0.17.0-py3-none-any.whl", hash = "sha256:81c2f1fad5bb0065371df221934c3cae22dc7526c9606ec83fb3405c3acfd5e6"},
+    {file = "unearth-0.17.0.tar.gz", hash = "sha256:771ca270fec8bea262774a0b1ce2752739056e65234434028eceaf466cbba0b6"},
 ]
 
 [package.dependencies]
