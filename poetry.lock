@@ -3068,18 +3068,18 @@ files = [
 
 [[package]]
 name = "types-seaborn"
-version = "0.13.2.20240804"
+version = "0.13.2.20240820"
 description = "Typing stubs for seaborn"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "types-seaborn-0.13.2.20240804.tar.gz", hash = "sha256:d58da5f77c724d7734697eecd8cab18d8149364855f41583a38a03803d22468d"},
-    {file = "types_seaborn-0.13.2.20240804-py3-none-any.whl", hash = "sha256:aa48251c139339a7510cf7e537d30251ab0b635437954c235cc9e767f7b913a1"},
+    {file = "types-seaborn-0.13.2.20240820.tar.gz", hash = "sha256:0a9785a669a483c7259df2d6c3221560019bb3fd9ceb77008b7d398b5306de9a"},
+    {file = "types_seaborn-0.13.2.20240820-py3-none-any.whl", hash = "sha256:08a3824a222e8fd9b448f2848c0c5f5847a8194e6974e1444eef6f23410a72c1"},
 ]
 
 [package.dependencies]
 matplotlib = ">=3.8"
-numpy = ">=1.20"
+numpy = ">=1.20,<2.1.0"
 pandas-stubs = "*"
 
 [[package]]
