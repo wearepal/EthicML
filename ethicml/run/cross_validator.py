@@ -70,8 +70,7 @@ class CVResults:
             # we convert the hyperparameter dictionaries to strings in order to compare them
             hyp_string = ", ".join(f"{key!s}={val!r}" for (key, val) in result.params.items())
             grouped[hyp_string].append(result)
-            if result.fold_id > max_fold_id:
-                max_fold_id = result.fold_id
+            max_fold_id = max(result.fold_id, max_fold_id)
 
         # compute the mean value of each measure within each group
         mean_vals: dict[str, ResultTuple] = {}

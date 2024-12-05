@@ -225,8 +225,6 @@ select = [
 ]
 ignore = [
     "A003", # builtins as class attribute
-    "ANN101",
-    "ANN102",
     "D105", # magic methods
     "D107", # __init__
     "D206", # indent with spaces (conflicts with formatter)
@@ -240,7 +238,6 @@ ignore = [
     "PD901", # forbidding "df" as a variable name
     "PLR0402", # useless import alias
     "PLR2004", # magic number comparison
-    "PT004", # fixture naming
     "PT013", # don't allow `from pytest import ...`
     "PLR0913", # too many arguments
     "PLW2901", # overwriting loop variables
@@ -289,3 +286,4 @@ style = "sphinx"
 arg-type-hints-in-docstring = false
 check-return-types = false
 check-yield-types = false
+check-class-attributes = false

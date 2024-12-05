@@ -11,18 +11,18 @@ http://www.sphinx-doc.org/en/master/config
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
+from pathlib import Path
 import sys
 
 import toml
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, str(Path("..").resolve()))
 
 
 # -- Project information -----------------------------------------------------
 
 project = "EthicML"
-copyright = "2022, O. Thomas, T. Kehrenberg, M. Bartlett"
+copyright = "2022, O. Thomas, T. Kehrenberg, M. Bartlett"  # noqa: A001
 author = "O. Thomas, T. Kehrenberg, M. Bartlett"
 
 # The full version, including alpha/beta/rc tags

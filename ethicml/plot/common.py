@@ -109,17 +109,13 @@ def errorbox(
 
         xmean: float = entry.vals[xaxis_measure].mean()
         xstd: float = entry.vals[xaxis_measure].std()
-        if xmean + (0.5 * xstd) > max_xmean:
-            max_xmean = xmean + (0.5 * xstd)
-        if xmean - (0.5 * xstd) < min_xmean:
-            min_xmean = xmean - (0.5 * xstd)
+        max_xmean = max(xmean + (0.5 * xstd), max_xmean)
+        min_xmean = min(xmean - (0.5 * xstd), min_xmean)
 
         ymean: float = entry.vals[yaxis_measure].mean()
         ystd: float = entry.vals[yaxis_measure].std()
-        if ymean + (0.5 * ystd) > max_ymean:
-            max_ymean = ymean + (0.5 * ystd)
-        if ymean - (0.5 * ystd) < min_ymean:
-            min_ymean = ymean - (0.5 * ystd)
+        max_ymean = max(ymean + (0.5 * ystd), max_ymean)
+        min_ymean = min(ymean - (0.5 * ystd), min_ymean)
 
         if use_cross:
             plot.errorbar(
