@@ -33,7 +33,7 @@ def zafar_teardown() -> Generator[None, None, None]:
     ZafarBaseline().remove()
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @pytest.mark.usefixtures("zafar_teardown")
 def test_zafar(toy_train_test: TrainTestPair) -> None:  # noqa: PLR0915
     """Test zafar."""

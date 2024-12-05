@@ -42,8 +42,8 @@ def test_issue_431() -> None:
     of the data.
     """
     x = pd.DataFrame(np.random.randn(100), columns=["x"])
-    s = pd.Series(np.random.randn(100), name="s")
-    y = pd.Series(np.random.randint(0, 5, 100), name="y")
+    s: pd.Series[int] = pd.Series(np.random.randint(0, 2, 100), name="s")
+    y: pd.Series[int] = pd.Series(np.random.randint(0, 5, 100), name="y")
     data = DataTuple.from_df(x=x, s=s, y=y)
     train_test: tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test

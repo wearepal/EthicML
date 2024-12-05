@@ -270,7 +270,7 @@ def test_run_alg_suite_err_handling() -> None:
     assert len(results) == 4
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @pytest.mark.usefixtures("results_cleanup")
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_no_pipeline() -> None:

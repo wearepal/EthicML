@@ -219,7 +219,7 @@ def kamishima_gen() -> Generator[Kamishima, None, None]:
     Kamishima().remove()  # delete the downloaded code
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @pytest.mark.xdist_group("in_model_files")
 def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
@@ -271,7 +271,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair) -> None:
     assert np.count_nonzero(predictions.hard.to_numpy() == 0) == len(predictions) - expected_num_pos
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @pytest.mark.xdist_group("results_files")
 def test_threaded_agarwal() -> None:
     """Test threaded agarwal."""

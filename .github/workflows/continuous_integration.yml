@@ -29,104 +29,86 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Install poetry
-      run: pipx install poetry
+    - uses: actions/checkout@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      run: uv python install 3.10
     - name: Install ruff
-      run: |
-        poetry env use 3.10
-        poetry install --only lint --no-interaction --no-root
+      run: uv sync --no-install-project --only-group lint
     - name: Lint with ruff
       run: |
-        poetry run ruff check --output-format=github ethicml
+        uv run ruff check --output-format=github ethicml
     - name: Lint with ruff
       run: |
-        poetry run ruff check --output-format=github tests
+        uv run ruff check --output-format=github tests
 
   format_with_black:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Install poetry
-      run: pipx install poetry
+    - uses: actions/checkout@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      run: uv python install 3.10
     - name: Install ruff
-      run: |
-        poetry env use 3.10
-        poetry install --only lint --no-interaction --no-root
+      run: uv sync --no-install-project --only-group lint
     - name: Format with ruff
       run: |
-        poetry run ruff format --diff .
+        uv run ruff format --diff .
 
   check_with_pydoclint:
 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Install poetry
-      run: pipx install poetry
+    - uses: actions/checkout@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'  # might as well use 3.11 as it's faster
+      run: uv python install 3.11
     - name: Install pydoclint
-      run: |
-        poetry env use 3.11
-        poetry install --only doclint --no-interaction --no-root
+      run: uv sync --no-install-project --only-group doclint
     - name: Check with pydoclint
       run: |
-        poetry run pydoclint ethicml
+        uv run pydoclint ethicml
 
   test_minimal_dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install poetry
-        run: pipx install poetry
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Set up Python
+        run: uv python install 3.10
       - name: Install dependencies
-        run: |
-          poetry env use 3.10
-          poetry install --no-interaction --no-root --without dev,test,typecheck,lint,doclint
+        run: uv sync --no-install-project --no-group dev --no-group test --no-group typecheck --no-group lint --no-group doclint
       - name: Test import
         run: |
-          poetry run python -c "import ethicml"
+          uv run python -c "import ethicml"
 
   test_build_docs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install poetry
-        run: pipx install poetry
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
         with:
-          python-version: '3.10'
-          cache: 'poetry'
-
+          enable-cache: true
+      - name: Set up Python
+        run: uv python install 3.10
       - name: Install dependencies
-        run: |
-          poetry env use 3.10
-          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu,docs --without lint,doclint
+        run: uv sync --no-install-project --all-extras --group ci --group torchcpu --group docs --no-group lint --no-group doclint
       - name: Test import
         run: |
-          poetry run python -c "import ethicml"
+          uv run python -c "import ethicml"
       - name: Install pandoc
         run: sudo apt-get install -y pandoc
       - name: Build with sphinx
         run: |
-          poetry run sphinx-build -W -b html ./docs ./docs/_build
+          uv run sphinx-build -W -b html ./docs ./docs/_build
 
   test_with_pytest:
     needs: [lint_with_ruff, format_with_black, check_with_pydoclint, test_minimal_dependencies, test_build_docs]
@@ -136,24 +118,22 @@ jobs:
       #----------------------------------------------
       #  ---  check-out repo and set-up python ---
       #----------------------------------------------
-      - uses: actions/checkout@v3
-      - name: Install poetry
+      - uses: actions/checkout@v4
+      - name: Install uv
         if: ${{ github.event_name == 'merge_group' }}
-        run: pipx install poetry
-      - uses: actions/setup-python@v4
-        if: ${{ github.event_name == 'merge_group' }}
+        uses: astral-sh/setup-uv@v4
         with:
-          python-version: '3.10'
-          cache: 'poetry'
+          enable-cache: true
+      - name: Set up Python
+        if: ${{ github.event_name == 'merge_group' }}
+        run: uv python install 3.10
 
       #----------------------------------------------
       #  ---------  install dependencies  --------
       #----------------------------------------------
       - name: Install dependencies
         if: ${{ github.event_name == 'merge_group' }}
-        run: |
-          poetry env use 3.10
-          poetry install --no-interaction --no-root --all-extras --with ci,torchcpu --without lint,doclint
+        run: uv sync --no-install-project --all-extras --group ci --group torchcpu --no-group lint --no-group doclint
 
       #----------------------------------------------
       #  -----           Run MyPy             -----
@@ -161,7 +141,7 @@ jobs:
       - name: Type check with mypy
         if: ${{ github.event_name == 'merge_group' }}
         run: |
-          poetry run mypy ethicml
+          uv run mypy ethicml
 
       #----------------------------------------------
       #  -----       Run MyPy on tests         -----
@@ -169,7 +149,7 @@ jobs:
       - name: Type check tests with mypy
         if: ${{ github.event_name == 'merge_group' }}
         run: |
-          poetry run mypy tests
+          uv run mypy tests
 
       #----------------------------------------------
       #  -----           Run Tests            -----
@@ -177,4 +157,4 @@ jobs:
       - name: Test with pytest
         if: ${{ github.event_name == 'merge_group' }}
         run: |
-          poetry run python -m pytest -vv -n 2 --dist loadgroup --cov=ethicml --cov-fail-under=80  tests/
+          uv run python -m pytest -vv -n 2 --dist loadgroup --cov=ethicml --cov-fail-under=80  tests/
