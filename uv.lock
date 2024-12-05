@@ -515,7 +515,7 @@ docs = [
     { name = "autodocsumm" },
     { name = "furo" },
     { name = "ipython-pygments" },
-    { name = "nbsphinx", git = "https://github.com/tmke8/nbsphinx.git?rev=0291ae7" },
+    { name = "nbsphinx", git = "https://github.com/tmke8/nbsphinx.git?rev=9f17483" },
     { name = "sphinx" },
     { name = "toml" },
 ]
@@ -1220,8 +1220,8 @@ wheels = [
 
 [[package]]
 name = "nbsphinx"
-version = "0.8.9"
-source = { git = "https://github.com/tmke8/nbsphinx.git?rev=0291ae7#0291ae7ca701ff1724532b7d8a798ff307a3d880" }
+version = "0.9.5"
+source = { git = "https://github.com/tmke8/nbsphinx.git?rev=9f17483#9f17483545c23b0d6e90fffdde205df9471b6aef" }
 dependencies = [
     { name = "docutils" },
     { name = "jinja2" },

@@ -85,7 +85,7 @@ docs = [
     "autodocsumm",
     "furo",
     "toml",
-    "nbsphinx @ git+https://github.com/tmke8/nbsphinx.git@0291ae7",
+    "nbsphinx @ git+https://github.com/tmke8/nbsphinx.git@9f17483",
     "ipython-pygments",
 ]
 ci = [
