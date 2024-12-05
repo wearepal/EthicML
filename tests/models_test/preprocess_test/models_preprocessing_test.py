@@ -58,7 +58,7 @@ METHOD_LIST = [
         name="VFAE",
         num_pos=47,
     ),
-    PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
+    PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=52),
     PreprocessTest(model=Beutel(dir=TMPDIR, validation_pcnt=0.25), name="Beutel dp", num_pos=51),
     PreprocessTest(
         model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp, validation_pcnt=0.25),

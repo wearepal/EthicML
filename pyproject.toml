@@ -40,7 +40,7 @@ repository = "https://github.com/wearepal/EthicML"
 models = [
     "GitPython<4.0.0,>=3.1.20",
     "cloudpickle<3.0.0,>=2.0.0",
-    "fairlearn==0.8.0",
+    "fairlearn>=0.11.0",
     "gitdb2==4.0.2",
     "pdm<3.0.0,>=2.4.0",
     "scipy<2.0.0,>=1.7.2",

@@ -483,7 +483,7 @@ typecheck = [
 [package.metadata]
 requires-dist = [
     { name = "cloudpickle", marker = "extra == 'models'", specifier = ">=2.0.0,<3.0.0" },
-    { name = "fairlearn", marker = "extra == 'models'", specifier = "==0.8.0" },
+    { name = "fairlearn", marker = "extra == 'models'", specifier = ">=0.11.0" },
     { name = "filelock" },
     { name = "folktables", marker = "extra == 'data'", specifier = ">=0.0.12" },
     { name = "gitdb2", marker = "extra == 'models'", specifier = "==4.0.2" },
@@ -558,7 +558,7 @@ wheels = [
 
 [[package]]
 name = "fairlearn"
-version = "0.8.0"
+version = "0.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
@@ -566,9 +566,9 @@ dependencies = [
     { name = "scikit-learn" },
     { name = "scipy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ab/10/4fa5ed2569f6438d30c468f2acbbcc15e7b485849898f5220cfe361778d8/fairlearn-0.8.0.tar.gz", hash = "sha256:d08ed8ef8a10193b5a91c868a63b92bcce42c2fd102b533809154768e81b922b", size = 169541 }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/c0/a7c1288a3ec5c775a5709b46f68678b5d65511d1aab142171272dc35498d/fairlearn-0.11.0.tar.gz", hash = "sha256:d836b851dd33c4d27bb07ab01b5f84b90d52b716c5bade54731656073c47f445", size = 167101 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/65/3b/2145139ec51519cd8c870cc47ecdfa64796ce68ad010cce27065e4af5c88/fairlearn-0.8.0-py3-none-any.whl", hash = "sha256:f2dce40dd39b91252aacec229f0b71aa946344839604bfadc0a13fa4c9611111", size = 235000 },
+    { url = "https://files.pythonhosted.org/packages/ec/10/7142b64f0835958920672410c0002b3575d668db979000266e81b19eb4ac/fairlearn-0.11.0-py3-none-any.whl", hash = "sha256:c8592e54412bd612a6a9823d177c9eab9212582c22ca01723739362971fcc266", size = 232283 },
 ]
 
 [[package]]
