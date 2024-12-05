@@ -26,7 +26,7 @@ copyright = "2022, O. Thomas, T. Kehrenberg, M. Bartlett"  # noqa: A001
 author = "O. Thomas, T. Kehrenberg, M. Bartlett"
 
 # The full version, including alpha/beta/rc tags
-release = toml.load("../pyproject.toml")["tool"]["poetry"]["version"]
+release = toml.load("../pyproject.toml")["project"]["version"]
 
 
 # -- General configuration ---------------------------------------------------
