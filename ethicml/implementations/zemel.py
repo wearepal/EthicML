@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 from scipy.spatial.distance import cdist
-from scipy.special import softmax  # type: ignore[attr-defined]
+from scipy.special import softmax
 
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, SubgroupTuple, TestTuple
@@ -39,7 +39,7 @@ def LFR_optim_objective(  # noqa: N802, PLR0913
     A_z: float,  # noqa: N803
     print_interval: int,
     verbose: bool,  # noqa: FBT001  # disabled because scipy needs positional args
-) -> np.number:
+) -> np.floating:
     """LFR optim objective."""
     _, features_dim = x_unprivileged.shape
 
@@ -135,8 +135,8 @@ def fit(train: DataTuple, flags: "ZemelArgs", seed: int) -> Model:
     bnd = [(0, 1)] * flags["clusters"] + [(None, None)] * features_dim * flags["clusters"]
     LFR_optim_objective.steps = 0  # type: ignore[attr-defined]
 
-    learned_model = optim.fmin_l_bfgs_b(  # type: ignore[attr-defined]
-        LFR_optim_objective,
+    learned_model = optim.fmin_l_bfgs_b(
+        func=LFR_optim_objective,
         x0=parameters_initialization,
         epsilon=1e-5,
         args=(
@@ -151,11 +151,11 @@ def fit(train: DataTuple, flags: "ZemelArgs", seed: int) -> Model:
             print_interval,
             verbose,
         ),
-        bounds=bnd,
+        bounds=bnd,  # type: ignore[arg-type]
         approx_grad=True,
         maxfun=flags["maxfun"],
         maxiter=flags["max_iter"],
-        disp=verbose,
+        disp=verbose,  # type: ignore[arg-type]
     )[0]
     w = learned_model[: flags["clusters"]]
     prototypes = learned_model[flags["clusters"] :].reshape((flags["clusters"], features_dim))

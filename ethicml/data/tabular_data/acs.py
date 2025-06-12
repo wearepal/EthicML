@@ -8,7 +8,7 @@ from collections.abc import Generator
 import contextlib
 import os
 from pathlib import Path
-from typing import Literal, TypeAlias, get_args
+from typing import Literal, TypeAlias, cast, get_args
 from typing_extensions import override
 
 import numpy as np
@@ -98,12 +98,13 @@ def _download_dir(root: Path) -> Generator[None, None, None]:
 class _AcsBase(Dataset):
     split: str
     target: str
+    year: Literal["2014", "2015", "2016", "2017", "2018"]
 
     def __init__(
         self,
         name: str,
         root: str | Path,
-        year: str,
+        year: Literal["2014", "2015", "2016", "2017", "2018"],
         horizon: int,
         states: list[StateList],
         class_label_spec: str,
@@ -119,7 +120,7 @@ class _AcsBase(Dataset):
 
         self.year = year
         self.horizon = horizon
-        self.survey = "person"
+        self.survey: Literal["person", "household"] = "person"
         self.states = states
         self._invert_s = invert_s
 
@@ -294,7 +295,7 @@ class AcsIncome(_AcsBase):
     def __init__(
         self,
         root: str | Path,
-        year: str,
+        year: Literal["2014", "2015", "2016", "2017", "2018"],
         horizon: int,
         states: list[StateList],
         split: str = "Sex",
@@ -341,9 +342,8 @@ class AcsIncome(_AcsBase):
     ) -> DataTuple:
         from folktables import ACSDataSource, adult_filter, folktables
 
-        datasource = ACSDataSource(
-            survey_year=self.year, horizon=f"{self.horizon}-Year", survey=self.survey
-        )
+        horizon = cast(Literal["1-Year", "5-Year"], f"{self.horizon}-Year")
+        datasource = ACSDataSource(survey_year=self.year, horizon=horizon, survey=self.survey)
 
         with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
@@ -374,8 +374,8 @@ class AcsIncome(_AcsBase):
             postprocess=lambda x: np.nan_to_num(x, nan=-1),
         )
 
-        dataframe = data_obj._preprocess(dataframe)
-        dataframe[data_obj.target] = dataframe[data_obj.target].apply(data_obj._target_transform)
+        dataframe = data_obj._preprocess(dataframe)  # type: ignore[attr-defined]
+        dataframe[data_obj.target] = dataframe[data_obj.target].apply(data_obj._target_transform)  # type: ignore[attr-defined]
 
         for feat in disc_feats:
             dataframe[feat] = (
@@ -388,7 +388,7 @@ class AcsIncome(_AcsBase):
 
         dataframe = pd.get_dummies(dataframe[disc_feats + continuous_features])
 
-        dataframe = dataframe.apply(data_obj._postprocess)
+        dataframe = dataframe.apply(data_obj._postprocess)  # type: ignore[attr-defined]
 
         cow_cols = [col for col in dataframe.columns if col.startswith("COW")]
         mar_cols = [col for col in dataframe.columns if col.startswith("MAR")]
@@ -451,7 +451,7 @@ class AcsEmployment(_AcsBase):
     def __init__(
         self,
         root: str | Path,
-        year: str,
+        year: Literal["2014", "2015", "2016", "2017", "2018"],
         horizon: int,
         states: list[StateList],
         split: str = "Sex",
@@ -506,9 +506,8 @@ class AcsEmployment(_AcsBase):
     ) -> DataTuple:
         from folktables import ACSDataSource, folktables
 
-        datasource = ACSDataSource(
-            survey_year=self.year, horizon=f"{self.horizon}-Year", survey=self.survey
-        )
+        horizon = cast(Literal["1-Year", "5-Year"], f"{self.horizon}-Year")
+        datasource = ACSDataSource(survey_year=self.year, horizon=horizon, survey=self.survey)
 
         with _download_dir(self.root):
             dataframe = datasource.get_data(states=self.states, download=True)
@@ -545,9 +544,9 @@ class AcsEmployment(_AcsBase):
             postprocess=lambda x: np.nan_to_num(x, nan=-1),
         )
 
-        dataframe = data_obj._preprocess(dataframe)
-        dataframe[data_obj.target] = dataframe[data_obj.target].apply(data_obj._target_transform)
-        dataframe = dataframe.apply(data_obj._postprocess)
+        dataframe = data_obj._preprocess(dataframe)  # type: ignore[attr-defined]
+        dataframe[data_obj.target] = dataframe[data_obj.target].apply(data_obj._target_transform)  # type: ignore[attr-defined]
+        dataframe = dataframe.apply(data_obj._postprocess)  # type: ignore[attr-defined]
 
         for feat in disc_feats:
             dataframe[feat] = (
@@ -560,7 +559,7 @@ class AcsEmployment(_AcsBase):
 
         dataframe = pd.get_dummies(dataframe[disc_feats + continuous_features])
 
-        dataframe = dataframe.apply(data_obj._postprocess)
+        dataframe = dataframe.apply(data_obj._postprocess)  # type: ignore[attr-defined]
 
         schl_cols = [col for col in dataframe.columns if col.startswith("SCHL")]
         mar_cols = [col for col in dataframe.columns if col.startswith("MAR")]
