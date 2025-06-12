@@ -50,7 +50,7 @@ def train_model(
             num_epochs = len(train_loader.dataset)  # type: ignore[arg-type]
             print(
                 f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{num_epochs}"
-                f"\t({100. * batch_idx / len(train_loader):.0f}%)]"
+                f"\t({100.0 * batch_idx / len(train_loader):.0f}%)]"
                 f"\tLoss: {loss.item() / len(data_x):.6f}"
             )
 

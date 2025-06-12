@@ -52,6 +52,7 @@ data = [
 plot = [
     "matplotlib>=3.8",
     "seaborn>=0.9.0",
+    "imageio",
 ]
 metrics = [
     "scikit-learn>=0.20.1",
@@ -69,9 +70,10 @@ test = [
     "pip<23.0.0,>=22.3.1",
 ]
 typecheck = [
+    "microsoft-python-type-stubs @ git+https://github.com/microsoft/python-type-stubs.git@76ca370",
     "mypy>=0.990",
     "pandas-stubs>=1.4.2.220626",
-    "python-type-stubs @ git+https://github.com/wearepal/python-type-stubs.git@8d5f608",
+    "scipy-stubs>=1.15.3.0",
     "types-seaborn<1.0.0.0,>=0.13.2.20240205",
 ]
 lint = [
@@ -157,10 +159,7 @@ module = [
     "aif360.*",
     "cloudpickle",
     "fairlearn.*",
-    "folktables.*",
     "imageio",
-    "scipy.*",
-    "sklearn.*",
 ]
 ignore_missing_imports = true
 
@@ -186,8 +185,8 @@ reportUnknownVariableType = "none"
 reportUnknownParameterType = "none"
 reportUnknownArgumentType = "none"
 reportUnknownLambdaType = "none"
-venvPath = "/home/tmk/.cache/pypoetry/virtualenvs"
-venv = "ethicml-dzQunYke-py3.10"
+venvPath = "."
+venv = ".venv"
 
 [tool.ruff]
 line-length = 100

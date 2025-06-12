@@ -480,7 +480,7 @@ def write_as_npz(
         for entry, values in data.items()
     }
 
-    np.savez(data_path, **as_numpy, **column_names, **extra)
+    np.savez(data_path, allow_pickle=False, **as_numpy, **column_names, **extra)
 
 
 def concat(datatup_list: Sequence[T], *, ignore_index: bool = False) -> T:
