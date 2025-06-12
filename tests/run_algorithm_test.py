@@ -1,7 +1,6 @@
 """Test that an algorithm can run against some data."""
 
 from dataclasses import dataclass
-import os
 from pathlib import Path
 from typing import Literal
 from typing_extensions import Self
@@ -186,7 +185,7 @@ def test_run_alg_suite() -> None:
         topic="pytest",
     )
 
-    files = os.listdir(Path() / "results")
+    files = list((Path() / "results").iterdir())
     file_names = [
         "pytest_Adult Race-Binary_Upsample uniform.csv",
         "pytest_Adult Race-Binary_no_transform.csv",
