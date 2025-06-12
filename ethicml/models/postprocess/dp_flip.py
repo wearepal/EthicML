@@ -72,7 +72,7 @@ class DPFlip(PostAlgorithm):
         idx_s_y = _y.index.intersection(_s.index)
         rng = np.random.RandomState(seed)
         idxs = list(rng.permutation(idx_s_y))
-        update = pd.Series({idx: post_y_val for idx in idxs[:num_to_flip]}, dtype=preds.hard.dtype)
+        update = pd.Series(dict.fromkeys(idxs[:num_to_flip], post_y_val), dtype=preds.hard.dtype)
         preds.hard.update(update)
         return preds
 

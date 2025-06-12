@@ -114,7 +114,7 @@ def train_model(
             if flags["supervised"]:
                 print(
                     f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{num_epochs}"
-                    f"({100. * batch_idx / len(train_loader):.0f}%)]\t"
+                    f"({100.0 * batch_idx / len(train_loader):.0f}%)]\t"
                     f"Loss: {loss.item() / len(data_x):.6f}\t"
                     f"pred_loss: {prediction_loss.item():.6f}\t"
                     f"recon_loss: {reconstruction_loss.item():.6f}\t"
@@ -124,7 +124,7 @@ def train_model(
             else:
                 print(
                     f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{num_epochs}"
-                    f"({100. * batch_idx / len(train_loader):.0f}%)]\t"
+                    f"({100.0 * batch_idx / len(train_loader):.0f}%)]\t"
                     f"Loss: {loss.item() / len(data_x):.6f}\t"
                     f"recon_loss: {reconstruction_loss.item():.6f}\t"
                     f"mmd_loss: {flags['batch_size'] * mmd_loss.item():.6f}"
