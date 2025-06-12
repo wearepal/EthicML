@@ -185,7 +185,7 @@ def test_run_alg_suite() -> None:
         topic="pytest",
     )
 
-    files = list((Path() / "results").iterdir())
+    files = [str(p) for p in (Path() / "results").iterdir()]
     file_names = [
         "pytest_Adult Race-Binary_Upsample uniform.csv",
         "pytest_Adult Race-Binary_no_transform.csv",
