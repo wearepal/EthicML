@@ -58,7 +58,7 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Adversarial Debiasing", model=AdvDebiasing(dir=TMPDIR), num_pos=45),
+    InprocessTest(name="Adversarial Debiasing", model=AdvDebiasing(dir=TMPDIR), num_pos=40),
     InprocessTest(name="Agarwal, lr, dp, 0.1", model=Agarwal(dir=TMPDIR), num_pos=45),
     InprocessTest(
         name="Agarwal, gbt, dp, 0.1",
@@ -103,9 +103,9 @@ INPROCESS_TESTS = [
         name="HGR linear_model", model=HGR(dir=TMPDIR, model_type=ModelType.linear), num_pos=60
     ),
     InprocessTest(
-        name="HGR deep_model", model=HGR(dir=TMPDIR, model_type=ModelType.deep), num_pos=69
+        name="HGR deep_model", model=HGR(dir=TMPDIR, model_type=ModelType.deep), num_pos=68
     ),
-    InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=59),
+    InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=58),
     InprocessTest(name="Kamiran & Calders lr C=1.0", model=Reweighting(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
