@@ -159,10 +159,7 @@ module = [
     "aif360.*",
     "cloudpickle",
     "fairlearn.*",
-    "folktables.*",
     "imageio",
-    "scipy.*",
-    "sklearn.*",
 ]
 ignore_missing_imports = true
 
