@@ -158,7 +158,7 @@ def make_gif(files: list[str], name: str = "movie") -> None:
     import imageio
 
     images = [imageio.imread(filename) for filename in files]
-    imageio.mimsave(f"{name}.gif", images)
+    imageio.mimsave(f"{name}.gif", images)  # pyright: ignore
 
 
 def save_label_plot(data: DataTuple, filename: str) -> None:

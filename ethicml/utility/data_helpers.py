@@ -23,7 +23,7 @@ def undo_one_hot(df: pd.DataFrame, new_column_name: str) -> pd.DataFrame: ...
 def undo_one_hot(df: pd.DataFrame, new_column_name: str | None = None) -> pd.Series | pd.DataFrame:
     """Undo one-hot encoding."""
     # we have to overwrite the column names because `idxmax` uses the column names
-    df.columns = pd.Index(range(df.shape[1]))  # type: ignore
+    df.columns = pd.Index(range(df.shape[1]))
     result = df.idxmax(axis="columns")
     if new_column_name is not None:
         return result.to_frame(name=new_column_name)
