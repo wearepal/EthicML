@@ -366,7 +366,7 @@ class GradReverse(Function):
         return x.view_as(x)
 
     @staticmethod
-    def backward(ctx: Any, grad_output: Tensor) -> Any:  # type: ignore[override]
+    def backward(ctx: Any, grad_output: Tensor) -> Any:  # pyright: ignore
         """Backward pass with Gradient reversed / inverted."""
         return grad_output.neg().mul(ctx.lambda_), None
 

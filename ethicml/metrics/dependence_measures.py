@@ -156,4 +156,4 @@ class RenyiCorrelation(_DependenceMeasure):
 
 def _count_true(mask: np.ndarray) -> int:
     """Count the number of elements that are True."""
-    return np.count_nonzero(mask)
+    return np.count_nonzero(mask).item()
