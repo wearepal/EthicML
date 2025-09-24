@@ -32,12 +32,12 @@ class Problem(ABC):
 
     @property
     @abstractmethod
-    def features(self):
+    def features(self) -> list[str]:
         pass
 
     @property
     @abstractmethod
-    def target_transform(self):
+    def target_transform(self) -> Callable[[float], bool] | None:
         pass
 
 class BasicProblem(Problem):
@@ -98,10 +98,10 @@ class BasicProblem(Problem):
     @property
     def target(self) -> str: ...
     @property
-    def target_transform(self): ...
+    def target_transform(self) -> Callable[[float], bool] | None: ...
     @property
     def features(self) -> list[str]: ...
     @property
-    def group(self): ...
+    def group(self) -> str | None: ...
     @property
-    def group_transform(self): ...
+    def group_transform(self) -> Callable: ...
