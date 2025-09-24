@@ -17,7 +17,7 @@ def download_and_extract(
     remote_fname: str,
     file_name: str,
     delete_download: bool = False,
-):
+) -> None:
     """Helper function to download and unzip files."""
 
 def initialize_and_download(
