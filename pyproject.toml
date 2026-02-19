@@ -287,3 +287,6 @@ arg-type-hints-in-docstring = false
 check-return-types = false
 check-yield-types = false
 check-class-attributes = false
+
+[tool.ty.rules]
+unused-ignore-comment = "ignore"

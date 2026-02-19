@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterator
 import itertools
 from typing import Literal
-from typing_extensions import override
+from typing_extensions import override, reveal_type
 
 import numpy as np
 from numpy.random import RandomState
@@ -347,3 +347,11 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[tuple[DataTuple, DataTupl
         )
 
         current = stop
+
+
+# a = np.array([[1, 2], [3, 4]], dtype=np.float64)
+a = np.array([[1, 2], [3, 4]], dtype=np.dtype(np.int64))
+reveal_type(a)
+reveal_type(np.dtype(np.int64))
+reveal_type(np.dtype("int64"))
+reveal_type(np.dtype(int))
