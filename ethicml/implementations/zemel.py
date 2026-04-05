@@ -151,11 +151,10 @@ def fit(train: DataTuple, flags: "ZemelArgs", seed: int) -> Model:
             print_interval,
             verbose,
         ),
-        bounds=bnd,  # type: ignore[arg-type]
+        bounds=bnd,
         approx_grad=True,
         maxfun=flags["maxfun"],
         maxiter=flags["max_iter"],
-        disp=verbose,  # type: ignore[arg-type]
     )[0]
     w = learned_model[: flags["clusters"]]
     prototypes = learned_model[flags["clusters"] :].reshape((flags["clusters"], features_dim))

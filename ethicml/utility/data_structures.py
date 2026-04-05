@@ -656,7 +656,7 @@ def aggregate_results(
     :returns: The aggregated results as a ``pd.DataFrame``.
     """
     grouped = results.groupby(["dataset", "scaler", "transform", "model"])
-    return grouped.agg(aggregator)[metrics]  # type: ignore[arg-type]
+    return grouped.agg(aggregator)[metrics]
 
 
 class KernelType(StrEnum):

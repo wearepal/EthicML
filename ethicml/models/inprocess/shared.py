@@ -29,4 +29,4 @@ def settings_for_svm_lr(
 
     if kernel is None:
         kernel = KernelType[SVC().kernel] if classifier is ClassifierType.svm else None  # type: ignore[attr-defined]
-    return C, kernel
+    return C, kernel  # pyright: ignore

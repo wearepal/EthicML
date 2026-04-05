@@ -34,11 +34,14 @@ def get_sensitive_combinations(metrics: list[Metric], train: DataTuple) -> list[
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
+OUTIDR_DEFAULT = Path() / "results"
+
+
 def load_results(
     dataset_name: str,
     transform_name: str,
     topic: str | None = None,
-    outdir: Path = Path() / "results",
+    outdir: Path = OUTIDR_DEFAULT,
 ) -> Results | None:
     """Load results from a CSV file that was created by :func:`evaluate_models`.
 

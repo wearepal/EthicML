@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterator
 import itertools
 from typing import Literal
-from typing_extensions import override, reveal_type
+from typing_extensions import override
 
 import numpy as np
 from numpy.random import RandomState
@@ -117,8 +117,8 @@ def train_test_split(
     pd.testing.assert_index_equal(train.x.columns, x_columns)
     pd.testing.assert_index_equal(test.x.columns, x_columns)
 
-    assert isinstance(train.s, pd.Series)  # type: ignore[unreachable]
-    assert isinstance(test.s, pd.Series)  # type: ignore[unreachable]
+    assert isinstance(train.s, pd.Series)
+    assert isinstance(test.s, pd.Series)
     assert train.s.name == data.s_column
     assert test.s.name == data.s_column
 
@@ -347,11 +347,3 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[tuple[DataTuple, DataTupl
         )
 
         current = stop
-
-
-# a = np.array([[1, 2], [3, 4]], dtype=np.float64)
-a = np.array([[1, 2], [3, 4]], dtype=np.dtype(np.int64))
-reveal_type(a)
-reveal_type(np.dtype(np.int64))
-reveal_type(np.dtype("int64"))
-reveal_type(np.dtype(int))
